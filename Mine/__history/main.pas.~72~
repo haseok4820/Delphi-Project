@@ -1,0 +1,161 @@
+unit main;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ToolWin, Vcl.ActnMan, Vcl.ActnCtrls, Vcl.Menus, Vcl.ExtCtrls, Vcl.StdCtrls;
+
+type
+  TMap = record
+    iX: Integer;
+    iY: Integer;
+    iW: Integer;
+    iH: Integer;
+  end;
+
+  TResult_BI = record
+    BMine: Boolean;
+    iCnt: Integer;
+  end;
+
+  TfmMain = class(TForm)
+    MainMenu1: TMainMenu;
+    N1: TMenuItem;
+    Help1: TMenuItem;
+    N2: TMenuItem;
+    N3: TMenuItem;
+    N4: TMenuItem;
+    Panel_Header: TPanel;
+    Panel_Footer: TPanel;
+    Label_Time: TLabel;
+    Label1: TLabel;
+    Panel_Map: TPanel;
+    Timer: TTimer;
+    procedure FormShow(Sender: TObject);
+  private
+    { Private declarations }
+    procedure Map(X, Y: Integer);
+    procedure MapMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+    procedure MapClick(); overload;
+    procedure MapClick(Flag: Boolean); overload;
+  public
+    { Public declarations }
+  end;
+
+var
+  fmMain: TfmMain;
+  MapInfo: TMap;
+  arrMineInfo: array of array of TResult_BI;
+
+implementation
+
+{$R *.dfm}
+{ TForm2 }
+
+procedure TfmMain.FormShow(Sender: TObject);
+begin
+  //
+  with MapInfo do
+  begin
+    iX := 8;
+    iY := 8;
+    iW := 30;
+    iH := 30;
+
+    Map(iX, iY);
+  end;
+
+end;
+
+procedure TfmMain.MapMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  case Button of
+    TMouseButton.mbLeft:
+      MapClick;
+    TMouseButton.mbRight:
+      ;
+  end;
+end;
+
+procedure TfmMain.Map(X, Y: Integer);
+var
+  i, j, k: Integer;
+begin
+  SetLength(arrMineInfo, 0);
+  if Panel_Map.ControlCount <> 0 then
+  begin
+    with Panel_Map do
+    begin
+      for i := Low(ControlCount) Downto 0 do
+      begin
+        if Controls[i] is TLabel then
+          (Controls[i] as TLabel).Free
+        else if Controls[i] is TShape then
+          (Controls[i] as TShape).Free
+        else if Controls[i] is TImage then
+          (Controls[i] as TImage).Free;
+      end;
+    end;
+  end;
+
+  //
+
+  SetLength(arrMineInfo, X);
+  k := (Panel_Map.Width - ((X) * MapInfo.iW)) div 2;
+  for i := 0 to X - 1 do
+  begin
+    SetLength(arrMineInfo[X], Y);
+    for j := 0 to Y - 1 do
+    begin
+      with arrMineInfo[i, j] do
+      begin
+        BMine := Random(2) <> 0;
+        iCnt := 0;
+      end;
+
+      with TShape.Create(Self) do
+      begin
+        Parent := Panel_Map;
+        Name := 'Shape_' + IntToStr((i + 1) * 1000 + (j + 1));
+
+        Top := i * MapInfo.iH + Panel_Map.Padding.Top;
+        Left := j * MapInfo.iW + k;
+        Width := MapInfo.iW;
+        Height := MapInfo.iH;
+      end;
+    end;
+  end;
+
+  for i := Low(arrMineInfo) to High(arrMineInfo) do
+  begin
+    for j := Low(arrMineInfo[i]) to High(arrMineInfo[i]) do
+    begin
+      with arrMineInfo[i, j] do
+      begin
+        if BMine then
+          Continue
+        else
+        begin
+          if i = Low(arrMineInfo) then
+
+
+        end;
+      end;
+    end;
+  end;
+end;
+
+procedure TfmMain.MapClick(Flag: Boolean);
+begin
+  //
+end;
+
+procedure TfmMain.MapClick;
+begin
+  //
+  if arrMineInfo then
+  
+end;
+
+end.

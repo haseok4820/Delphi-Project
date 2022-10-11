@@ -1,0 +1,92 @@
+object Form2: TForm2
+  Left = 0
+  Top = 0
+  BorderStyle = bsSizeToolWin
+  Caption = 'Mine'
+  ClientHeight = 275
+  ClientWidth = 350
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -16
+  Font.Name = #47569#51008' '#44256#46357
+  Font.Style = []
+  Menu = MainMenu1
+  OldCreateOrder = False
+  PixelsPerInch = 96
+  TextHeight = 21
+  object Panel_Header: TPanel
+    Left = 0
+    Top = 0
+    Width = 350
+    Height = 41
+    Align = alTop
+    BevelOuter = bvNone
+    ShowCaption = False
+    TabOrder = 0
+    ExplicitLeft = 88
+    ExplicitTop = 288
+    ExplicitWidth = 185
+  end
+  object Panel1: TPanel
+    Left = 0
+    Top = 255
+    Width = 350
+    Height = 20
+    Align = alBottom
+    BevelOuter = bvNone
+    ShowCaption = False
+    TabOrder = 1
+    ExplicitTop = 520
+    object Label_Time: TLabel
+      Left = 236
+      Top = 0
+      Width = 114
+      Height = 20
+      Align = alRight
+      Caption = 'Time : 00:00:00'
+      ExplicitLeft = 245
+      ExplicitHeight = 21
+    end
+    object Label1: TLabel
+      Left = 0
+      Top = 0
+      Width = 66
+      Height = 20
+      Align = alLeft
+      Caption = 'Ver 0.0.1'
+      ExplicitHeight = 21
+    end
+  end
+  object Panel_Map: TPanel
+    Left = 0
+    Top = 41
+    Width = 350
+    Height = 214
+    Align = alClient
+    BevelOuter = bvNone
+    ShowCaption = False
+    TabOrder = 2
+    ExplicitTop = 8
+    ExplicitHeight = 41
+  end
+  object MainMenu1: TMainMenu
+    Left = 8
+    Top = 16
+    object N1: TMenuItem
+      Caption = #44172#51076
+      object N2: TMenuItem
+        Caption = #49352#47196' '#49884#51089
+      end
+      object N3: TMenuItem
+        Caption = #45149#45236#44592
+      end
+    end
+    object Help1: TMenuItem
+      Caption = #46020#50880#47568
+      object N4: TMenuItem
+        Caption = #48260#51204' '#51221#48372
+      end
+    end
+  end
+end
