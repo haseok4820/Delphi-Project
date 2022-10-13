@@ -1,5 +1,8 @@
 unit fGamemain;
 
+// 만든이 Miniuser
+// E-Mail : haseok4820@naver.com
+
 interface
 
 uses
@@ -13,6 +16,8 @@ type
     iY: Integer;
     iW: Integer;
     iH: Integer;
+    iLevel: Integer;
+    bTimer: Boolean;
   end;
 
   TResult_BI = record
@@ -25,7 +30,6 @@ type
     N1: TMenuItem;
     Help1: TMenuItem;
     N2: TMenuItem;
-    N3: TMenuItem;
     N4: TMenuItem;
     Panel_Header: TPanel;
     Panel_Footer: TPanel;
@@ -40,19 +44,31 @@ type
     procedure NewClick(Sender: TObject);
     procedure Shape_MapMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure N3Click(Sender: TObject);
+    procedure Image_IconClick(Sender: TObject);
+    procedure N4Click(Sender: TObject);
+    procedure TimerTimer(Sender: TObject);
   private
     { Private declarations }
     procedure Map(X, Y: Integer);
-    procedure MapClick(Sender: TObject; X, Y: Integer); overload; // 우클릭
-    procedure MapClick(Sender: TObject); overload; // 좌클릭
+    procedure MapClick(Sender: TObject; X, Y: Integer); overload; // Left Click
+    procedure MapClick(Sender: TObject); overload; // Right Click
+    procedure MapCheck;
+
   public
     { Public declarations }
+    function ShowPopup(sMSG: String; iViewType: Byte): Integer;
   end;
+
+const
+  cMSG_Normal = 0;
+  cMSG_YESNO = 1;
 
 var
   fmMain: TfmMain;
   MapInfo: TMap;
   arrMineInfo: array of array of TResult_BI;
+  bFail: Boolean = False;
+  tStart: TDateTime;
 
 implementation
 
@@ -70,14 +86,39 @@ begin
     iY := 8;
     iW := 30;
     iH := 30;
+    iLevel := 6;
 
     Map(iX, iY);
   end;
 end;
 
+procedure TfmMain.Image_IconClick(Sender: TObject);
+begin
+  MapCheck;
+end;
+
 procedure TfmMain.N3Click(Sender: TObject);
 begin
   //
+end;
+
+procedure TfmMain.N4Click(Sender: TObject);
+var
+  sl: TStringList;
+begin
+
+  sl := TStringList.Create;
+  try
+    sl.Add('Made up : Miniuser');
+    sl.Add('E-Mail : haseok4820@naver.com');
+    sl.Add('Program By Delphi (Rad Studio)');
+    sl.Add('Copyright @ Miniuser All Rights reserved.');
+    sl.Add('Thank you for Playing');
+
+    ShowPopup(sl.Text, cMSG_Normal);
+  finally
+    sl.Free;
+  end;
 end;
 
 procedure TfmMain.NewClick(Sender: TObject);
@@ -86,6 +127,49 @@ begin
   with fmNew do
   begin
     ShowModal;
+
+    if ModalResult = mrOK then
+    begin
+      with MapInfo do
+      begin
+        if CheckBox_Self.Checked = False then
+        begin
+          case GROUP1.ItemIndex of
+            0:
+              begin
+                iX := 8;
+                iY := 8;
+                iLevel := 6;
+              end;
+            1:
+              begin
+                iX := 16;
+                iY := 16;
+                iLevel := 5;
+              end;
+            2:
+              begin
+                iX := 32;
+                iY := 32;
+                iLevel := 4;
+              end;
+          end;
+
+        end
+        else
+        begin
+          iX := StrToIntDef(Edit_Width.Text, 8);
+          iY := StrToIntDef(Edit_Height.Text, 8);
+          iLevel := 10 - TrackBar_.Position;
+        end;
+
+        bTimer := CheckBox_Timer.Checked;
+        iW := 30;
+        iH := 30;
+
+        Map(iX, iY);
+      end;
+    end;
     Free;
   end;
 end;
@@ -103,10 +187,37 @@ begin
   end;
 
   if Button = mbLeft then
-    MapClick(Sender, i, j)
+  begin
+    if Sender is TShape then
+      MapClick(Sender, i, j)
+    else
+      MapClick(Sender);
+  end
   else if Button = mbRight then
     MapClick(Sender);
 
+  if bFail = False then
+    MapCheck;
+end;
+
+function TfmMain.ShowPopup(sMSG: String; iViewType: Byte): Integer;
+begin
+  case iViewType of
+    0:
+      begin
+        ShowMEssage(sMSG);
+        Result := 1;
+      end;
+    1:
+      begin
+        Result := MessageDlg(sMSG, mtCustom, [mbYes, mbNo], 0);
+      end;
+  end;
+end;
+
+procedure TfmMain.TimerTimer(Sender: TObject);
+begin
+  Label_Time.Caption := Label_Time.Hint + FormatDateTime('HH:MM:SS', Now - tStart);
 end;
 
 procedure TfmMain.ExitClick(Sender: TObject);
@@ -119,12 +230,17 @@ var
   i, j, k: Integer;
 begin
   // 초기화
+  bFail := False;
+  fmMain.Width := MapInfo.iX * 30 + 100;
+  fmMain.Height := MapInfo.iY * 30 + 175;
+
   SetLength(arrMineInfo, 0);
+
   if Panel_Map.ControlCount <> 0 then
   begin
-    with Panel_Map do
+    for i := Panel_Map.ControlCount - 1 Downto 0 do
     begin
-      for i := Low(ControlCount) Downto 0 do
+      with Panel_Map do
       begin
         if Controls[i] is TLabel then
           (Controls[i] as TLabel).Free
@@ -146,7 +262,7 @@ begin
     begin
       with arrMineInfo[i, j] do
       begin
-        BMine := Random(4) = 0;
+        BMine := Random(MapInfo.iLevel) = 0;
         iCnt := 0;
       end;
 
@@ -155,8 +271,8 @@ begin
         Parent := Panel_Map;
         Name := 'Shape_' + IntToStr((i + 1) * 1000 + (j + 1));
         Tag := i * 1000 + j;
-        Top := i * MapInfo.iH + Panel_Map.Padding.Top;
-        Left := j * MapInfo.iW + k;
+        Top := j * MapInfo.iH + Panel_Map.Padding.Top;
+        Left := i * MapInfo.iW + k;
         Width := MapInfo.iW;
         Height := MapInfo.iH;
 
@@ -166,24 +282,114 @@ begin
       end;
     end;
   end;
+
+  // 타이머
+  if MapInfo.bTimer then
+  begin
+    tStart := Now;
+
+    Timer.Enabled := True;
+    Label_Time.Visible := True;
+    Label_Time.Caption := Label_Time.Hint + FormatDateTime('HH:MM:SS', Now - tStart);
+  end
+  else
+  begin
+    Timer.Enabled := False;
+    Label_Time.Visible := False;
+  end;
+end;
+
+procedure TfmMain.MapCheck;
+var
+  i, j: Integer;
+  bVictory: Boolean;
+  sMSG: String;
+begin
+  // 승리유무 확인
+  bVictory := True;
+  for i := Low(arrMineInfo) to High(arrMineInfo) do
+  begin
+    for j := Low(arrMineInfo[i]) to High(arrMineInfo[i]) do
+    begin
+      if (arrMineInfo[i, j].BMine = False) AND ((FindComponent('Shape_' + IntToStr((i + 1) * 1000 + (j + 1))) as TShape).Brush.Color <>
+        clWhite) then
+      begin
+        Image_Icon.Hint := IntToStr((i + 1) * 1000 + (j + 1));
+        bVictory := False;
+        Break;
+      end;
+    end;
+  end;
+
+  if bVictory then
+  begin
+    bFail := True;
+    if (MapInfo.iLevel = 2) AND (MapInfo.iX = 2017) AND (MapInfo.iY = 217) then
+      sMSG := '우리 하늘/바다 생일이에요~,' + Chr(13) + '오늘도 고생하셔꼬, 좋은 하루 보내세요.'
+    else
+    begin
+      sMSG := '축하합니다!! 해내셨어요!' + Chr(13) + '난이도를 높여 게속 진행하시겠어요?';
+      sMSG := sMSG + Chr(13) + 'Congratulations! You made it!!' + Chr(13) + 'Do you want to increase the difficulty level and continue?';
+    end;
+
+    if ShowPopup(sMSG, cMSG_YESNO) = mrYes then
+    begin
+      with MapInfo do
+      begin
+        if iLevel <> 2 then
+          dec(iLevel);
+        Inc(iX);
+        Inc(iY);
+
+        Map(iX, iY);
+      end;
+    end;
+  end;
 end;
 
 procedure TfmMain.MapClick(Sender: TObject);
 var
+  sFlagName: String;
   iL, iT, iW, iH: Integer;
 begin
-  with (Sender as TShape) do
+  if Sender is TShape then
   begin
-    iL := Left;
-    iT := Top;
-    iW := Width;
-    iH := Height;
-  end;
+    with (Sender as TShape) do
+    begin
+      iL := Left;
+      iT := Top;
+      iW := Width;
+      iH := Height;
 
-  with TImage.Create(Self) do
+      Brush.Color := clGreen;
+      sFlagName := StringReplace(Name, 'Shape', 'Image', [rfIgnoreCase]);
+    end;
+
+    with TImage.Create(Self) do
+    begin
+      Parent := Panel_Map;
+      Stretch := True;
+      AutoSize := False;
+
+      Name := sFlagName;
+      Left := iL;
+      Top := iT;
+      Width := iW;
+      Height := iH;
+
+      Picture.Assign(nil);
+      OnClick := MapClick;
+      OnMouseDown := Shape_MapMouseDown;
+
+    end;
+
+  end
+  else if Sender is TImage then
   begin
-    Parent := Panel_Map;
-    Name := 'Image_Flag' + (Sender as TShape).Tag;
+    sFlagName := StringReplace((Sender as TImage).Name, 'Image', 'Shape', [rfIgnoreCase]);
+    (Sender as TImage).Free;
+
+    (FindComponent(sFlagName) as TShape).Brush.Color := clSilver;
   end;
 end;
 
@@ -192,35 +398,65 @@ var
   arrRange: array [1 .. 9] of Boolean;
   bMineChk: Boolean;
   i, j: Integer;
+  i2, j2: Integer;
   iL, iT, iW, iH: Integer;
 begin
-  with (Sender as TShape) do
+  if Sender is TShape then
   begin
-    iL := Left;
-    iT := Top;
-    iW := Width;
-    iH := Height;
+    with (Sender as TShape) do
+    begin
+      iL := Left;
+      iT := Top;
+      iW := Width;
+      iH := Height;
 
-    if arrMineInfo[X, Y].BMine then
-      Brush.Color := clBlack
-    else
-      Brush.Color := clWhite;
+      if arrMineInfo[X, Y].BMine then
+      begin
+        bFail := True;
+        Brush.Color := clRed;
+      end
+      else
+        Brush.Color := clWhite;
+    end;
+  end
+  else if Sender = Nil then
+  begin
+    with (FindComponent('Shape_' + IntToStr((X + 1) * 1000 + (Y + 1))) as TShape) do
+    begin
+      iL := Left;
+      iT := Top;
+      iW := Width;
+      iH := Height;
+
+      if arrMineInfo[X, Y].BMine then
+        Brush.Color := clRed
+      else
+        Brush.Color := clWhite;
+    end;
   end;
 
   if arrMineInfo[X, Y].BMine then
   begin
-    ShowMEssage('Game Over!');
-    with TImage.Create(Self) do
+    if ShowPopup('Game Over' + Chr(13) + 'try again?', cMSG_YESNO) = mrYes then
     begin
-      Parent := Panel_Map;
-      Name := 'Image_' + IntToStr((X + 1) * 1000 + (Y + 1));;
-      Stretch := True;
+      Map(MapInfo.iX, MapInfo.iY);
+      Exit;
+    end
+    else
+    begin
+      with TImage.Create(Self) do
+      begin
+        Parent := Panel_Map;
+        Name := 'Image_' + IntToStr((X + 1) * 1000 + (Y + 1));;
+        Stretch := True;
 
-      Top := iT;
-      Left := iL;
-      Width := iW;
-      Height := iH;
+        Top := iT;
+        Left := iL;
+        Width := iW;
+        Height := iH;
+      end;
     end;
+
   end
   else
   begin
@@ -233,8 +469,8 @@ begin
     begin
       for i := 1 to 3 do
         arrRange[i] := False;
-    end
-    else if X = High(arrMineInfo) then
+    end;
+    if X = High(arrMineInfo) then
     begin
       for i := 7 to 9 do
         arrRange[i] := False;
@@ -247,8 +483,8 @@ begin
         if (i - 1) mod 3 = 0 then
           arrRange[i] := False;
       end;
-    end
-    else if Y = High(arrMineInfo[X]) then
+    end;
+    if Y = High(arrMineInfo[X]) then
     begin
       for i := 3 to 9 do
       begin
@@ -292,42 +528,102 @@ begin
         Inc(arrMineInfo[X, Y].iCnt);
     end;
 
+    with TLabel.Create(Self) do
+    begin
+      Parent := Panel_Map;
+      Alignment := taCenter;
+      Layout := tlCenter;
+      AutoSize := False;
+
+      Name := 'Label_' + IntToStr((X + 1) * 1000 + (Y + 1));
+      if arrMineInfo[X, Y].iCnt = 0 then
+        Caption := ''
+      else
+        Caption := IntToStr(arrMineInfo[X, Y].iCnt);
+      Tag := i * 1000 + j;
+
+      Top := iT;
+      Left := iL;
+      Width := iW;
+      Height := iH;
+
+      with font do
+      begin
+        Style := [fsBold];
+      end;
+
+    end;
+
     if arrMineInfo[X, Y].iCnt = 0 then
     begin
-
-    end
-    else
-    begin
-
-      with TLabel.Create(Self) do
+      for i := Low(arrRange) to High(arrRange) do
       begin
-        Parent := Panel_Map;
-        Alignment := taCenter;
-        Layout := tlCenter;
-        AutoSize := False;
 
-        Name := 'Label_' + IntToStr((X + 1) * 1000 + (Y + 1));
-        Caption := IntToStr(arrMineInfo[X, Y].iCnt);
-        Tag := i * 1000 + j;
+        if (arrRange[i] = False) then
+          Continue;
 
-        Top := iT;
-        Left := iL;
-        Width := iW;
-        Height := iH;
+        bMineChk := False;
+        case i of
+          // Top
+          1:
+            begin
+              i2 := X - 1;
+              j2 := Y - 1;
+            end;
+          2:
+            begin
+              i2 := X - 1;
+              j2 := Y;
+            end;
+          3:
+            begin
+              i2 := X - 1;
+              j2 := Y + 1;
+            end;
 
-        with font do
-        begin
-          Style := [fsBold];
+          4:
+            begin
+              i2 := X;
+              j2 := Y - 1;
+            end;
+          6:
+            begin
+              i2 := X;
+              j2 := Y + 1;
+            end;
+
+          7:
+            begin
+              i2 := X + 1;
+              j2 := Y - 1;
+            end;
+          8:
+            begin
+              i2 := X + 1;
+              j2 := Y;
+            end;
+          9:
+            begin
+              i2 := X + 1;
+              j2 := Y + 1;
+            end;
+        else
+          Continue;
         end;
 
+        if FindComponent('Label_' + IntToStr((i2 + 1) * 1000 + (j2 + 1))) <> nil then
+        begin
+          Continue;
+        end;
+
+        MapClick(nil, i2, j2);
+
+        if bMineChk then
+          Inc(arrMineInfo[X, Y].iCnt);
       end;
     end;
+
   end;
-
-
-
-
-  // Congratulations!
 
 end;
 

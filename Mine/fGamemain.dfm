@@ -3,7 +3,7 @@ object fmMain: TfmMain
   Top = 0
   BorderStyle = bsSizeToolWin
   Caption = 'Mine'
-  ClientHeight = 340
+  ClientHeight = 320
   ClientWidth = 350
   Color = clBtnFace
   DoubleBuffered = True
@@ -35,6 +35,7 @@ object fmMain: TfmMain
       Height = 50
       Align = alClient
       Center = True
+      ParentShowHint = False
       Picture.Data = {
         0B54496D6167696E67504E4789504E470D0A1A0A0000000D4948445200000028
         0000002808060000008CFEB86D0000017149444154789CED9841B2823010443B
@@ -50,13 +51,15 @@ object fmMain: TfmMain
         6449C06E124D43A32637F5D707900748275E385E6A1A46B0D04D93814D4D1311
         04F2C04514F065ABF394162B44050B47232DDB202CA51915D44C09789C21F856
         FE00139BC0473ED743290000000049454E44AE426082}
+      ShowHint = True
+      OnClick = Image_IconClick
       ExplicitTop = -6
       ExplicitHeight = 40
     end
   end
   object Panel_Footer: TPanel
     Left = 0
-    Top = 310
+    Top = 290
     Width = 350
     Height = 30
     Align = alBottom
@@ -65,12 +68,12 @@ object fmMain: TfmMain
     Padding.Right = 5
     ShowCaption = False
     TabOrder = 1
-    ExplicitTop = 300
     object Label_Time: TLabel
       Left = 230
       Top = 0
       Width = 115
       Height = 30
+      Hint = 'Time : '
       Align = alRight
       Caption = 'Time : 00:00:00'
       Font.Charset = DEFAULT_CHARSET
@@ -80,32 +83,31 @@ object fmMain: TfmMain
       Font.Style = [fsBold]
       ParentFont = False
       Layout = tlCenter
-      ExplicitLeft = 236
+      Visible = False
       ExplicitHeight = 21
     end
     object Label1: TLabel
       Left = 5
       Top = 0
-      Width = 67
+      Width = 194
       Height = 30
       Align = alLeft
-      Caption = 'Ver 0.0.1'
+      Caption = 'Copyright 2022 Miniuser. All Rights Reserved.'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -16
+      Font.Height = -9
       Font.Name = #47569#51008' '#44256#46357
       Font.Style = [fsBold]
       ParentFont = False
       Layout = tlCenter
-      ExplicitLeft = 0
-      ExplicitHeight = 21
+      ExplicitHeight = 12
     end
   end
   object Panel_Map: TPanel
     Left = 0
     Top = 50
     Width = 350
-    Height = 260
+    Height = 240
     Align = alClient
     BevelOuter = bvNone
     Color = clWhite
@@ -114,21 +116,16 @@ object fmMain: TfmMain
     ParentBackground = False
     ShowCaption = False
     TabOrder = 2
-    ExplicitTop = 8
-    ExplicitHeight = 41
+    ExplicitTop = 44
   end
   object MainMenu1: TMainMenu
     Left = 8
     Top = 16
     object N1: TMenuItem
-      Caption = #44172#51076
+      Caption = #44172#51076'(Game)'
       object N2: TMenuItem
         Caption = #49352#47196' '#49884#51089'(New Game)'
         OnClick = NewClick
-      end
-      object N3: TMenuItem
-        Caption = #49444#51221'(Setting)'
-        OnClick = N3Click
       end
       object N5: TMenuItem
         Caption = #45149#45236#44592'(Exit)'
@@ -136,13 +133,16 @@ object fmMain: TfmMain
       end
     end
     object Help1: TMenuItem
-      Caption = #46020#50880#47568
+      Caption = #44592#53440'(Other)'
       object N4: TMenuItem
         Caption = #54532#47196#44536#47016' '#51221#48372' (Program Info)'
+        OnClick = N4Click
       end
     end
   end
   object Timer: TTimer
+    Enabled = False
+    OnTimer = TimerTimer
     Left = 8
     Top = 64
   end
