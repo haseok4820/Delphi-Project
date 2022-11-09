@@ -79,14 +79,14 @@ type
     Button60: TButton;
     Button62: TButton;
     Button63: TButton;
-    Button52: TButton;
+    Button_Close: TButton;
     Button53: TButton;
     Button56: TButton;
-    Label_Airpos: TLabel;
+    Label_MadeBy: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure Button2Click(Sender: TObject);
-    procedure Button52Click(Sender: TObject);
-    procedure Label_AirposClick(Sender: TObject);
+    procedure Button_CloseClick(Sender: TObject);
+    procedure Label_MadeByClick(Sender: TObject);
   private
     { Private declarations }
     procedure GetKeyList(iType: Byte);
@@ -463,7 +463,7 @@ begin
 
 end;
 
-procedure TForm_KeyBoard.Button52Click(Sender: TObject);
+procedure TForm_KeyBoard.Button_CloseClick(Sender: TObject);
 begin
   Application.Terminate;
 end;
@@ -751,9 +751,9 @@ begin
 
 end;
 
-procedure TForm_KeyBoard.Label_AirposClick(Sender: TObject);
+procedure TForm_KeyBoard.Label_MadeByClick(Sender: TObject);
 begin
-  sHOWmeSSAGE('Copyright 2003~' + FormatDateTime('YYYY', NOW) + ' AIRPOS Co..Ltd. All rights Reserved.');
+  sHOWmeSSAGE('Copyright @ Miniuser. All rights Reserved.');
 end;
 
 end.
