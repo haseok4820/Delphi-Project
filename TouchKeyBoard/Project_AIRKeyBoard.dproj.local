@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>1899-12-30 00:00:00.000.126,=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Unit3.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.934,=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Unit3.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.456,=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Unit3.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.077,=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Unit3.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.307,=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Unit3.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.511,C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Project2.dproj=D:\최하석 작업문서\VCL\20210120_KeyBoard\Project_KeyBoard.dproj</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.435,C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Unit4.dfm=D:\최하석 작업문서\VCL\20210120_KeyBoard\uKeyBoard.dfm</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.221,=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Unit3.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.735,=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Unit3.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.174,=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Unit3.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.386,=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Unit3.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.529,=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Unit4.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.435,C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Unit4.pas=D:\최하석 작업문서\VCL\20210120_KeyBoard\uKeyBoard.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.077,=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Unit3.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.261,=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Unit3.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.367,=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Unit3.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.958,=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Unit3.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.185,=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Unit3.pas</Transaction>
+    <Transaction>2022-08-30 11:21:15.174,D:\최하석 작업문서\VCL\20210120_KeyBoard\Project_AIRKeyBoard.dproj=D:\최하석 작업문서\VCL\20210120_KeyBoard\Project_KeyBoard.dproj</Transaction>
+  </Transactions>
+	<ActiveMobileDevice>
+		<NoProfile iOSSimulator="iPhone5"/>
+	</ActiveMobileDevice>
+</BorlandProject>

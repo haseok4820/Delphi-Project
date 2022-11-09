@@ -1,0 +1,757 @@
+unit uKeyBoard;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
+  System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Touch.Keyboard, imm,
+  dxGDIPlusClasses, Vcl.ExtCtrls, Vcl.Buttons, Vcl.AppEvnts;
+
+type
+  TKeyBoard_Info = record
+    bHangul : Boolean;
+    bCapsLoack : Boolean;
+    bShift : Boolean;
+  end;
+
+  TForm_KeyBoard = class(TForm)
+    Panel1: TPanel;
+    Button5: TButton;
+    Button6: TButton;
+    Button7: TButton;
+    Button8: TButton;
+    Button9: TButton;
+    Button10: TButton;
+    Button11: TButton;
+    Button12: TButton;
+    Button13: TButton;
+    Button14: TButton;
+    Button15: TButton;
+    Button1: TButton;
+    Button2: TButton;
+    Button3: TButton;
+    Button4: TButton;
+    Panel2: TPanel;
+    Button17: TButton;
+    Button18: TButton;
+    Button19: TButton;
+    Button20: TButton;
+    Button21: TButton;
+    Button22: TButton;
+    Button23: TButton;
+    Button24: TButton;
+    Button25: TButton;
+    Button26: TButton;
+    Button29: TButton;
+    Panel3: TPanel;
+    Button32: TButton;
+    Button33: TButton;
+    Button34: TButton;
+    Button35: TButton;
+    Button36: TButton;
+    Button37: TButton;
+    Button38: TButton;
+    Button39: TButton;
+    Button40: TButton;
+    Button41: TButton;
+    Button43: TButton;
+    Button44: TButton;
+    Button45: TButton;
+    Button16: TButton;
+    Button27: TButton;
+    Panel4: TPanel;
+    Button28: TButton;
+    Button30: TButton;
+    Button31: TButton;
+    Button42: TButton;
+    Button46: TButton;
+    Button47: TButton;
+    Button48: TButton;
+    Button49: TButton;
+    Button50: TButton;
+    Button51: TButton;
+    Button54: TButton;
+    Button55: TButton;
+    Panel5: TPanel;
+    Button60: TButton;
+    Button62: TButton;
+    Button63: TButton;
+    Button52: TButton;
+    Button53: TButton;
+    Button56: TButton;
+    Label_Airpos: TLabel;
+    procedure FormCreate(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
+    procedure Button52Click(Sender: TObject);
+    procedure Label_AirposClick(Sender: TObject);
+  private
+    { Private declarations }
+    procedure GetKeyList(iType: Byte);
+  public
+    { Public declarations }
+  end;
+
+const
+  const_KEYNUMBER = 10;
+
+var
+  Form_KeyBoard: TForm_KeyBoard;
+  KeyBoard_Info : TKeyBoard_Info;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm_KeyBoard.Button2Click(Sender: TObject);
+var
+  iKey: Byte;
+  ks: TKeyboardState;
+  i: Integer;
+  j: Integer;
+
+  KeyType_Hangul: Boolean;
+begin
+  if Sender is TButton then
+  begin
+
+    iKey := (Sender as TButton).Tag;
+    Caption := 'Press' + IntToStr(iKey);
+
+    Keybd_Event(iKey, MapVirtualKey(iKey, 0), 0, 0);
+    Keybd_Event(iKey, MapVirtualKey(iKey, 0), KEYEVENTF_KEYUP, 0);
+
+    GetKeyboardState(ks);
+
+    KeyType_Hangul := NOT KeyType_Hangul;
+
+    // 영문상태
+    if ks[VK_HANGUL] = 0 then
+    begin
+      for i := 0 to ControlCount - 1 do
+      begin
+        if Controls[i] is TPanel then
+        begin
+          for j := 0 to (Controls[i] as TPanel).ControlCount - 1 do
+          begin
+            if (Controls[i] as TPanel).Controls[j] is TButton then
+            begin
+              with ((Controls[i] as TPanel).Controls[j] as TButton) do
+              begin
+
+                case Tag of
+                  65:
+                    begin
+                      Caption := 'A';
+                      Hint := 'a';
+                    end;
+                  66:
+                    begin
+                      Caption := 'B';
+                      Hint := 'b';
+                    end;
+                  67:
+                    begin
+                      Caption := 'C';
+                      Hint := 'c';
+                    end;
+                  68:
+                    begin
+                      Caption := 'D';
+                      Hint := 'd';
+                    end;
+                  69:
+                    begin
+                      Caption := 'E';
+                      Hint := 'e';
+                    end;
+                  70:
+                    begin
+                      Caption := 'F';
+                      Hint := 'f';
+                    end;
+                  71:
+                    begin
+                      Caption := 'G';
+                      Hint := 'g';
+                    end;
+                  72:
+                    begin
+                      Caption := 'H';
+                      Hint := 'h';
+                    end;
+                  73:
+                    begin
+                      Caption := 'I';
+                      Hint := 'i';
+                    end;
+                  74:
+                    begin
+                      Caption := 'J';
+                      Hint := 'j';
+                    end;
+                  75:
+                    begin
+                      Caption := 'K';
+                      Hint := 'k';
+                    end;
+                  76:
+                    begin
+                      Caption := 'L';
+                      Hint := 'l';
+                    end;
+                  77:
+                    begin
+                      Caption := 'M';
+                      Hint := 'm';
+                    end;
+                  78:
+                    begin
+                      Caption := 'N';
+                      Hint := 'n';
+                    end;
+                  79:
+                    begin
+                      Caption := 'O';
+                      Hint := 'o';
+                    end;
+                  80:
+                    begin
+                      Caption := 'P';
+                      Hint := 'p';
+                    end;
+                  81:
+                    begin
+                      Caption := 'Q';
+                      Hint := 'q';
+                    end;
+                  82:
+                    begin
+                      Caption := 'R';
+                      Hint := 'r';
+                    end;
+                  83:
+                    begin
+                      Caption := 'S';
+                      Hint := 's';
+                    end;
+                  84:
+                    begin
+                      Caption := 'T';
+                      Hint := 't';
+                    end;
+                  85:
+                    begin
+                      Caption := 'U';
+                      Hint := 'u';
+                    end;
+                  86:
+                    begin
+                      Caption := 'V';
+                      Hint := 'v';
+                    end;
+                  87:
+                    begin
+                      Caption := 'W';
+                      Hint := 'w';
+                    end;
+                  88:
+                    begin
+                      Caption := 'X';
+                      Hint := 'x';
+                    end;
+                  89:
+                    begin
+                      Caption := 'Y';
+                      Hint := 'w';
+                    end;
+                  90:
+                    begin
+                      Caption := 'Z';
+                      Hint := 'z';
+                    end;
+                end;
+              end;
+
+            end;
+
+          end;
+
+        end;
+      end;
+
+    end
+    // 한글상태
+    else
+    begin
+      for i := 0 to ControlCount - 1 do
+      begin
+        if Controls[i] is TPanel then
+        begin
+
+          for j := 0 to (Controls[i] as TPanel).ControlCount - 1 do
+          begin
+            if (Controls[i] as TPanel).Controls[j] is TButton then
+            begin
+              with ((Controls[i] as TPanel).Controls[j] as TButton) do
+              begin
+                case Tag of
+                  65:
+                    begin
+                      Caption := 'ㅁ';
+                      Hint := 'a';
+                    end;
+                  66:
+                    begin
+                      Caption := 'ㅠ';
+                      Hint := 'b';
+                    end;
+                  67:
+                    begin
+                      Caption := 'ㅊ';
+                      Hint := 'c';
+                    end;
+                  68:
+                    begin
+                      Caption := 'ㅇ';
+                      Hint := 'd';
+                    end;
+                  69:
+                    begin
+                      if ks[VK_CAPITAL] = 1 then
+                        Caption := 'ㄸ'
+                      else
+                        Caption := 'ㄷ';
+                      Hint := 'e';
+                    end;
+                  70:
+                    begin
+                      Caption := 'ㄹ';
+                      Hint := 'f';
+                    end;
+                  71:
+                    begin
+                      Caption := 'ㅎ';
+                      Hint := 'g';
+                    end;
+                  72:
+                    begin
+                      Caption := 'ㅗ';
+                      Hint := 'h';
+                    end;
+                  73:
+                    begin
+                      Caption := 'ㅑ';
+                      Hint := 'i';
+                    end;
+                  74:
+                    begin
+                      Caption := 'ㅓ';
+                      Hint := 'j';
+                    end;
+                  75:
+                    begin
+                      Caption := 'ㅏ';
+                      Hint := 'k';
+                    end;
+                  76:
+                    begin
+                      Caption := 'ㅣ';
+                      Hint := 'l';
+                    end;
+                  77:
+                    begin
+                      Caption := 'ㅡ';
+                      Hint := 'm';
+                    end;
+                  78:
+                    begin
+                      Caption := 'ㅜ';
+                      Hint := 'n';
+                    end;
+                  79:
+                    begin
+                      if ks[VK_CAPITAL] = 1 then
+                        Caption := 'ㅒ'
+                      else
+                        Caption := 'ㅐ';
+                      Hint := 'o';
+                    end;
+                  80:
+                    begin
+                      if ks[VK_CAPITAL] = 1 then
+                        Caption := 'ㅖ'
+                      else
+                        Caption := 'ㅔ';
+                      Hint := 'p';
+                    end;
+                  81:
+                    begin
+                      if ks[VK_CAPITAL] = 1 then
+                        Caption := 'ㅃ'
+                      else
+                        Caption := 'ㅂ';
+                      Hint := 'q';
+                    end;
+                  82:
+                    begin
+                      if ks[VK_CAPITAL] = 1 then
+                        Caption := 'ㄲ'
+                      else
+                        Caption := 'ㄱ';
+                      Hint := 'r';
+                    end;
+                  83:
+                    begin
+                      Caption := 'ㄴ';
+                      Hint := 's';
+                    end;
+                  84:
+                    begin
+                      if ks[VK_CAPITAL] = 1 then
+                        Caption := 'ㅆ'
+                      else
+                        Caption := 'ㅅ';
+                      Hint := 't';
+                    end;
+                  85:
+                    begin
+                      Caption := 'ㅕ';
+                      Hint := 'u';
+                    end;
+                  86:
+                    begin
+                      Caption := 'ㅍ';
+                      Hint := 'v';
+                    end;
+                  87:
+                    begin
+                      if ks[VK_CAPITAL] = 1 then
+                        Caption := 'ㅉ'
+                      else
+                        Caption := 'ㅈ';
+                      Hint := 'w';
+                    end;
+                  88:
+                    begin
+                      Caption := 'ㅌ';
+                      Hint := 'x';
+                    end;
+                  89:
+                    begin
+                      Caption := 'ㅛ';
+                      Hint := 'w';
+                    end;
+                  90:
+                    begin
+                      Caption := 'ㅋ';
+                      Hint := 'z';
+                    end;
+                end;
+              end;
+            end;
+
+          end;
+
+        end;
+      end;
+
+    end;
+  end;
+
+end;
+
+procedure TForm_KeyBoard.Button52Click(Sender: TObject);
+begin
+  Application.Terminate;
+end;
+
+procedure TForm_KeyBoard.FormCreate(Sender: TObject);
+var
+  hContext: HIMC;
+  mcon, msen: DWORD;
+
+  i, j: Byte;
+begin
+  SetWindowLong(Self.Handle, GWL_EXSTYLE, WS_EX_NOACTIVATE);
+  ImmSetConversionStatus(hContext, IME_CMODE_HANGUL, IME_SMODE_NONE);
+end;
+
+procedure TForm_KeyBoard.GetKeyList(iType: Byte);
+var
+  i, j: Integer;
+begin
+  // KeyBoard Type
+  // 0 - Number & Key
+  // 1 - Key
+  // 2 - Number
+  if ControlCount <> 0 then
+  begin
+    for i := ControlCount - 1 Downto 0 do
+    begin
+      if Controls[i] is TButton then
+        (Controls[i] as TButton).Free;
+
+    end;
+  end;
+
+  case iType of
+    0:
+      begin
+        // Number
+        for i := 0 to 9 do
+        begin
+          with TButton.Create(Self) do
+          begin
+            Parent := Self;
+            Name := 'Num' + IntToStr(i);
+            Tag := i + 48;
+            Hint := IntToStr(i);
+            Caption := Hint;
+
+            Width := (Self.ClientWidth div 10);
+            Height := (Self.ClientHeight div 5);
+
+            Top := 5;
+            Left := 5 + (i * Width);
+
+            onClick := Button2Click;
+          end;
+
+        end;
+
+        for i := 0 to 9 do
+        begin
+          with TButton.Create(Self) do
+          begin
+            Parent := Self;
+            Name := 'Key_Top' + IntToStr(i);
+            Width := (Self.ClientWidth div 10);
+            Height := (Self.ClientHeight div 5);
+            Top := 10 + Height;
+            Left := 5 + (i * Width);
+            case i of
+              0:
+                begin
+                  Tag := 81;
+                  Caption := 'Q(ㅂ)';
+                end;
+              1:
+                Begin
+                  Tag := 87;
+                  Caption := 'W(ㅈ)';
+                end;
+              2:
+                Begin
+                  Tag := 69;
+                  Caption := 'E(ㄷ)';
+                end;
+              3:
+                Begin
+                  Tag := 82;
+                  Caption := 'R(ㄱ)';
+                end;
+              4:
+                Begin
+                  Tag := 84;
+                  Caption := 'T(ㅅ)';
+                end;
+              5:
+                Begin
+                  Tag := 89;
+                  Caption := 'Y(ㅛ)';
+                end;
+              6:
+                Begin
+                  Tag := 85;
+                  Caption := 'U(ㅕ)';
+                end;
+              7:
+                Begin
+                  Tag := 73;
+                  Caption := 'I(ㅑ)';
+                end;
+              8:
+                Begin
+                  Tag := 79;
+                  Caption := 'O(ㅐ)';
+                end;
+              9:
+                Begin
+                  Tag := 80;
+                  Caption := 'P(ㅔ)';
+                end;
+            end;
+            onClick := Button2Click;
+          end;
+
+        end;
+
+        for i := 0 to 8 do
+        begin
+          with TButton.Create(Self) do
+          begin
+            Parent := Self;
+            Name := 'Key_Middle' + IntToStr(i);
+            Width := (Self.ClientWidth div 9);
+            Height := (Self.ClientHeight div 5);
+            Top := 10 + (Height * 2);
+            Left := 5 + (i * Width);
+            case i of
+              0:
+                begin
+                  Tag := 65;
+                  Caption := 'A(ㅁ)';
+                end;
+              1:
+                Begin
+                  Tag := 83;
+                  Caption := 'S(ㄴ)';
+                end;
+              2:
+                Begin
+                  Tag := 68;
+                  Caption := 'D(ㄷ)';
+                end;
+              3:
+                Begin
+                  Tag := 70;
+                  Caption := 'F(ㄹ)';
+                end;
+              4:
+                Begin
+                  Tag := 71;
+                  Caption := 'G(ㅎ)';
+                end;
+              5:
+                Begin
+                  Tag := 72;
+                  Caption := 'H(ㅗ)';
+                end;
+              6:
+                Begin
+                  Tag := 74;
+                  Caption := 'J(ㅓ)';
+                end;
+              7:
+                Begin
+                  Tag := 75;
+                  Caption := 'K(ㅏ)';
+                end;
+              8:
+                Begin
+                  Tag := 76;
+                  Caption := 'L(ㅣ)';
+                end;
+            end;
+            onClick := Button2Click;
+          end;
+
+        end;
+
+        for i := 0 to 6 do
+        begin
+          with TButton.Create(Self) do
+          begin
+            Parent := Self;
+            Name := 'Key_Bottom' + IntToStr(i);
+            Width := (Self.ClientWidth div 7);
+            Height := (Self.ClientHeight div 5);
+            Top := 10 + (Height * 3);
+            Left := 5 + (i * Width);
+            case i of
+              0:
+                begin
+                  Tag := 90;
+                  Caption := 'Z(ㅋ)';
+                end;
+              1:
+                Begin
+                  Tag := 88;
+                  Caption := 'X(ㅌ)';
+                end;
+              2:
+                Begin
+                  Tag := 67;
+                  Caption := 'C(ㅊ)';
+                end;
+              3:
+                Begin
+                  Tag := 86;
+                  Caption := 'V(ㅍ)';
+                end;
+              4:
+                Begin
+                  Tag := 66;
+                  Caption := 'B(ㅠ)';
+                end;
+              5:
+                Begin
+                  Tag := 78;
+                  Caption := 'N(ㅜ)';
+                end;
+              6:
+                Begin
+                  Tag := 77;
+                  Caption := 'M(ㅡ)';
+                end;
+            end;
+            onClick := Button2Click;
+          end;
+
+        end;
+
+        for i := 0 to 3 do
+        begin
+          with TButton.Create(Self) do
+          begin
+            Parent := Self;
+            Name := 'Key_Option' + IntToStr(i);
+            Width := (Self.ClientWidth div 4);
+            Height := (Self.ClientHeight div 5);
+            Top := 10 + (Height * 4);
+            Left := 5 + (i * Width);
+            case i of
+              0:
+                begin
+                  Tag := VK_SHIFT;
+                  Caption := 'Shift';
+                end;
+              1:
+                Begin
+                  Tag := VK_SPACE;
+                  Caption := 'Space';
+                end;
+              2:
+                Begin
+
+                  Tag := VK_HANGUL;
+                  Caption := '한/Eng';
+                end;
+              3:
+                Begin
+                  Tag := VK_RETURN;
+                  Caption := 'Enter';
+                end;
+            end;
+            onClick := Button2Click;
+          end;
+
+        end;
+      end;
+
+    1:
+      begin
+
+      end;
+
+  end;
+
+end;
+
+procedure TForm_KeyBoard.Label_AirposClick(Sender: TObject);
+begin
+  sHOWmeSSAGE('Copyright 2003~' + FormatDateTime('YYYY', NOW) + ' AIRPOS Co..Ltd. All rights Reserved.');
+end;
+
+end.

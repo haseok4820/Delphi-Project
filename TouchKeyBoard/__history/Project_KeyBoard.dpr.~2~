@@ -1,0 +1,14 @@
+program Project_KeyBoard;
+
+uses
+  Vcl.Forms,
+  uKeyBoard in 'uKeyBoard.pas' {Form_KeyBoard};
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TForm_KeyBoard, Form_KeyBoard);
+  Application.Run;
+end.
