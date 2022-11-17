@@ -114,7 +114,7 @@ var
 
   KeyType_Hangul: Boolean;
 begin
-    if Sender is TButton then
+  if Sender is TButton then
   begin
 
     iKey := (Sender as TButton).Tag;
@@ -753,7 +753,7 @@ end;
 
 procedure TForm_KeyBoard.Label_MadeByClick(Sender: TObject);
 begin
-  sHOWmeSSAGE('Copyright @ Miniuser. All rights Reserved.');
+  sHOWmeSSAGE('Copyright 2003~' + FormatDateTime('YYYY', NOW) + ' AIRPOS Co..Ltd. All rights Reserved.');
 end;
 
 end.

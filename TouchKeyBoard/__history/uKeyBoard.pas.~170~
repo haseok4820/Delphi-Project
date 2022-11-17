@@ -114,7 +114,7 @@ var
 
   KeyType_Hangul: Boolean;
 begin
-    if Sender is TButton then
+  if Sender is TButton then
   begin
 
     iKey := (Sender as TButton).Tag;

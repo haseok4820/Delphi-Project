@@ -217,7 +217,7 @@ object Form_KeyBoard: TForm_KeyBoard
       Height = 60
       Align = alClient
       Alignment = taCenter
-      Caption = 'Function Key'
+      Caption = 'Other Keyboard'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = 16744448
       Font.Height = -16
@@ -226,7 +226,7 @@ object Form_KeyBoard: TForm_KeyBoard
       ParentFont = False
       Layout = tlCenter
       OnClick = Label_MadeByClick
-      ExplicitWidth = 100
+      ExplicitWidth = 122
       ExplicitHeight = 21
     end
     object Button17: TButton
@@ -340,7 +340,7 @@ object Form_KeyBoard: TForm_KeyBoard
       OnClick = Button2Click
     end
     object Button29: TButton
-      Tag = 221
+      Tag = 93
       Left = 750
       Top = 0
       Width = 60
@@ -351,7 +351,7 @@ object Form_KeyBoard: TForm_KeyBoard
       OnClick = Button2Click
     end
     object Button16: TButton
-      Tag = 219
+      Tag = 91
       Left = 690
       Top = 0
       Width = 60
@@ -494,7 +494,7 @@ object Form_KeyBoard: TForm_KeyBoard
       OnClick = Button2Click
     end
     object Button43: TButton
-      Tag = 222
+      Tag = 39
       Left = 730
       Top = 0
       Width = 60
@@ -538,7 +538,7 @@ object Form_KeyBoard: TForm_KeyBoard
     TabOrder = 3
     OnClick = Button2Click
     object Button28: TButton
-      Tag = 110
+      Tag = 46
       Left = 630
       Top = 0
       Width = 60
@@ -648,7 +648,7 @@ object Form_KeyBoard: TForm_KeyBoard
       OnClick = Button2Click
     end
     object Button54: TButton
-      Tag = 111
+      Tag = 47
       Left = 690
       Top = 0
       Width = 60

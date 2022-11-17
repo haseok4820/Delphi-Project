@@ -33,7 +33,7 @@ object Form_KeyBoard: TForm_KeyBoard
     TabOrder = 0
     OnClick = Button2Click
     object Button5: TButton
-      Tag = 220
+      Tag = 92
       Left = 780
       Top = 0
       Width = 60
@@ -88,7 +88,7 @@ object Form_KeyBoard: TForm_KeyBoard
       OnClick = Button2Click
     end
     object Button10: TButton
-      Tag = 53
+      Tag = 52
       Left = 300
       Top = 0
       Width = 60
@@ -143,7 +143,7 @@ object Form_KeyBoard: TForm_KeyBoard
       OnClick = Button2Click
     end
     object Button15: TButton
-      Tag = 192
+      Tag = 96
       Left = 0
       Top = 0
       Width = 60
@@ -152,11 +152,9 @@ object Form_KeyBoard: TForm_KeyBoard
       Caption = #39
       TabOrder = 10
       OnClick = Button2Click
-      ExplicitLeft = -6
-      ExplicitTop = -6
     end
     object Button1: TButton
-      Tag = 187
+      Tag = 61
       Left = 720
       Top = 0
       Width = 60
@@ -167,7 +165,7 @@ object Form_KeyBoard: TForm_KeyBoard
       OnClick = Button2Click
     end
     object Button2: TButton
-      Tag = 189
+      Tag = 45
       Left = 660
       Top = 0
       Width = 60
@@ -217,17 +215,17 @@ object Form_KeyBoard: TForm_KeyBoard
       Height = 60
       Align = alClient
       Alignment = taCenter
-      Caption = 'Function Key'
+      Caption = 'Other'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = 16744448
-      Font.Height = -16
+      Font.Height = -19
       Font.Name = #47569#51008' '#44256#46357
       Font.Style = [fsBold]
       ParentFont = False
       Layout = tlCenter
       OnClick = Label_MadeByClick
-      ExplicitWidth = 100
-      ExplicitHeight = 21
+      ExplicitWidth = 51
+      ExplicitHeight = 25
     end
     object Button17: TButton
       Tag = 79
@@ -340,7 +338,7 @@ object Form_KeyBoard: TForm_KeyBoard
       OnClick = Button2Click
     end
     object Button29: TButton
-      Tag = 221
+      Tag = 93
       Left = 750
       Top = 0
       Width = 60
@@ -351,7 +349,7 @@ object Form_KeyBoard: TForm_KeyBoard
       OnClick = Button2Click
     end
     object Button16: TButton
-      Tag = 219
+      Tag = 91
       Left = 690
       Top = 0
       Width = 60
@@ -494,7 +492,7 @@ object Form_KeyBoard: TForm_KeyBoard
       OnClick = Button2Click
     end
     object Button43: TButton
-      Tag = 222
+      Tag = 39
       Left = 730
       Top = 0
       Width = 60
@@ -538,7 +536,7 @@ object Form_KeyBoard: TForm_KeyBoard
     TabOrder = 3
     OnClick = Button2Click
     object Button28: TButton
-      Tag = 110
+      Tag = 46
       Left = 630
       Top = 0
       Width = 60
@@ -648,7 +646,7 @@ object Form_KeyBoard: TForm_KeyBoard
       OnClick = Button2Click
     end
     object Button54: TButton
-      Tag = 111
+      Tag = 47
       Left = 690
       Top = 0
       Width = 60

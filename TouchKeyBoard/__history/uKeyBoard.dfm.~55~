@@ -217,7 +217,7 @@ object Form_KeyBoard: TForm_KeyBoard
       Height = 60
       Align = alClient
       Alignment = taCenter
-      Caption = 'Function Key'
+      Caption = 'Other Keyboard'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = 16744448
       Font.Height = -16
@@ -226,7 +226,7 @@ object Form_KeyBoard: TForm_KeyBoard
       ParentFont = False
       Layout = tlCenter
       OnClick = Label_MadeByClick
-      ExplicitWidth = 100
+      ExplicitWidth = 122
       ExplicitHeight = 21
     end
     object Button17: TButton

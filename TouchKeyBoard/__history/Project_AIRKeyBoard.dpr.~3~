@@ -11,7 +11,7 @@ uses
 begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
-  TStyleManager.TrySetStyle('Amethyst Kamri');
+  TStyleManager.TrySetStyle('Windows10 Dark');
   Application.CreateForm(TForm_KeyBoard, Form_KeyBoard);
   Application.Run;
 end.
