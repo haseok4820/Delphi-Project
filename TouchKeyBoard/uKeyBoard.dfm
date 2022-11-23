@@ -152,8 +152,6 @@ object Form_KeyBoard: TForm_KeyBoard
       Caption = #39
       TabOrder = 10
       OnClick = Button2Click
-      ExplicitLeft = -6
-      ExplicitTop = -6
     end
     object Button1: TButton
       Tag = 187
@@ -642,6 +640,7 @@ object Form_KeyBoard: TForm_KeyBoard
       Top = 0
       Width = 150
       Height = 60
+      Hint = '*'
       Align = alLeft
       Caption = 'Shift'
       TabOrder = 9
@@ -664,6 +663,7 @@ object Form_KeyBoard: TForm_KeyBoard
       Top = 0
       Width = 194
       Height = 60
+      Hint = '*'
       Align = alClient
       Caption = 'Shift'
       TabOrder = 11
@@ -707,6 +707,7 @@ object Form_KeyBoard: TForm_KeyBoard
       Top = 0
       Width = 100
       Height = 60
+      Hint = '*'
       Align = alLeft
       Caption = 'Ctrl'
       TabOrder = 2
@@ -739,6 +740,7 @@ object Form_KeyBoard: TForm_KeyBoard
       Top = 0
       Width = 120
       Height = 60
+      Hint = '*'
       Align = alLeft
       Caption = 'Alt'
       TabOrder = 5

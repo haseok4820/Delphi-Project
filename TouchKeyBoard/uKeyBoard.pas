@@ -11,10 +11,14 @@ uses
 type
   TKeyBoard_Info = record
     bHangul: Boolean; // 한/영 체크
-    bCapsLoack: Boolean; // Caps Loack 체크
-    bShift: Boolean; // Shift 체크
-    bCtrl: Boolean; // Ctrl 체크
-    bAlt: Boolean; // Alt 체크
+    bTool: Boolean; // Shift, Alt, Ctrl 통합
+    iTool: Integer; // 구분
+    {
+      bCapsLoack: Boolean; // Caps Loack 체크
+      bShift: Boolean; // Shift 체크
+      bCtrl: Boolean; // Ctrl 체크
+      bAlt: Boolean; // Alt 체크
+    }
   end;
 
   TForm_KeyBoard = class(TForm)
@@ -108,358 +112,40 @@ implementation
 procedure TForm_KeyBoard.Button2Click(Sender: TObject);
 var
   iKey: Byte;
+  sKey: String;
   ks: TKeyboardState;
   i: Integer;
   j: Integer;
 
   KeyType_Hangul: Boolean;
 begin
-    if Sender is TButton then
+  if Sender is TButton then
   begin
-
     iKey := (Sender as TButton).Tag;
-    Caption := 'Press' + IntToStr(iKey);
-
-    Keybd_Event(iKey, MapVirtualKey(iKey, 0), 0, 0);
-    Keybd_Event(iKey, MapVirtualKey(iKey, 0), KEYEVENTF_KEYUP, 0);
-
-    GetKeyboardState(ks);
-
-    KeyType_Hangul := NOT KeyType_Hangul;
-
-    // 영문상태
-    if ks[VK_HANGUL] = 0 then
-    begin
-      for i := 0 to ControlCount - 1 do
-      begin
-        if Controls[i] is TPanel then
-        begin
-          for j := 0 to (Controls[i] as TPanel).ControlCount - 1 do
-          begin
-            if (Controls[i] as TPanel).Controls[j] is TButton then
-            begin
-              with ((Controls[i] as TPanel).Controls[j] as TButton) do
-              begin
-
-                case Tag of
-                  65:
-                    begin
-                      Caption := 'A';
-                      Hint := 'a';
-                    end;
-                  66:
-                    begin
-                      Caption := 'B';
-                      Hint := 'b';
-                    end;
-                  67:
-                    begin
-                      Caption := 'C';
-                      Hint := 'c';
-                    end;
-                  68:
-                    begin
-                      Caption := 'D';
-                      Hint := 'd';
-                    end;
-                  69:
-                    begin
-                      Caption := 'E';
-                      Hint := 'e';
-                    end;
-                  70:
-                    begin
-                      Caption := 'F';
-                      Hint := 'f';
-                    end;
-                  71:
-                    begin
-                      Caption := 'G';
-                      Hint := 'g';
-                    end;
-                  72:
-                    begin
-                      Caption := 'H';
-                      Hint := 'h';
-                    end;
-                  73:
-                    begin
-                      Caption := 'I';
-                      Hint := 'i';
-                    end;
-                  74:
-                    begin
-                      Caption := 'J';
-                      Hint := 'j';
-                    end;
-                  75:
-                    begin
-                      Caption := 'K';
-                      Hint := 'k';
-                    end;
-                  76:
-                    begin
-                      Caption := 'L';
-                      Hint := 'l';
-                    end;
-                  77:
-                    begin
-                      Caption := 'M';
-                      Hint := 'm';
-                    end;
-                  78:
-                    begin
-                      Caption := 'N';
-                      Hint := 'n';
-                    end;
-                  79:
-                    begin
-                      Caption := 'O';
-                      Hint := 'o';
-                    end;
-                  80:
-                    begin
-                      Caption := 'P';
-                      Hint := 'p';
-                    end;
-                  81:
-                    begin
-                      Caption := 'Q';
-                      Hint := 'q';
-                    end;
-                  82:
-                    begin
-                      Caption := 'R';
-                      Hint := 'r';
-                    end;
-                  83:
-                    begin
-                      Caption := 'S';
-                      Hint := 's';
-                    end;
-                  84:
-                    begin
-                      Caption := 'T';
-                      Hint := 't';
-                    end;
-                  85:
-                    begin
-                      Caption := 'U';
-                      Hint := 'u';
-                    end;
-                  86:
-                    begin
-                      Caption := 'V';
-                      Hint := 'v';
-                    end;
-                  87:
-                    begin
-                      Caption := 'W';
-                      Hint := 'w';
-                    end;
-                  88:
-                    begin
-                      Caption := 'X';
-                      Hint := 'x';
-                    end;
-                  89:
-                    begin
-                      Caption := 'Y';
-                      Hint := 'w';
-                    end;
-                  90:
-                    begin
-                      Caption := 'Z';
-                      Hint := 'z';
-                    end;
-                end;
-              end;
-
-            end;
-
-          end;
-
-        end;
-      end;
-
-    end
-    // 한글상태
-    else
-    begin
-      for i := 0 to ControlCount - 1 do
-      begin
-        if Controls[i] is TPanel then
-        begin
-
-          for j := 0 to (Controls[i] as TPanel).ControlCount - 1 do
-          begin
-            if (Controls[i] as TPanel).Controls[j] is TButton then
-            begin
-              with ((Controls[i] as TPanel).Controls[j] as TButton) do
-              begin
-                case Tag of
-                  65:
-                    begin
-                      Caption := 'ㅁ';
-                      Hint := 'a';
-                    end;
-                  66:
-                    begin
-                      Caption := 'ㅠ';
-                      Hint := 'b';
-                    end;
-                  67:
-                    begin
-                      Caption := 'ㅊ';
-                      Hint := 'c';
-                    end;
-                  68:
-                    begin
-                      Caption := 'ㅇ';
-                      Hint := 'd';
-                    end;
-                  69:
-                    begin
-                      if ks[VK_CAPITAL] = 1 then
-                        Caption := 'ㄸ'
-                      else
-                        Caption := 'ㄷ';
-                      Hint := 'e';
-                    end;
-                  70:
-                    begin
-                      Caption := 'ㄹ';
-                      Hint := 'f';
-                    end;
-                  71:
-                    begin
-                      Caption := 'ㅎ';
-                      Hint := 'g';
-                    end;
-                  72:
-                    begin
-                      Caption := 'ㅗ';
-                      Hint := 'h';
-                    end;
-                  73:
-                    begin
-                      Caption := 'ㅑ';
-                      Hint := 'i';
-                    end;
-                  74:
-                    begin
-                      Caption := 'ㅓ';
-                      Hint := 'j';
-                    end;
-                  75:
-                    begin
-                      Caption := 'ㅏ';
-                      Hint := 'k';
-                    end;
-                  76:
-                    begin
-                      Caption := 'ㅣ';
-                      Hint := 'l';
-                    end;
-                  77:
-                    begin
-                      Caption := 'ㅡ';
-                      Hint := 'm';
-                    end;
-                  78:
-                    begin
-                      Caption := 'ㅜ';
-                      Hint := 'n';
-                    end;
-                  79:
-                    begin
-                      if ks[VK_CAPITAL] = 1 then
-                        Caption := 'ㅒ'
-                      else
-                        Caption := 'ㅐ';
-                      Hint := 'o';
-                    end;
-                  80:
-                    begin
-                      if ks[VK_CAPITAL] = 1 then
-                        Caption := 'ㅖ'
-                      else
-                        Caption := 'ㅔ';
-                      Hint := 'p';
-                    end;
-                  81:
-                    begin
-                      if ks[VK_CAPITAL] = 1 then
-                        Caption := 'ㅃ'
-                      else
-                        Caption := 'ㅂ';
-                      Hint := 'q';
-                    end;
-                  82:
-                    begin
-                      if ks[VK_CAPITAL] = 1 then
-                        Caption := 'ㄲ'
-                      else
-                        Caption := 'ㄱ';
-                      Hint := 'r';
-                    end;
-                  83:
-                    begin
-                      Caption := 'ㄴ';
-                      Hint := 's';
-                    end;
-                  84:
-                    begin
-                      if ks[VK_CAPITAL] = 1 then
-                        Caption := 'ㅆ'
-                      else
-                        Caption := 'ㅅ';
-                      Hint := 't';
-                    end;
-                  85:
-                    begin
-                      Caption := 'ㅕ';
-                      Hint := 'u';
-                    end;
-                  86:
-                    begin
-                      Caption := 'ㅍ';
-                      Hint := 'v';
-                    end;
-                  87:
-                    begin
-                      if ks[VK_CAPITAL] = 1 then
-                        Caption := 'ㅉ'
-                      else
-                        Caption := 'ㅈ';
-                      Hint := 'w';
-                    end;
-                  88:
-                    begin
-                      Caption := 'ㅌ';
-                      Hint := 'x';
-                    end;
-                  89:
-                    begin
-                      Caption := 'ㅛ';
-                      Hint := 'w';
-                    end;
-                  90:
-                    begin
-                      Caption := 'ㅋ';
-                      Hint := 'z';
-                    end;
-                end;
-              end;
-            end;
-
-          end;
-
-        end;
-      end;
-
-    end;
+    sKey := (Sender as TButton).Hint;
   end;
+
+  Caption := 'Press' + IntToStr(iKey);
+  if (sKey <> '') AND (KeyBoard_Info.bTool = False) then
+  begin
+    KeyBoard_Info.bTool := True;
+    KeyBoard_Info.iTool := iKey;
+    Keybd_Event(iKey, MapVirtualKey(iKey, 0), 0, 0);
+    Exit;
+  end;
+
+  Keybd_Event(iKey, MapVirtualKey(iKey, 0), 0, 0);
+  Keybd_Event(iKey, MapVirtualKey(iKey, 0), KEYEVENTF_KEYUP, 0);
+
+  if KeyBoard_Info.bTool then
+  begin
+    KeyBoard_Info.bTool := False;
+    Keybd_Event(iKey, MapVirtualKey(KeyBoard_Info.iTool, 0), KEYEVENTF_KEYUP, 0);
+  end;
+
+  GetKeyboardState(ks);
+
+  KeyType_Hangul := NOT KeyType_Hangul;
 
 end;
 
@@ -477,6 +163,8 @@ var
 begin
   SetWindowLong(Self.Handle, GWL_EXSTYLE, WS_EX_NOACTIVATE);
   ImmSetConversionStatus(hContext, IME_CMODE_HANGUL, IME_SMODE_NONE);
+
+  KeyBoard_Info.bTool := False;
 end;
 
 procedure TForm_KeyBoard.GetKeyList(iType: Byte);
