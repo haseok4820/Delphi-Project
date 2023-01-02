@@ -1,0 +1,90 @@
+unit Unit3;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls;
+
+type
+  TForm3 = class(TForm)
+    ColorDialog1: TColorDialog;
+    Panel_BGR: TPanel;
+    Button1: TButton;
+    Edit1: TEdit;
+    Edit2: TEdit;
+    Panel1: TPanel;
+    Label1: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
+    Edit3: TEdit;
+    Edit4: TEdit;
+    Edit5: TEdit;
+    procedure Button1Click(Sender: TObject);
+    procedure EditClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form3: TForm3;
+  iType, R, G, B: Byte;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm3.Button1Click(Sender: TObject);
+var
+  i: Integer;
+begin
+  case iType of
+    0:
+      begin
+        R := GetRValue(StringToColor(Edit1.Text));
+        G := GetGValue(StringToColor(Edit1.Text));
+        B := GetBValue(StringToColor(Edit1.Text));
+      end;
+    1:
+      begin
+
+        R := StrToIntDef(Copy(Edit2.Text, 2, 2), 0);
+        G := StrToIntDef(Copy(Edit2.Text, 4, 2), 0);
+        B := StrToIntDef(Copy(Edit2.Text, 6, 2), 0);
+      end;
+    2:
+      begin
+        R := StrToIntDef(Edit3.Text, 0);
+        G := StrToIntDef(Edit4.Text, 0);
+        B := StrToIntDef(Edit5.Text, 0);
+      end;
+  end;
+
+  Panel_BGR.Color := RGB(R, G, B);
+  for i := 1 to 5 do
+    (FindComponent('Edit' + IntToStr(i)) as TEdit).OnChange := nil;
+
+  Edit1.Text := ColorToString(Panel_BGR.Color);
+  Edit2.Text := '#' + IntToHex(R) + IntToHex(B) + IntToHex(B);
+  Edit3.Text := IntToStr(R);
+  Edit4.Text := IntToStr(G);
+  Edit5.Text := IntToStr(B);
+
+  for i := 1 to 5 do
+    (FindComponent('Edit' + IntToStr(i)) as TEdit).OnChange := nil;
+end;
+
+procedure TForm3.EditClick(Sender: TObject);
+begin
+  iType := (Sender as TEdit).Tag;
+end;
+
+procedure TForm3.FormShow(Sender: TObject);
+begin
+  iType := 0;
+end;
+
+end.

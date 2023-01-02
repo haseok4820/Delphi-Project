@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>1899-12-30 00:00:00.000.762,C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Project1.dproj=D:\최하석 작업문서\VCL\20221229_Color\Project1.dproj</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.786,D:\최하석 작업문서\VCL\20221229_Color\Unit3.dfm=D:\최하석 작업문서\VCL\20221229_Color\Unit1.dfm</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.786,D:\최하석 작업문서\VCL\20221229_Color\Unit3.pas=D:\최하석 작업문서\VCL\20221229_Color\Unit1.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.579,C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Unit3.pas=D:\최하석 작업문서\VCL\20221229_Color\Unit3.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.579,C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Unit3.dfm=D:\최하석 작업문서\VCL\20221229_Color\Unit3.dfm</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.871,D:\최하석 작업문서\VCL\20221229_Color\Project1.dproj=D:\최하석 작업문서\VCL\20221229_Color\Project_Color.dproj</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.544,=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Unit3.pas</Transaction>
+  </Transactions>
+</BorlandProject>
