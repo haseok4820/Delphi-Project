@@ -1,447 +1,421 @@
-unit uKeyBoard;
+unit uKeyboard;
 
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
-  System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Touch.Keyboard, imm,
-  dxGDIPlusClasses, Vcl.ExtCtrls, Vcl.Buttons, Vcl.AppEvnts;
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, ImagingComponents, Vcl.ExtCtrls, Vcl.StdCtrls;
 
 type
-  TKeyBoard_Info = record
-    bHangul: Boolean; // 한/영 체크
-    bTool: Boolean; // Shift, Alt, Ctrl 통합
-    iTool: Integer; // 구분
-    {
-      bCapsLoack: Boolean; // Caps Loack 체크
-      bShift: Boolean; // Shift 체크
-      bCtrl: Boolean; // Ctrl 체크
-      bAlt: Boolean; // Alt 체크
-    }
+  TKeyInfo = record
+    iTag: Integer;
+    sCaption: String;
+    iT: Integer;
+    iL: Integer;
+    iW: Integer;
+    iH: Integer;
   end;
 
-  TForm_KeyBoard = class(TForm)
-    Panel1: TPanel;
-    Button5: TButton;
-    Button6: TButton;
-    Button7: TButton;
-    Button8: TButton;
-    Button9: TButton;
-    Button10: TButton;
-    Button11: TButton;
-    Button12: TButton;
-    Button13: TButton;
-    Button14: TButton;
-    Button15: TButton;
-    Button1: TButton;
-    Button2: TButton;
-    Button3: TButton;
-    Button4: TButton;
-    Panel2: TPanel;
-    Button17: TButton;
-    Button18: TButton;
-    Button19: TButton;
-    Button20: TButton;
-    Button21: TButton;
-    Button22: TButton;
-    Button23: TButton;
-    Button24: TButton;
-    Button25: TButton;
-    Button26: TButton;
-    Button29: TButton;
-    Panel3: TPanel;
-    Button32: TButton;
-    Button33: TButton;
-    Button34: TButton;
-    Button35: TButton;
-    Button36: TButton;
-    Button37: TButton;
-    Button38: TButton;
-    Button39: TButton;
-    Button40: TButton;
-    Button41: TButton;
-    Button43: TButton;
-    Button44: TButton;
-    Button45: TButton;
-    Button16: TButton;
-    Button27: TButton;
-    Panel4: TPanel;
-    Button28: TButton;
-    Button30: TButton;
-    Button31: TButton;
-    Button42: TButton;
-    Button46: TButton;
-    Button47: TButton;
-    Button48: TButton;
-    Button49: TButton;
-    Button50: TButton;
-    Button51: TButton;
-    Button54: TButton;
-    Button55: TButton;
-    Panel5: TPanel;
-    Button60: TButton;
-    Button62: TButton;
-    Button63: TButton;
-    Button_Close: TButton;
-    Button53: TButton;
-    Button56: TButton;
-    Label_MadeBy: TLabel;
+  TToolChk = record
+    iTool: Integer; // Tool 번호
+    bTool: Boolean; // Tool 유무
+    bShift: Boolean;
+    bTab: Boolean;
+    bCaps: Boolean;
+  end;
+
+  TfmKeyboard = class(TForm)
+    procedure KeyClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
-    procedure Button2Click(Sender: TObject);
-    procedure Button_CloseClick(Sender: TObject);
-    procedure Label_MadeByClick(Sender: TObject);
+    procedure FormResize(Sender: TObject);
   private
     { Private declarations }
-    procedure GetKeyList(iType: Byte);
   public
     { Public declarations }
+    procedure SEtKeyInfo(iType: Byte);
+    procedure SetKeyBoard;
   end;
 
-const
-  const_KEYNUMBER = 10;
-
 var
-  Form_KeyBoard: TForm_KeyBoard;
-  KeyBoard_Info: TKeyBoard_Info;
+  fmKeyboard: TfmKeyboard;
+
+  arrKeyInfo: array [0 .. 59] of TKeyInfo;
+  ToolChk: TToolChk;
+
+  arrChar: array [0 .. 59] of String = (
+    '~ `',
+    '! 1',
+    '@ 2',
+    '# 3',
+    '$ 4',
+    '% 5',
+    '^ 6',
+    '＆ 7',
+    '* 8',
+    '( 9',
+    ') 0',
+    '_ -',
+    '+ =',
+    '| \',
+    '←',
+    //
+    'Tab',
+    'Q==ㅃ ㅂ',
+    'W==ㅉ ㅈ',
+    'E==ㄸ ㄷ',
+    'R==ㄲ ㄱ',
+    'T==ㅆ ㅅ',
+    'Y==ㅤ ㅛ',
+    'U==ㅤ ㅕ',
+    'I==ㅤ ㅑ',
+    'O==ㅒ ㅐ',
+    'P==ㅖ ㅔ',
+    '{ [',
+    '} ]',
+    '==',
+    //
+    'Caps==Lock',
+    'A ㅁ',
+    'S ㄴ',
+    'D ㅇ',
+    'F ㄹ',
+    'G ㅎ',
+    'H ㅗ',
+    'J ㅓ',
+    'K ㅏ',
+    'L ㅣ',
+    ': ;',
+    '" ''',
+    'Enter',
+    //
+    'Shift',
+    'Z ㅋ',
+    'X ㅌ',
+    'C ㅊ',
+    'V ㅍ',
+    'B ㅠ',
+    'N ㅜ',
+    'M ㅡ',
+    '< ,',
+    '> .',
+    '? /',
+    'Shift',
+    //
+    'Ctrl',
+    'Win',
+    'Alt',
+    'Space',
+    '한/영',
+    '韓字'
+  );
+
+  arrTag: array [0 .. 59] of Integer = (
+    192,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    48,
+    189,
+    187,
+    220,
+    8,
+    //
+    9,
+    81,
+    87,
+    69,
+    82,
+    84,
+    89,
+    85,
+    73,
+    79,
+    80,
+    91,
+    93,
+    13,
+    //
+    20,
+    65,
+    83,
+    68,
+    70,
+    71,
+    72,
+    74,
+    75,
+    76,
+    59,
+    39,
+    13,
+    //
+    16,
+    90,
+    88,
+    67,
+    86,
+    66,
+    78,
+    77,
+    44,
+    46,
+    47,
+    16,
+    //
+    17,
+    91,
+    18,
+    32,
+    21,
+    25
+  );
 
 implementation
 
 {$R *.dfm}
+{ TForm3 }
 
-procedure TForm_KeyBoard.Button2Click(Sender: TObject);
+procedure TfmKeyboard.FormCreate(Sender: TObject);
+begin
+  SetWindowLong(Self.Handle, GWL_EXSTYLE, WS_EX_NOACTIVATE);
+  SetWindowPos(Self.Handle, HWND_TOPMOST, Top, Left, Width, Height, 0);
+  SEtKeyInfo(0);
+  SetKeyBoard;
+end;
+
+procedure TfmKeyboard.FormResize(Sender: TObject);
+begin
+  if (Width < 825) then
+    Width := 825
+  else if Height < 375 then
+    Height := 375
+  else
+  begin
+    SEtKeyInfo(0);
+    SetKeyBoard;
+  end;
+end;
+
+procedure TfmKeyboard.KeyClick(Sender: TObject);
 var
   iKey: Byte;
   sKey: String;
-  ks: TKeyboardState;
   i: Integer;
   j: Integer;
 
-  KeyType_Hangul: Boolean;
 begin
-  if Sender is TButton then
+  for i := ControlCount - 1 Downto 0 do
   begin
-    iKey := (Sender as TButton).Tag;
-    sKey := (Sender as TButton).Hint;
+    if Controls[i] is TLabel then
+    begin
+      with (Controls[i] as TLabel) do
+      begin
+        Color := clBlack;
+        Font.Color := clWhite;
+      end;
+    end;
+  end;
+  if Sender is TLabel then
+  begin
+    with (Sender as TLabel) do
+    begin
+      Color := clSkyBlue;
+      Font.Color := clBlack;
+      iKey := Tag;
+      sKey := Hint;
+
+      if iKey = 13 then
+      begin
+        for i := ControlCount - 1 Downto 0 do
+        begin
+          if Controls[i] is TLabel then
+          begin
+            with (Controls[i] as TLabel) do
+            begin
+              if Tag = 13 then
+              begin
+                Color := clSkyBlue;
+                Font.Color := clBlack;
+              end;
+
+            end;
+          end;
+        end;
+      end;
+    end;
   end;
 
   Caption := 'Press' + IntToStr(iKey);
-  if (sKey <> '') AND (KeyBoard_Info.bTool = False) then
+
+  if (sKey <> '') AND (ToolChk.bTool = False) then
   begin
-    KeyBoard_Info.bTool := True;
-    KeyBoard_Info.iTool := iKey;
-    Keybd_Event(iKey, MapVirtualKey(iKey, 0), 0, 0);
+    ToolChk.bTool := True;
+    ToolChk.iTool := iKey;
+    Keybd_Event(ToolChk.iTool, MapVirtualKey(ToolChk.iTool, 0), 0, 0);
+    case iKey of
+      16:
+        begin
+          ToolChk.bShift := True
+        end;
+    end;
     Exit;
   end;
 
   Keybd_Event(iKey, MapVirtualKey(iKey, 0), 0, 0);
   Keybd_Event(iKey, MapVirtualKey(iKey, 0), KEYEVENTF_KEYUP, 0);
 
-  if KeyBoard_Info.bTool then
+  if ToolChk.bTool then
   begin
-    KeyBoard_Info.bTool := False;
-    Keybd_Event(iKey, MapVirtualKey(KeyBoard_Info.iTool, 0), KEYEVENTF_KEYUP, 0);
+    ToolChk.bTool := False;
+    Keybd_Event(ToolChk.iTool, MapVirtualKey(ToolChk.iTool, 0), KEYEVENTF_KEYUP, 0);
+    if ToolChk.bShift then
+      ToolChk.bShift := False;
   end;
-
-  GetKeyboardState(ks);
-
-  KeyType_Hangul := NOT KeyType_Hangul;
-
 end;
 
-procedure TForm_KeyBoard.Button_CloseClick(Sender: TObject);
-begin
-  Application.Terminate;
-end;
-
-procedure TForm_KeyBoard.FormCreate(Sender: TObject);
-var
-  hContext: HIMC;
-  mcon, msen: DWORD;
-
-  i, j: Byte;
-begin
-  SetWindowLong(Self.Handle, GWL_EXSTYLE, WS_EX_NOACTIVATE);
-  ImmSetConversionStatus(hContext, IME_CMODE_HANGUL, IME_SMODE_NONE);
-
-  KeyBoard_Info.bTool := False;
-end;
-
-procedure TForm_KeyBoard.GetKeyList(iType: Byte);
+procedure TfmKeyboard.SetKeyBoard;
 var
   i, j: Integer;
 begin
-  // KeyBoard Type
-  // 0 - Number & Key
-  // 1 - Key
-  // 2 - Number
-  if ControlCount <> 0 then
+  //
+  with Font do
   begin
-    for i := ControlCount - 1 Downto 0 do
-    begin
-      if Controls[i] is TButton then
-        (Controls[i] as TButton).Free;
-
-    end;
+    Size := 16;
+    Name := '돋움체';
+    style := [fsBold];
   end;
 
-  case iType of
-    0:
-      begin
-        // Number
-        for i := 0 to 9 do
-        begin
-          with TButton.Create(Self) do
-          begin
-            Parent := Self;
-            Name := 'Num' + IntToStr(i);
-            Tag := i + 48;
-            Hint := IntToStr(i);
-            Caption := Hint;
+  for i := ControlCount - 1 Downto 0 do
+  begin
+    (Controls[i]).Free;
+  end;
 
-            Width := (Self.ClientWidth div 10);
-            Height := (Self.ClientHeight div 5);
+  for i := Low(arrKeyInfo) to High(arrKeyInfo) do
+  begin
+    with TLabel.Create(Self), arrKeyInfo[i] do
+    begin
+      Parent := Self;
+      WordWrap := True;
+      AutoSize := False;
+      Layout := tlCenter;
+      Alignment := taCenter;
+      Transparent := False;
+      Color := clBlack;
 
-            Top := 5;
-            Left := 5 + (i * Width);
+      Tag := arrKeyInfo[i].iTag;
+      Caption := sCaption;
+      if i in [15, 42, 53, 54, 56] then
+        Hint := 'Tool'
+      else
+        Hint := '';
 
-            onClick := Button2Click;
-          end;
+      Top := iT;
+      Left := iL;
+      Width := iW;
+      Height := iH;
 
-        end;
-
-        for i := 0 to 9 do
-        begin
-          with TButton.Create(Self) do
-          begin
-            Parent := Self;
-            Name := 'Key_Top' + IntToStr(i);
-            Width := (Self.ClientWidth div 10);
-            Height := (Self.ClientHeight div 5);
-            Top := 10 + Height;
-            Left := 5 + (i * Width);
-            case i of
-              0:
-                begin
-                  Tag := 81;
-                  Caption := 'Q(ㅂ)';
-                end;
-              1:
-                Begin
-                  Tag := 87;
-                  Caption := 'W(ㅈ)';
-                end;
-              2:
-                Begin
-                  Tag := 69;
-                  Caption := 'E(ㄷ)';
-                end;
-              3:
-                Begin
-                  Tag := 82;
-                  Caption := 'R(ㄱ)';
-                end;
-              4:
-                Begin
-                  Tag := 84;
-                  Caption := 'T(ㅅ)';
-                end;
-              5:
-                Begin
-                  Tag := 89;
-                  Caption := 'Y(ㅛ)';
-                end;
-              6:
-                Begin
-                  Tag := 85;
-                  Caption := 'U(ㅕ)';
-                end;
-              7:
-                Begin
-                  Tag := 73;
-                  Caption := 'I(ㅑ)';
-                end;
-              8:
-                Begin
-                  Tag := 79;
-                  Caption := 'O(ㅐ)';
-                end;
-              9:
-                Begin
-                  Tag := 80;
-                  Caption := 'P(ㅔ)';
-                end;
-            end;
-            onClick := Button2Click;
-          end;
-
-        end;
-
-        for i := 0 to 8 do
-        begin
-          with TButton.Create(Self) do
-          begin
-            Parent := Self;
-            Name := 'Key_Middle' + IntToStr(i);
-            Width := (Self.ClientWidth div 9);
-            Height := (Self.ClientHeight div 5);
-            Top := 10 + (Height * 2);
-            Left := 5 + (i * Width);
-            case i of
-              0:
-                begin
-                  Tag := 65;
-                  Caption := 'A(ㅁ)';
-                end;
-              1:
-                Begin
-                  Tag := 83;
-                  Caption := 'S(ㄴ)';
-                end;
-              2:
-                Begin
-                  Tag := 68;
-                  Caption := 'D(ㄷ)';
-                end;
-              3:
-                Begin
-                  Tag := 70;
-                  Caption := 'F(ㄹ)';
-                end;
-              4:
-                Begin
-                  Tag := 71;
-                  Caption := 'G(ㅎ)';
-                end;
-              5:
-                Begin
-                  Tag := 72;
-                  Caption := 'H(ㅗ)';
-                end;
-              6:
-                Begin
-                  Tag := 74;
-                  Caption := 'J(ㅓ)';
-                end;
-              7:
-                Begin
-                  Tag := 75;
-                  Caption := 'K(ㅏ)';
-                end;
-              8:
-                Begin
-                  Tag := 76;
-                  Caption := 'L(ㅣ)';
-                end;
-            end;
-            onClick := Button2Click;
-          end;
-
-        end;
-
-        for i := 0 to 6 do
-        begin
-          with TButton.Create(Self) do
-          begin
-            Parent := Self;
-            Name := 'Key_Bottom' + IntToStr(i);
-            Width := (Self.ClientWidth div 7);
-            Height := (Self.ClientHeight div 5);
-            Top := 10 + (Height * 3);
-            Left := 5 + (i * Width);
-            case i of
-              0:
-                begin
-                  Tag := 90;
-                  Caption := 'Z(ㅋ)';
-                end;
-              1:
-                Begin
-                  Tag := 88;
-                  Caption := 'X(ㅌ)';
-                end;
-              2:
-                Begin
-                  Tag := 67;
-                  Caption := 'C(ㅊ)';
-                end;
-              3:
-                Begin
-                  Tag := 86;
-                  Caption := 'V(ㅍ)';
-                end;
-              4:
-                Begin
-                  Tag := 66;
-                  Caption := 'B(ㅠ)';
-                end;
-              5:
-                Begin
-                  Tag := 78;
-                  Caption := 'N(ㅜ)';
-                end;
-              6:
-                Begin
-                  Tag := 77;
-                  Caption := 'M(ㅡ)';
-                end;
-            end;
-            onClick := Button2Click;
-          end;
-
-        end;
-
-        for i := 0 to 3 do
-        begin
-          with TButton.Create(Self) do
-          begin
-            Parent := Self;
-            Name := 'Key_Option' + IntToStr(i);
-            Width := (Self.ClientWidth div 4);
-            Height := (Self.ClientHeight div 5);
-            Top := 10 + (Height * 4);
-            Left := 5 + (i * Width);
-            case i of
-              0:
-                begin
-                  Tag := VK_SHIFT;
-                  Caption := 'Shift';
-                end;
-              1:
-                Begin
-                  Tag := VK_SPACE;
-                  Caption := 'Space';
-                end;
-              2:
-                Begin
-
-                  Tag := VK_HANGUL;
-                  Caption := '한/Eng';
-                end;
-              3:
-                Begin
-                  Tag := VK_RETURN;
-                  Caption := 'Enter';
-                end;
-            end;
-            onClick := Button2Click;
-          end;
-
-        end;
-      end;
-
-    1:
-      begin
-
-      end;
-
+      OnClick := KeyClick;
+    end;
   end;
 
 end;
 
-procedure TForm_KeyBoard.Label_MadeByClick(Sender: TObject);
+procedure TfmKeyboard.SEtKeyInfo(iType: Byte);
+const
+  s13 = #13#10;
+  iPadding = 7;
+  WType_1 = 1.5;
+  WType_2 = 2.0;
+  WType_3 = 2.5;
+var
+  iWidth: Integer;
+  i, j, k, l: Integer;
 begin
-  sHOWmeSSAGE('Copyright @ Miniuser. All rights Reserved.');
+  //
+  k := 0;
+  j := 0;
+  iWidth := 10;
+  for i := Low(arrKeyInfo) to High(arrKeyInfo) do
+  begin
+    with arrKeyInfo[i] do
+    begin
+      iTag := arrTag[i];
+      sCaption := StringReplace(arrChar[i], ' ', '  ' + Chr(13) + '  ', [rfIgnoreCase]);
+      sCaption := StringReplace(sCaption, '==', ' ', [rfReplaceAll]);
+
+      iH := ClientHeight div 5 - iPadding;
+      iW := ((Self.Width div 16) - iPadding) + 3;
+      iT := k * (Self.Height div 5 - iPadding);
+      case i of
+        0 .. 14: // 1
+          begin
+            if i = 14 then
+              inc(k);
+          end;
+        15 .. 28:
+          begin
+            if i = 15 then
+              iWidth := 10;
+            if i = 28 then
+            begin
+              iH := iH + 10;
+              inc(k);
+            end;
+
+            if i in [15, 28] then
+              iW := Round(iW * WType_1);
+          end;
+        29 .. 41:
+          begin
+            if i = 29 then
+              iWidth := 10;
+            if i = 41 then
+              inc(k);
+
+            if i in [29, 41] then
+              iW := Round(iW * WType_2);
+          end;
+        42 .. 53:
+          begin
+            if i = 42 then
+              iWidth := 10;
+            if i = 53 then
+              inc(k);
+
+            if i in [42, 53] then
+              iW := Round(iW * WType_3);
+          end;
+        54 .. 59:
+          begin
+            if i = 54 then
+              iWidth := 10;
+            if i = 57 then
+              iW := Round((iW * WType_1) * 5)
+            else
+              iW := Round(iW * WType_1);
+
+          end;
+      end;
+
+      iL := iWidth;
+      if i = 14 then
+        l := iW + iL;
+
+      if i in [28, 41, 53, 59] then
+        iW := l - iL;
+
+      iWidth := iWidth + iW + iPadding;
+      // iL := j * iW + 10;
+      inc(j);
+    end;
+  end;
+
 end;
 
 end.
