@@ -25,10 +25,14 @@ type
   end;
 
   TfmKeyboard = class(TForm)
+    Timer: TTimer;
     procedure KeyClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormResize(Sender: TObject);
+    procedure TimerTimer(Sender: TObject);
   private
+    procedure KeyDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+    procedure KeyUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     { Private declarations }
   public
     { Public declarations }
@@ -41,6 +45,7 @@ var
 
   arrKeyInfo: array [0 .. 59] of TKeyInfo;
   ToolChk: TToolChk;
+  KeyLabel : TLabel;
 
   arrChar: array [0 .. 59] of String = (
     '~ `',
@@ -137,8 +142,8 @@ var
     73,
     79,
     80,
-    91,
-    93,
+    219,
+    221,
     13,
     //
     20,
@@ -151,8 +156,8 @@ var
     74,
     75,
     76,
-    59,
-    39,
+    186,
+    222,
     13,
     //
     16,
@@ -163,9 +168,9 @@ var
     66,
     78,
     77,
-    44,
-    46,
-    47,
+    188,
+    190,
+    191,
     16,
     //
     17,
@@ -189,6 +194,23 @@ begin
   SetKeyBoard;
 end;
 
+procedure TfmKeyboard.KeyDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  //
+  KeyLabel := (Sender as TLabel);
+  if Timer.Enabled = False then
+    Timer.Enabled := True
+end;
+
+procedure TfmKeyboard.KeyUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  //
+  KeyLabel := nil;
+  Timer.Enabled := False;
+  Timer.Interval := 2000;
+end;
+
+
 procedure TfmKeyboard.FormResize(Sender: TObject);
 begin
   if (Width < 825) then
@@ -208,7 +230,6 @@ var
   sKey: String;
   i: Integer;
   j: Integer;
-
 begin
   for i := ControlCount - 1 Downto 0 do
   begin
@@ -221,6 +242,7 @@ begin
       end;
     end;
   end;
+
   if Sender is TLabel then
   begin
     with (Sender as TLabel) do
@@ -321,6 +343,8 @@ begin
       Height := iH;
 
       OnClick := KeyClick;
+      OnMouseDown := KeyDown;
+      OnMouseUp := KeyUp;
     end;
   end;
 
@@ -415,6 +439,16 @@ begin
       inc(j);
     end;
   end;
+
+end;
+
+procedure TfmKeyboard.TimerTimer(Sender: TObject);
+begin
+  Timer.Interval := Timer.Interval div 2;
+  if Timer.Interval <= 10 then
+    Timer.Interval := 10;
+  KeyClick(KeyLabel);
+
 
 end;
 

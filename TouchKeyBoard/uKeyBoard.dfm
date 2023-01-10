@@ -2,7 +2,7 @@ object fmKeyboard: TfmKeyboard
   Left = 0
   Top = 0
   BorderStyle = bsSizeToolWin
-  Caption = 'Touch Keyboard [made by Delphi]'
+  Caption = 'u'
   ClientHeight = 359
   ClientWidth = 1013
   Color = clBtnFace
@@ -19,4 +19,11 @@ object fmKeyboard: TfmKeyboard
   OnResize = FormResize
   PixelsPerInch = 96
   TextHeight = 27
+  object Timer: TTimer
+    Tag = 3
+    Interval = 2000
+    OnTimer = TimerTimer
+    Left = 904
+    Top = 80
+  end
 end
