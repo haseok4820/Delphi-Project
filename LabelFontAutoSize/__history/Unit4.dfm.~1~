@@ -1,0 +1,37 @@
+object Form4: TForm4
+  Left = 0
+  Top = 0
+  BorderStyle = bsSizeToolWin
+  Caption = 'Form4'
+  ClientHeight = 95
+  ClientWidth = 350
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  OnResize = FormResize
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Label1: TLabel
+    Left = 0
+    Top = 0
+    Width = 350
+    Height = 95
+    Align = alClient
+    Alignment = taCenter
+    AutoSize = False
+    Caption = 'Label1'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -21
+    Font.Name = #47569#51008' '#44256#46357
+    Font.Style = []
+    ParentFont = False
+    Layout = tlCenter
+    WordWrap = True
+    ExplicitHeight = 100
+  end
+end

@@ -1,0 +1,65 @@
+unit Unit4;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls;
+
+type
+  TForm4 = class(TForm)
+    Label1: TLabel;
+    procedure FormResize(Sender: TObject);
+  private
+    { Private declarations }
+    function SetLabelFontSize(Label_Test: TLabel): Integer;
+  public
+    { Public declarations }
+  end;
+
+var
+  Form4: TForm4;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm4.FormResize(Sender: TObject);
+begin
+  Label1.Font.Size := SetLabelFontSize(Label1);
+end;
+
+function TForm4.SetLabelFontSize(Label_Test: TLabel): Integer;
+var
+  Rect_Test: TRect;
+
+  bChk, bGet: Boolean;
+  sText: String;
+  i: Byte;
+begin
+  bGet := False;
+  bChk := bGet;
+  i := 50;
+  sText := Label_Test.Caption;
+
+  Rect_Test := Default (TRect);
+  with Rect_Test do
+  begin
+    Right := Label_Test.Width;
+    Bottom := Label_Test.Height;
+
+    for i := 1 To 50 do
+    begin
+      with Label_Test do
+      begin
+        Canvas.Font.Size := i;
+        Canvas.TextRect(Rect_Test, sText, [tfCalcRect]);
+
+        if ((Rect_Test.Right - Rect_Test.Left) < Width) AND ((Rect_Test.Bottom - Rect_Test.Top) < Height) then
+          Result := i;
+      end;
+    end;
+  end;
+end;
+
+end.
