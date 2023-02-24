@@ -3,7 +3,7 @@ object fmMain: TfmMain
   Top = 0
   BorderStyle = bsSizeToolWin
   Caption = 'Mine'
-  ClientHeight = 320
+  ClientHeight = 240
   ClientWidth = 350
   Color = clBtnFace
   DoubleBuffered = True
@@ -59,7 +59,7 @@ object fmMain: TfmMain
   end
   object Panel_Footer: TPanel
     Left = 0
-    Top = 290
+    Top = 210
     Width = 350
     Height = 30
     Align = alBottom
@@ -107,16 +107,16 @@ object fmMain: TfmMain
     Left = 0
     Top = 50
     Width = 350
-    Height = 240
+    Height = 160
     Align = alClient
     BevelOuter = bvNone
+    Caption = '953'
     Color = clWhite
     Padding.Top = 10
     Padding.Bottom = 10
     ParentBackground = False
     ShowCaption = False
     TabOrder = 2
-    ExplicitTop = 44
   end
   object MainMenu1: TMainMenu
     Left = 8

@@ -43,13 +43,13 @@ type
     procedure ExitClick(Sender: TObject);
     procedure NewClick(Sender: TObject);
     procedure Shape_MapMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
-    procedure N3Click(Sender: TObject);
+    procedure Label_MapMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure Image_IconClick(Sender: TObject);
     procedure N4Click(Sender: TObject);
     procedure TimerTimer(Sender: TObject);
   private
     { Private declarations }
-    procedure Map(X, Y: Integer);
+    procedure Map(X, Y: Integer); // Init
     procedure MapClick(Sender: TObject; X, Y: Integer); overload; // Left Click
     procedure MapClick(Sender: TObject); overload; // Right Click
     procedure MapCheck;
@@ -97,11 +97,6 @@ begin
   MapCheck;
 end;
 
-procedure TfmMain.N3Click(Sender: TObject);
-begin
-  //
-end;
-
 procedure TfmMain.N4Click(Sender: TObject);
 var
   sl: TStringList;
@@ -112,7 +107,7 @@ begin
     sl.Add('Made up : Miniuser');
     sl.Add('E-Mail : haseok4820@naver.com');
     sl.Add('Program By Delphi (Rad Studio)');
-    sl.Add('Copyright @ Miniuser All Rights reserved.');
+    sl.Add('Copyright 2022 Miniuser All Rights reserved.');
     sl.Add('Thank you for Playing');
 
     ShowPopup(sl.Text, cMSG_Normal);
@@ -200,6 +195,86 @@ begin
     MapCheck;
 end;
 
+procedure TfmMain.Label_MapMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+var
+  i, j: Integer;
+  ic, iTag: Integer;
+  iCap, iVal: Byte; // 지뢰개수, 지정한 지뢰 개수, 처리할 이벤트 수
+  arrMapClick: array [1 .. 9] of Integer;
+begin
+  //
+  if Button <> mbRight then
+    Exit;
+
+  iCap := 10;
+  iVal := 0;
+  if Sender is TLabel then
+  begin
+    // 지뢰 체크
+    with (Sender as TLabel) do
+    begin
+      iCap := StrToIntDef(Caption, 0);
+      iTag := StrToIntDef(Copy(Name, Pos('_', Name) + 1, 5), 0);
+      i := iTag div 1000;
+      j := iTag mod 1000;
+    end;
+
+    for ic := 1 to 9 do
+    begin
+      if ic = 5 then
+        Continue;
+
+      case ic of
+        1:
+          iTag := (i - 1) * 1000 + (j - 1);
+        2:
+          iTag := (i - 1) * 1000 + j;
+        3:
+          iTag := (i - 1) * 1000 + (j + 1);
+
+        // Middle
+        4:
+          iTag := i * 1000 + (j - 1);
+        6:
+          iTag := i * 1000 + (j + 1);
+
+        // Bottom
+        7:
+          iTag := (i + 1) * 1000 + (j - 1);
+        8:
+          iTag := (i + 1) * 1000 + j;
+        9:
+          iTag := (i + 1) * 1000 + (j + 1);
+      end;
+
+      if (FindComponent('Image_' + IntToStr(iTag)) as TImage) <> nil then
+      begin
+        arrMapClick[ic] := -1;
+        inc(iVal);
+      end
+      else
+        arrMapClick[ic] := iTag;
+    end;
+  end;
+
+  if (iCap = iVal) then
+  begin
+    for ic := 1 to 9 do
+    begin
+      iTag := arrMapClick[ic];
+
+      if (ic = 5) OR ((FindComponent('Label_' + IntToStr(iTag)) as TLabel) <> nil) then
+        Continue
+      else if iTag <> -1 then
+        MapClick(nil, (iTag div 1000) - 1, (iTag mod 1000) - 1);
+    end;
+  end
+  else
+  begin
+    ShowMEssage('먼저 지뢰 예상 지점을 처리후 진행해주세요!' + #13#10 + 'Please proceed after processing the estimated landmine point first!');
+  end;
+end;
+
 function TfmMain.ShowPopup(sMSG: String; iViewType: Byte): Integer;
 begin
   case iViewType of
@@ -230,6 +305,8 @@ var
   i, j, k: Integer;
 begin
   // 초기화
+  Application.ProcessMessages;
+
   bFail := False;
   fmMain.Width := MapInfo.iX * 30 + 100;
   fmMain.Height := MapInfo.iY * 30 + 175;
@@ -277,7 +354,6 @@ begin
         Height := MapInfo.iH;
 
         Brush.Color := clSilver;
-
         OnMouseDown := Shape_MapMouseDown;
       end;
     end;
@@ -325,11 +401,14 @@ begin
   begin
     bFail := True;
     if (MapInfo.iLevel = 2) AND (MapInfo.iX = 2017) AND (MapInfo.iY = 217) then
-      sMSG := '우리 하늘/바다 생일이에요~,' + Chr(13) + '오늘도 고생하셔꼬, 좋은 하루 보내세요.'
+      sMSG := '우리 하늘/바다 생일이에요~,' + Chr(13) + '오늘도 고생하셨고,좋은 하루 보내세요.'
     else
     begin
       sMSG := '축하합니다!! 해내셨어요!' + Chr(13) + '난이도를 높여 게속 진행하시겠어요?';
       sMSG := sMSG + Chr(13) + 'Congratulations! You made it!!' + Chr(13) + 'Do you want to increase the difficulty level and continue?';
+
+      if MapInfo.bTimer then
+        sMSG := sMSG + Chr(13) + Chr(13) + Label_Time.Caption;
     end;
 
     if ShowPopup(sMSG, cMSG_YESNO) = mrYes then
@@ -338,8 +417,8 @@ begin
       begin
         if iLevel <> 2 then
           dec(iLevel);
-        Inc(iX);
-        Inc(iY);
+        inc(iX);
+        inc(iY);
 
         Map(iX, iY);
       end;
@@ -401,6 +480,9 @@ var
   i2, j2: Integer;
   iL, iT, iW, iH: Integer;
 begin
+  if (X < 0) OR (Y < 0) then
+    Exit;
+
   if Sender is TShape then
   begin
     with (Sender as TShape) do
@@ -421,6 +503,9 @@ begin
   end
   else if Sender = Nil then
   begin
+    if FindComponent('Shape_' + IntToStr((X + 1) * 1000 + (Y + 1))) = nil then
+      Exit;
+
     with (FindComponent('Shape_' + IntToStr((X + 1) * 1000 + (Y + 1))) as TShape) do
     begin
       iL := Left;
@@ -523,9 +608,8 @@ begin
         9:
           bMineChk := arrMineInfo[X + 1, Y + 1].BMine;
       end;
-
       if bMineChk then
-        Inc(arrMineInfo[X, Y].iCnt);
+        inc(arrMineInfo[X, Y].iCnt);
     end;
 
     with TLabel.Create(Self) do
@@ -546,6 +630,8 @@ begin
       Left := iL;
       Width := iW;
       Height := iH;
+
+      OnMouseDown := Label_MapMouseDown;
 
       with font do
       begin
@@ -619,7 +705,7 @@ begin
         MapClick(nil, i2, j2);
 
         if bMineChk then
-          Inc(arrMineInfo[X, Y].iCnt);
+          inc(arrMineInfo[X, Y].iCnt);
       end;
     end;
 
