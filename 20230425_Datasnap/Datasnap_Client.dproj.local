@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>1899-12-30 00:00:00.000.576,D:\최하석 작업문서\VCL\20230425_Datasnap\DC_Form.fmx=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Unit1.fmx</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.852,D:\최하석 작업문서\VCL\20230425_Datasnap\Datasnap_Client.dproj=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Datasnap_Client.dproj</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.026,=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.576,D:\최하석 작업문서\VCL\20230425_Datasnap\DC_Form.pas=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.688,C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Datasnap_Client.dproj=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Project3.dproj</Transaction>
+  </Transactions>
+	<ActiveMobileDevice>
+		<NoProfile iOSSimulator="iPhone5"/>
+	</ActiveMobileDevice>
+</BorlandProject>

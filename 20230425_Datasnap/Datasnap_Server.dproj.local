@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>1899-12-30 00:00:00.000.939,D:\최하석 작업문서\VCL\20230425_Datasnap\ServerMethodsUnit.pas=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\ServerMethodsUnit1.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.783,=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\ServerMethodsUnit1.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.627,D:\최하석 작업문서\VCL\20230425_Datasnap\ServerContainerUnit.pas=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\ServerContainerUnit1.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.939,D:\최하석 작업문서\VCL\20230425_Datasnap\ServerMethodsUnit.dfm=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\ServerMethodsUnit1.dfm</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.561,D:\최하석 작업문서\VCL\20230425_Datasnap\DS_Form.pas=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Unit5.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.627,D:\최하석 작업문서\VCL\20230425_Datasnap\ServerContainerUnit.dfm=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\ServerContainerUnit1.dfm</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.022,C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Datasnap_Server.dproj=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Project3.dproj</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.427,D:\최하석 작업문서\VCL\20230425_Datasnap\Datasnap_Server.dproj=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Datasnap_Server.dproj</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.561,D:\최하석 작업문서\VCL\20230425_Datasnap\DS_Form.fmx=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Unit5.fmx</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.401,=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Unit5.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.270,=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\ServerContainerUnit1.pas</Transaction>
+  </Transactions>
+</BorlandProject>
