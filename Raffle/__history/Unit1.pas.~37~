@@ -1,0 +1,98 @@
+unit Unit1;
+
+interface
+
+uses
+  System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
+  FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.Objects, FMX.Controls.Presentation, FMX.StdCtrls,
+  FMX.ScrollBox, FMX.Memo;
+
+type
+  TForm1 = class(TForm)
+    Rectangle_Header: TRectangle;
+    Label_Title: TLabel;
+    GroupBox1: TGroupBox;
+    Button1: TButton;
+    Rectangle1: TRectangle;
+    GroupBox2: TGroupBox;
+    Button2: TButton;
+    Rectangle2: TRectangle;
+    Label1: TLabel;
+    Label2: TLabel;
+    Memo_Log: TMemo;
+    Label_Copyright: TLabel;
+    procedure ButtonGetClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form1: TForm1;
+
+implementation
+
+{$R *.fmx}
+
+procedure TForm1.ButtonGetClick(Sender: TObject);
+const
+  iRANDOM_1 = 0;
+  iRANDOM_2 = 1;
+var
+
+  i, iType: Byte;
+  sResult, sChk: String;
+  bNext: Boolean;
+begin
+  // ¹øÈ£ »Ì±â
+  iType := (Sender as TButton).Tag;
+  (Sender as TButton).Text := 'ÃßÃ·Áß..';
+  (Sender as TButton).Enabled := False;
+
+  sResult := '';
+  case iType of
+    iRANDOM_1:
+      begin
+        for i := 0 to 6 do
+        begin
+          if i = 0 then
+            sResult := sResult + IntToStr(Random(4) + 1)
+          else
+            sResult := sResult + IntToStr(Random(9) + 1);
+
+          if i = 0 then
+            sResult := sResult + 'Á¶ : '
+          else if i <> 6 then
+            sResult := sResult + ',';
+        end;
+
+        Label1.Text := sResult;
+      end;
+    iRANDOM_2:
+      begin
+        for i := 0 to 5 do
+        begin
+          bNext := False;
+          repeat
+            sChk := IntToStr(Random(44) + 1);
+            if Pos(' ' + sChk, sResult) = 0 then
+            begin
+              if i <> 5 then
+                sResult := sResult + ', ';
+                bNext := True;
+            end;
+          until bNext;
+
+        end;
+
+        Label2.Text := sResult;
+      end;
+  end;
+
+  Memo_Log.Lines.Add(FormatDateTime('HH:MM:SS', Now) + ' : ' + sResult);
+  (Sender as TButton).Text := '¹øÈ£ »Ì±â';
+  (Sender as TButton).Enabled := True;
+end;
+
+end.
