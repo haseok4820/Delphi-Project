@@ -47,7 +47,7 @@ object Form1: TForm1
           'https://accounts.google.com/o/oauth2/v2/auth?client_id=831687569' +
           '751-enafvgs3k6lalv5ilan7f5vbpo3jl37q.apps.googleusercontent.com&' +
           'redirect_uri=http://127.0.0.1:4227/&scope=https://www.googleapis' +
-          '.com/auth/drive.file&response_type=code')
+          '.com/auth/spreadsheets&response_type=code')
       ScrollBars = ssBoth
       TabOrder = 1
       ExplicitLeft = -5
@@ -153,6 +153,7 @@ object Form1: TForm1
     Top = 416
   end
   object RESTClient1: TRESTClient
+    Authenticator = OAuth2Authenticator1
     Params = <>
     HandleRedirects = True
     Left = 232
@@ -169,6 +170,10 @@ object Form1: TForm1
   end
   object RESTResponse1: TRESTResponse
     Left = 392
+    Top = 416
+  end
+  object OAuth2Authenticator1: TOAuth2Authenticator
+    Left = 488
     Top = 416
   end
   object NetHTTPRequest1: TNetHTTPRequest

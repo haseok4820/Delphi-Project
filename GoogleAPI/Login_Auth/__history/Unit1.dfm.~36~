@@ -47,7 +47,7 @@ object Form1: TForm1
           'https://accounts.google.com/o/oauth2/v2/auth?client_id=831687569' +
           '751-enafvgs3k6lalv5ilan7f5vbpo3jl37q.apps.googleusercontent.com&' +
           'redirect_uri=http://127.0.0.1:4227/&scope=https://www.googleapis' +
-          '.com/auth/drive.file&response_type=code')
+          '.com/auth/spreadsheets&response_type=code')
       ScrollBars = ssBoth
       TabOrder = 1
       ExplicitLeft = -5
@@ -161,7 +161,17 @@ object Form1: TForm1
   object RESTRequest1: TRESTRequest
     Accept = 'application/json'
     Client = RESTClient1
-    Params = <>
+    Params = <
+      item
+        Kind = pkHTTPHEADER
+        name = 'Authorization'
+        Options = [poDoNotEncode, poTransient, poAutoCreated]
+        Value = 
+          'Bearer ya29.a0AfB_byBH4Kqvdy3BC46MLE97qBzkL33nJzwTKHJM6GPyZ0yvD2' +
+          'ABidNljoy7WTIo9KwZiWwOBpI-xOa9Nf_QB0EFDRTJNNF7k6yUCWcy-wmIxiR9JL' +
+          'Ic-F-UkaT5S2cQ0_T-V-U7ICQphgm5-XfjyuLr_UeqaCgYKAdQSARASFQHsvYlsG' +
+          'DU62TIdNpguJ0dxvtH6lA0163'
+      end>
     Response = RESTResponse1
     SynchronizedEvents = False
     Left = 312

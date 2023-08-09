@@ -65,6 +65,7 @@ var
     참고사항
     ※ 새로운 액세스 토큰을 생성하면, 이전에 생성된 토큰은 사용하지 못합니다.
     ※ RESTAPI Auth 설정시, 인코딩을 적용하지 않게, poDoNotEncode을 설정해야합니다.
+
   }
 
 implementation

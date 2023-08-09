@@ -15,6 +15,7 @@ type
     RESTClient1: TRESTClient;
     RESTRequest1: TRESTRequest;
     RESTResponse1: TRESTResponse;
+    OAuth2Authenticator1: TOAuth2Authenticator;
     Panel_Left: TPanel;
     Button_Login: TButton;
     Memo1: TMemo;
@@ -53,7 +54,6 @@ var
   sToken_ReURL, sToken_Secret: String;
   {
     Google Sheet API : https://developers.google.com/sheets/api/guides/concepts?hl=ko
-    REST API : https://stackoverflow.com/questions/76184528/delphi-restrequest-unable-to-get-authorization
 
     범위
     https://www.googleapis.com/auth/drive	                Google Drive 파일 보기, 수정, 생성, 삭제
@@ -62,9 +62,6 @@ var
     https://www.googleapis.com/auth/spreadsheets	        모든 Google Sheets 스프레드시트를 보고, 수정하고, 만들고, 삭제합니다.
     https://www.googleapis.com/auth/spreadsheets.readonly	모든 Google Sheets 스프레드시트를 확인합니다.
 
-    참고사항
-    ※ 새로운 액세스 토큰을 생성하면, 이전에 생성된 토큰은 사용하지 못합니다.
-    ※ RESTAPI Auth 설정시, 인코딩을 적용하지 않게, poDoNotEncode을 설정해야합니다.
   }
 
 implementation
@@ -111,7 +108,8 @@ begin
   RESTClient1.BaseURL := 'https://sheets.googleapis.com';
   RESTRequest1.Client := RESTClient1;
   RESTRequest1.Response := RESTResponse1;
-  RESTRequest1.Resource := 'v4/spreadsheets/12MAlJ6bD8eci-vUfRG0IiDLtEv-69HijPabm3MgGWOw/values/Test_Sheet!A1:D5';
+  RESTRequest1.Resource := 'v4/spreadsheets/12MAlJ6bD8eci-vUfRG0IiDLtEv-69HijPabm3MgGWOw/values/Test_Sheet!A1%3AD5';
+  {
     with RESTRequest1.Params.AddItem do
     begin
     ContentType := ctNone;
@@ -121,6 +119,7 @@ begin
     Options := [poDoNotEncode];
     end;
 
+  }
   RESTRequest1.Execute;
 
   Memo_Res.Lines.Add(RESTResponse1.Content);
