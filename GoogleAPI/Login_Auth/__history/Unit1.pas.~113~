@@ -129,12 +129,13 @@ begin
       if Assigned(ResStream) then
       begin
         ResStream.Position := 0;
-        // ±âº»
         sResText := ReadStringFromStream(ResStream);
-
-        // ÇÑ±Û ±úÁü½Ã
-        // sResText := ReadStringFromStream(ResStream, -1, IndyTextEncoding_UTF8);
-        Add('ARequestInfo.PostStream : ' + sResText);
+        ShowMEssage(sResText);
+        TThread.Synchronize(nil,
+          procedure
+          begin
+            Memo1.Lines.Add(sResText);
+          end);
       end;
     finally
     end;

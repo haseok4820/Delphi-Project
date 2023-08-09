@@ -129,11 +129,10 @@ begin
       if Assigned(ResStream) then
       begin
         ResStream.Position := 0;
-        // ±âº»
         sResText := ReadStringFromStream(ResStream);
 
         // ÇÑ±Û ±úÁü½Ã
-        // sResText := ReadStringFromStream(ResStream, -1, IndyTextEncoding_UTF8);
+        sResText := ReadStringFromStream(ResStream, -1, IndyTextEncoding_UTF8);
         Add('ARequestInfo.PostStream : ' + sResText);
       end;
     finally
