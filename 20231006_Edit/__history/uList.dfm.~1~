@@ -1,0 +1,42 @@
+object Form_List: TForm_List
+  Left = 0
+  Top = 0
+  BorderStyle = bsToolWindow
+  BorderWidth = 5
+  Caption = #44544#51088#52404' '#47785#47197
+  ClientHeight = 313
+  ClientWidth = 350
+  Color = clGray
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -19
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  OnCreate = FormCreate
+  PixelsPerInch = 96
+  TextHeight = 23
+  object ListBox1: TListBox
+    Left = 0
+    Top = 0
+    Width = 350
+    Height = 263
+    Align = alClient
+    ItemHeight = 23
+    TabOrder = 0
+    ExplicitLeft = 120
+    ExplicitTop = 256
+    ExplicitWidth = 121
+    ExplicitHeight = 97
+  end
+  object Button1: TButton
+    Left = 0
+    Top = 263
+    Width = 350
+    Height = 50
+    Align = alBottom
+    Caption = #54644#45817' '#44544#51088#52404#47484' '#49440#53469' (Select a font)'
+    TabOrder = 1
+    ExplicitTop = 536
+  end
+end

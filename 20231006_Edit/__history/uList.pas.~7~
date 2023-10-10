@@ -1,0 +1,69 @@
+unit uList;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ComCtrls;
+
+type
+  TForm_List = class(TForm)
+    ListBox1: TListBox;
+    Button1: TButton;
+    procedure FormCreate(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
+    procedure ListBox1Click(Sender: TObject);
+    procedure ListBox1KeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form_List: TForm_List;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm_List.Button1Click(Sender: TObject);
+begin
+  ModalResult := mrOk;
+
+end;
+
+procedure TForm_List.FormCreate(Sender: TObject);
+var
+  sl: TStringList;
+  li: TListItem;
+  i: Word;
+begin
+  ListBox1.Items.Clear;
+
+  sl := TStringList.Create;
+  sl.Assign(Screen.Fonts);
+  for i := 0 to Screen.Fonts do
+  begin
+    li := ListBox1.Items.Add;
+    li.Caption := sl[i];
+  end;
+end;
+
+procedure TForm_List.ListBox1Click(Sender: TObject);
+begin
+  //
+  Button1.Enabled := ListBox1.SelCount > 0;
+  if Button1.Enabled then
+  begin
+    Button1.Font.Name := '';
+    ListBox1.ItemIndex;
+  end;
+end;
+
+procedure TForm_List.ListBox1KeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+  ListBox1Click(ListBox1);
+end;
+
+end.

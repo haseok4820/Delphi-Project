@@ -1,0 +1,315 @@
+object Form1: TForm1
+  Left = 0
+  Top = 0
+  BorderStyle = bsToolWindow
+  Caption = 'EditBox (MaskEdit, RichEdit)'
+  ClientHeight = 335
+  ClientWidth = 360
+  Color = clGray
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -21
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  OnCreate = FormCreate
+  PixelsPerInch = 96
+  TextHeight = 25
+  object Panel1: TPanel
+    AlignWithMargins = True
+    Left = 5
+    Top = 5
+    Width = 350
+    Height = 40
+    Margins.Left = 5
+    Margins.Top = 5
+    Margins.Right = 5
+    Margins.Bottom = 5
+    Align = alTop
+    Alignment = taLeftJustify
+    Caption = 'MaskEdit Sample : '
+    Color = clWhite
+    ParentBackground = False
+    TabOrder = 0
+    ExplicitLeft = 0
+    object MaskEdit1: TMaskEdit
+      AlignWithMargins = True
+      Left = 181
+      Top = 4
+      Width = 165
+      Height = 32
+      Margins.Left = 180
+      Align = alClient
+      EditMask = '!(99)000-0000;1'
+      MaxLength = 12
+      TabOrder = 0
+      Text = '(  )   -    '
+      ExplicitWidth = 164
+    end
+  end
+  object Panel2: TPanel
+    AlignWithMargins = True
+    Left = 5
+    Top = 50
+    Width = 350
+    Height = 280
+    Margins.Left = 5
+    Margins.Top = 0
+    Margins.Right = 5
+    Margins.Bottom = 5
+    Align = alClient
+    Alignment = taLeftJustify
+    Color = clWhite
+    ParentBackground = False
+    TabOrder = 1
+    ExplicitLeft = 0
+    ExplicitTop = 8
+    ExplicitHeight = 41
+    object Label1: TLabel
+      Left = 1
+      Top = 1
+      Width = 348
+      Height = 40
+      Align = alTop
+      AutoSize = False
+      Layout = tlCenter
+      ExplicitWidth = 338
+    end
+    object RichEdit1: TRichEdit
+      AlignWithMargins = True
+      Left = 4
+      Top = 44
+      Width = 342
+      Height = 132
+      Align = alClient
+      Font.Charset = HANGEUL_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -21
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      Lines.Strings = (
+        'RichEdit Test'
+        'Select a phrase and click the '
+        'button below!')
+      ParentFont = False
+      ReadOnly = True
+      ScrollBars = ssVertical
+      TabOrder = 0
+      Zoom = 100
+      OnKeyDown = RichEdit1KeyDown
+      OnKeyUp = RichEdit1KeyUp
+      OnMouseUp = RichEdit1MouseUp
+    end
+    object Panel_RichEditOption: TPanel
+      Left = 1
+      Top = 179
+      Width = 348
+      Height = 50
+      Align = alBottom
+      BevelOuter = bvNone
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 1
+      ExplicitTop = 219
+      ExplicitWidth = 338
+      object Button1: TButton
+        AlignWithMargins = True
+        Left = 3
+        Top = 3
+        Width = 75
+        Height = 44
+        Hint = 'Ctrl + B'
+        Align = alLeft
+        Caption = 'Bold'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -17
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 0
+        OnClick = RichEditEventClick
+        ExplicitLeft = 136
+        ExplicitTop = 8
+        ExplicitHeight = 25
+      end
+      object Button2: TButton
+        Tag = 1
+        AlignWithMargins = True
+        Left = 84
+        Top = 3
+        Width = 89
+        Height = 44
+        Hint = 'Ctrl + U'
+        Align = alClient
+        Caption = 'Underline'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -17
+        Font.Name = 'Tahoma'
+        Font.Style = [fsUnderline]
+        ParentFont = False
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 1
+        OnClick = RichEditEventClick
+        ExplicitWidth = 100
+      end
+      object Button3: TButton
+        Tag = 2
+        AlignWithMargins = True
+        Left = 179
+        Top = 3
+        Width = 75
+        Height = 44
+        Hint = 'Ctrl + I'
+        Align = alRight
+        Caption = 'Italic'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -17
+        Font.Name = 'Tahoma'
+        Font.Style = [fsItalic]
+        ParentFont = False
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 2
+        OnClick = RichEditEventClick
+        ExplicitLeft = 246
+      end
+      object Button4: TButton
+        Tag = 3
+        AlignWithMargins = True
+        Left = 260
+        Top = 3
+        Width = 85
+        Height = 44
+        Hint = 'Ctrl + S'
+        Align = alRight
+        Caption = 'StrikeOut'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -17
+        Font.Name = 'Tahoma'
+        Font.Style = [fsStrikeOut]
+        ParentFont = False
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 3
+        OnClick = RichEditEventClick
+        ExplicitLeft = 270
+      end
+    end
+    object Panel3: TPanel
+      Left = 1
+      Top = 229
+      Width = 348
+      Height = 50
+      Align = alBottom
+      BevelOuter = bvNone
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 2
+      ExplicitLeft = -2
+      ExplicitTop = 259
+      object Shape1: TShape
+        AlignWithMargins = True
+        Left = 3
+        Top = 3
+        Width = 170
+        Height = 44
+        Align = alClient
+        Brush.Color = clAqua
+        OnMouseDown = Shape1MouseDown
+        ExplicitLeft = 144
+        ExplicitTop = -8
+        ExplicitWidth = 65
+        ExplicitHeight = 65
+      end
+      object Button5: TButton
+        Tag = 4
+        AlignWithMargins = True
+        Left = 179
+        Top = 3
+        Width = 75
+        Height = 44
+        Hint = 'Ctrl + B'
+        Align = alRight
+        Caption = 'Color'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -16
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 0
+        OnClick = RichEditEventClick
+        ExplicitLeft = 169
+      end
+      object Button6: TButton
+        Tag = 5
+        AlignWithMargins = True
+        Left = 260
+        Top = 3
+        Width = 85
+        Height = 44
+        Hint = 'Ctrl + B'
+        Align = alRight
+        Caption = 'Set Font'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -16
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 1
+        OnClick = RichEditEventClick
+        ExplicitLeft = 289
+      end
+    end
+  end
+  object ActionList1: TActionList
+    Left = 168
+    Top = 168
+    object Action1: TAction
+      Caption = #44405#44172' (Ctrl + B)'
+      Hint = 'Bold'
+      ShortCut = 16450
+    end
+    object Action2: TAction
+      Tag = 1
+      Caption = #48145#51460' (Ctrl + U)'
+      Hint = 'Underline'
+    end
+    object Action3: TAction
+      Tag = 2
+      Caption = #44592#50872#51076#44852' (Ctrl + I)'
+      Hint = 'Italic'
+      ShortCut = 16457
+    end
+    object Action4: TAction
+      Tag = 3
+      Caption = #52712#49548#49440' (Ctrl + D)'
+      Hint = 'Strkieout'
+      ShortCut = 16452
+    end
+  end
+  object ColorDialog1: TColorDialog
+    Left = 240
+    Top = 168
+  end
+end

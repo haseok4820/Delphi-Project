@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+  <Transactions>
+    <Transaction>2023-10-06 15:14:50.550,=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2023-10-06 16:29:29.027,C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Project_Edit.dproj=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
+    <Transaction>2023-10-06 16:30:10.216,D:\최하석 작업문서\VCL\20231006_Edit\uMain.pas=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2023-10-06 16:30:10.216,D:\최하석 작업문서\VCL\20231006_Edit\uMain.dfm=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
+    <Transaction>2023-10-06 16:30:12.524,D:\최하석 작업문서\VCL\20231006_Edit\Project_Edit.dproj=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Project_Edit.dproj</Transaction>
+    <Transaction>2023-10-06 16:30:17.403,=D:\최하석 작업문서\VCL\20231006_Edit\Unit2.pas</Transaction>
+    <Transaction>2023-10-06 16:37:25.492,D:\최하석 작업문서\VCL\20231006_Edit\uList.pas=D:\최하석 작업문서\VCL\20231006_Edit\Unit2.pas</Transaction>
+    <Transaction>2023-10-06 16:37:25.543,D:\최하석 작업문서\VCL\20231006_Edit\uList.dfm=D:\최하석 작업문서\VCL\20231006_Edit\Unit2.dfm</Transaction>
+  </Transactions>
+</BorlandProject>
