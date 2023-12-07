@@ -17,18 +17,22 @@ type
   end;
 
   TToolChk = record
-    iTool: Integer; // Tool π¯»£
-    bTool: Boolean; // Tool ¿Øπ´
+    iTool: Integer; // Tool Î≤àÌò∏
+    bTool: Boolean; // Tool Ïú†Î¨¥
     bShift: Boolean;
     bTab: Boolean;
     bCaps: Boolean;
   end;
 
-  TForm3 = class(TForm)
+  TfmKeyboard = class(TForm)
+    Timer: TTimer;
     procedure KeyClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormResize(Sender: TObject);
+    procedure TimerTimer(Sender: TObject);
   private
+    procedure KeyDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+    procedure KeyUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     { Private declarations }
   public
     { Public declarations }
@@ -37,10 +41,11 @@ type
   end;
 
 var
-  Form3: TForm3;
+  fmKeyboard: TfmKeyboard;
 
   arrKeyInfo: array [0 .. 59] of TKeyInfo;
   ToolChk: TToolChk;
+  KeyLabel : TLabel;
 
   arrChar: array [0 .. 59] of String = (
     '~ `',
@@ -50,52 +55,52 @@ var
     '$ 4',
     '% 5',
     '^ 6',
-    '& 7',
+    'ÔºÜ 7',
     '* 8',
     '( 9',
     ') 0',
     '_ -',
     '+ =',
     '| \',
-    '°Á',
+    '‚Üê',
     //
     'Tab',
-    'Q==§≥ §≤',
-    'W==§π §∏',
-    'E==§® §ß',
-    'R==§¢ §°',
-    'T==§∂ §µ',
-    'Y==§À §À',
-    'U==§≈ §≈',
-    'I==§¡ §¡',
-    'O==§¬ §¿',
-    'P==§∆ §ƒ',
+    'Q==„ÖÉ „ÖÇ',
+    'W==„Öâ „Öà',
+    'E==„Ñ∏ „Ñ∑',
+    'R==„Ñ≤ „Ñ±',
+    'T==„ÖÜ „ÖÖ',
+    'Y==„Ö§ „Öõ',
+    'U==„Ö§ „Öï',
+    'I==„Ö§ „Öë',
+    'O==„Öí „Öê',
+    'P==„Öñ „Öî',
     '{ [',
     '} ]',
     '==',
     //
     'Caps==Lock',
-    'A §±',
-    'S §§',
-    'D §∑',
-    'F §©',
-    'G §æ',
-    'H §«',
-    'J §√',
-    'K §ø',
-    'L §”',
+    'A „ÖÅ',
+    'S „Ñ¥',
+    'D „Öá',
+    'F „Ñπ',
+    'G „Öé',
+    'H „Öó',
+    'J „Öì',
+    'K „Öè',
+    'L „Ö£',
     ': ;',
     '" ''',
     'Enter',
     //
     'Shift',
-    'Z §ª',
-    'X §º',
-    'C §∫',
-    'V §Ω',
-    'B §–',
-    'N §Ã',
-    'M §—',
+    'Z „Öã',
+    'X „Öå',
+    'C „Öä',
+    'V „Öç',
+    'B „Ö†',
+    'N „Öú',
+    'M „Ö°',
     '< ,',
     '> .',
     '? /',
@@ -105,8 +110,8 @@ var
     'Win',
     'Alt',
     'Space',
-    '«—/øµ',
-    '˘€ÌÆ'
+    'Ìïú/ÏòÅ',
+    'ÈüìÂ≠ó'
   );
 
   arrTag: array [0 .. 59] of Integer = (
@@ -137,8 +142,8 @@ var
     73,
     79,
     80,
-    91,
-    93,
+    219,
+    221,
     13,
     //
     20,
@@ -151,8 +156,8 @@ var
     74,
     75,
     76,
-    59,
-    39,
+    186,
+    222,
     13,
     //
     16,
@@ -163,9 +168,9 @@ var
     66,
     78,
     77,
-    44,
-    46,
-    47,
+    188,
+    190,
+    191,
     16,
     //
     17,
@@ -181,20 +186,37 @@ implementation
 {$R *.dfm}
 { TForm3 }
 
-procedure TForm3.FormCreate(Sender: TObject);
+procedure TfmKeyboard.FormCreate(Sender: TObject);
 begin
   SetWindowLong(Self.Handle, GWL_EXSTYLE, WS_EX_NOACTIVATE);
-  SetWindowPos(Self.Handle, HWND_TOPMOST, Top, Left ,Width, Height, 0);
+  SetWindowPos(Self.Handle, HWND_TOPMOST, Top, Left, Width, Height, 0);
   SEtKeyInfo(0);
   SetKeyBoard;
 end;
 
-procedure TForm3.FormResize(Sender: TObject);
+procedure TfmKeyboard.KeyDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
-  if (Width < 550) then
-    Width := 550
-  else if Height < 200 then
-    Height := 200
+  //
+  KeyLabel := (Sender as TLabel);
+  if Timer.Enabled = False then
+    Timer.Enabled := True
+end;
+
+procedure TfmKeyboard.KeyUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  //
+  KeyLabel := nil;
+  Timer.Enabled := False;
+  Timer.Interval := 2000;
+end;
+
+
+procedure TfmKeyboard.FormResize(Sender: TObject);
+begin
+  if (Width < 825) then
+    Width := 825
+  else if Height < 375 then
+    Height := 375
   else
   begin
     SEtKeyInfo(0);
@@ -202,13 +224,12 @@ begin
   end;
 end;
 
-procedure TForm3.KeyClick(Sender: TObject);
+procedure TfmKeyboard.KeyClick(Sender: TObject);
 var
   iKey: Byte;
   sKey: String;
   i: Integer;
   j: Integer;
-
 begin
   for i := ControlCount - 1 Downto 0 do
   begin
@@ -221,14 +242,34 @@ begin
       end;
     end;
   end;
+
   if Sender is TLabel then
   begin
     with (Sender as TLabel) do
     begin
-      Color := clYellow;
+      Color := clSkyBlue;
       Font.Color := clBlack;
       iKey := Tag;
       sKey := Hint;
+
+      if iKey = 13 then
+      begin
+        for i := ControlCount - 1 Downto 0 do
+        begin
+          if Controls[i] is TLabel then
+          begin
+            with (Controls[i] as TLabel) do
+            begin
+              if Tag = 13 then
+              begin
+                Color := clSkyBlue;
+                Font.Color := clBlack;
+              end;
+
+            end;
+          end;
+        end;
+      end;
     end;
   end;
 
@@ -260,7 +301,7 @@ begin
   end;
 end;
 
-procedure TForm3.SetKeyBoard;
+procedure TfmKeyboard.SetKeyBoard;
 var
   i, j: Integer;
 begin
@@ -268,7 +309,7 @@ begin
   with Font do
   begin
     Size := 16;
-    Name := 'µ∏øÚ√º';
+    Name := 'ÎèãÏõÄÏ≤¥';
     style := [fsBold];
   end;
 
@@ -302,12 +343,14 @@ begin
       Height := iH;
 
       OnClick := KeyClick;
+      OnMouseDown := KeyDown;
+      OnMouseUp := KeyUp;
     end;
   end;
 
 end;
 
-procedure TForm3.SEtKeyInfo(iType: Byte);
+procedure TfmKeyboard.SEtKeyInfo(iType: Byte);
 const
   s13 = #13#10;
   iPadding = 7;
@@ -331,7 +374,7 @@ begin
       sCaption := StringReplace(sCaption, '==', ' ', [rfReplaceAll]);
 
       iH := ClientHeight div 5 - iPadding;
-      iW := ((Self.Width div 16) - iPadding) + l;
+      iW := ((Self.Width div 16) - iPadding) + 3;
       iT := k * (Self.Height div 5 - iPadding);
       case i of
         0 .. 14: // 1
@@ -396,6 +439,16 @@ begin
       inc(j);
     end;
   end;
+
+end;
+
+procedure TfmKeyboard.TimerTimer(Sender: TObject);
+begin
+  Timer.Interval := Timer.Interval div 2;
+  if Timer.Interval <= 10 then
+    Timer.Interval := 10;
+  KeyClick(KeyLabel);
+
 
 end;
 
