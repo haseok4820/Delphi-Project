@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+  <Transactions>
+    <Transaction>2023-12-01 09:31:48.479,=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2023-12-01 10:13:50.376,C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Project_Map.dproj=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
+    <Transaction>2023-12-01 10:22:39.035,D:\최하석 작업문서\VCL\20231201_캡처테스트본\Unit1.pas=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2023-12-01 10:22:39.035,D:\최하석 작업문서\VCL\20231201_캡처테스트본\Unit1.dfm=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
+    <Transaction>2023-12-01 10:22:40.280,D:\최하석 작업문서\VCL\20231201_캡처테스트본\Project_Map.dproj=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Project_Map.dproj</Transaction>
+  </Transactions>
+</BorlandProject>
