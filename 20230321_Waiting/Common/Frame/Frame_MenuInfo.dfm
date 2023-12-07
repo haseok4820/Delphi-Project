@@ -1,0 +1,112 @@
+object Frame_ENV_MenuInfo: TFrame_ENV_MenuInfo
+  Left = 0
+  Top = 0
+  Width = 610
+  Height = 35
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -21
+  Font.Name = #44256#46020' B'
+  Font.Style = []
+  Padding.Left = 2
+  Padding.Top = 2
+  Padding.Right = 2
+  Padding.Bottom = 2
+  ParentBackground = False
+  ParentColor = False
+  ParentFont = False
+  TabOrder = 0
+  object Image_MenuCheck: TImage
+    Left = 2
+    Top = 2
+    Width = 26
+    Height = 31
+    Align = alLeft
+  end
+  object Label1: TLabel
+    Left = 28
+    Top = 2
+    Width = 120
+    Height = 31
+    Align = alLeft
+    AutoSize = False
+    Caption = '99900001'
+    Color = clWhite
+    ParentColor = False
+    Transparent = False
+    Layout = tlCenter
+    ExplicitLeft = 32
+  end
+  inline Frame_MenuKit: TFrame_ENV_ComboBox
+    AlignWithMargins = True
+    Left = 498
+    Top = 2
+    Width = 100
+    Height = 31
+    Margins.Left = 10
+    Margins.Top = 0
+    Margins.Right = 10
+    Margins.Bottom = 0
+    Align = alRight
+    DoubleBuffered = True
+    Color = clBlack
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -21
+    Font.Name = #44256#46020' B'
+    Font.Style = []
+    Padding.Left = 2
+    Padding.Top = 2
+    Padding.Right = 2
+    Padding.Bottom = 2
+    ParentBackground = False
+    ParentColor = False
+    ParentDoubleBuffered = False
+    ParentFont = False
+    TabOrder = 0
+    ExplicitLeft = 498
+    ExplicitTop = 2
+    ExplicitWidth = 100
+    ExplicitHeight = 31
+    inherited Label_Key: TLabel
+      Width = 76
+      Height = 27
+      Caption = #51452#48169'-1'
+      ExplicitLeft = 7
+      ExplicitWidth = 71
+      ExplicitHeight = 27
+    end
+    inherited Label1: TLabel
+      Left = 78
+      Width = 20
+      Height = 27
+      ExplicitLeft = 88
+      ExplicitWidth = 20
+      ExplicitHeight = 27
+    end
+  end
+  object Edit_MenuName: TEdit
+    Left = 148
+    Top = 2
+    Width = 240
+    Height = 31
+    Align = alClient
+    TabOrder = 1
+    Text = #46076#51648#44040#48708#50577#45392#45934#48165
+    ExplicitHeight = 32
+  end
+  object Edit_MenuAmount: TEdit
+    Left = 388
+    Top = 2
+    Width = 100
+    Height = 31
+    Align = alRight
+    Alignment = taRightJustify
+    MaxLength = 7
+    NumbersOnly = True
+    TabOrder = 2
+    Text = '9999999'
+    ExplicitHeight = 32
+  end
+end

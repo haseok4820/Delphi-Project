@@ -1,0 +1,102 @@
+unit Form_ENV1_5;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Winapi.ShellAPI, Vcl.ExtCtrls;
+
+type
+  TfmENV1_5 = class(TForm)
+    Timer_WizheloerCheck: TTimer;
+    Label_MSG: TLabel;
+    procedure Button_ASClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure Timer_WizheloerCheckTimer(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  fmENV1_5: TfmENV1_5;
+
+implementation
+
+{$R *.dfm}
+
+uses uDM;
+
+procedure TfmENV1_5.Button_ASClick(Sender: TObject);
+begin
+  FormCreate(nil);
+end;
+
+procedure TfmENV1_5.FormCreate(Sender: TObject);
+var
+  iProcess: Cardinal;
+  sProcHandle: THandle;
+  sPath: String;
+begin
+  if bWIN64 then
+    sPath := 'C:\Program Files (x86)\WizHelper\'
+  else
+    sPath := 'C:\Program Files\WizHelper\';
+  sPath := sPath + 'NSProClientDirect.exe';
+
+  // 원격 프로그램 설치확인
+  if FileExists(sPath) then
+  begin
+    iProcess := DM.GetProcessChk(ExtractFileName(sPath));
+    if iProcess <> 0 then
+    begin
+      sProcHandle := OpenProcess(PROCESS_TERMINATE, True, iProcess);
+      if sProcHandle <> 0 then
+      begin
+        if NOT TerminateProcess(sProcHandle, 0) then
+          DM.LogText('종료 실패');
+      end;
+    end;
+    ShellExecute(Application.Handle, 'open', PChar(sPath), nil, nil, SW_SHOWNORMAL);
+  end
+  else if FileExists(sAPPPATH + 'SetupClientDirect.exe') then
+  begin
+    ShellExecute(Application.Handle, 'open', PChar(sAPPPATH + 'SetupClientDirect.exe'), nil, nil, SW_SHOWNORMAL);
+  end;
+
+  Timer_WizheloerCheck.Enabled := True;
+end;
+
+procedure TfmENV1_5.Timer_WizheloerCheckTimer(Sender: TObject);
+var
+  hWiz, hWizCode: THandle;
+  sCompCode: String;
+  bView: Boolean;
+begin
+  // 설치/실행 체크
+  sCompCode := 'airpos';
+  hWiz := FindWindow(nil, 'WizHelper Connection Program');
+  if hWiz <> 0 then
+  begin
+    SetWindowPos(hWiz, HWND_TOPMOST, (Screen.Monitors[0].Width - 600) div 2, (Screen.Monitors[0].Height - 400) div 2, 600, 400, 0);
+    hWizCode := FindWindowEx(hWiz, 0, 'Edit', nil);
+    if hWizCode <> 0 then
+    begin
+      SendMessage(hWizCode, WM_SETTEXT, 0, LParam(PChar(sCompCode)));
+      SendMessage(hWizCode, WM_KEYDOWN, VK_RETURN, 0);
+      SendMessage(hWizCode, WM_KEYUP, VK_RETURN, 0);
+
+      Timer_WizheloerCheck.Enabled := False;
+      Label_MSG.Caption := '위즈헬퍼 실행완료';
+    end
+    else
+      Label_MSG.Caption := '위즈헬퍼 회사코드핸들을 찾을 수 없습니다.';
+  end
+  else
+    Label_MSG.Caption := '위즈헬퍼 핸들을 찾을 수 없습니다.';
+
+  Timer_WizheloerCheck.Enabled := False;
+end;
+
+end.

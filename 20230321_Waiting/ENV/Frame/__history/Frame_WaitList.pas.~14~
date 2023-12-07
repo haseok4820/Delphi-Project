@@ -1,0 +1,40 @@
+unit Frame_WaitList;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
+  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls;
+
+type
+  TFrame_WaitInfo = class(TFrame)
+    Label_WaitNO: TLabel;
+    Label_Cancel: TLabel;
+    Label_ReCall: TLabel;
+    Label_DateTime: TLabel;
+    Panel_Parent: TPanel;
+    Memo_List: TMemo;
+    Label1: TLabel;
+    procedure Label_ReCallMouseEnter(Sender: TObject);
+    procedure Label_ReCallMouseLeave(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+implementation
+
+{$R *.dfm}
+
+procedure TFrame_WaitInfo.Label_ReCallMouseEnter(Sender: TObject);
+begin
+  (Sender as TLabel).Color := clGray;
+end;
+
+procedure TFrame_WaitInfo.Label_ReCallMouseLeave(Sender: TObject);
+begin
+  (Sender as TLabel).Color := $00EDEDED;
+end;
+
+end.

@@ -1,0 +1,53 @@
+unit Frame_Nav;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
+  System.Classes,
+  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls,
+  Vcl.ExtCtrls;
+
+type
+  TFrame_ENV_Nav = class(TFrame)
+    Label_Value: TLabel;
+    procedure Label_ValueClick(Sender: TObject);
+    procedure Label_ValueMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+implementation
+
+{$R *.dfm}
+
+
+procedure TFrame_ENV_Nav.Label_ValueClick(Sender: TObject);
+var
+  comp: TComponent;
+begin
+  if Assigned(Self.OnClick) then
+  begin
+    Self.OnClick(Self);
+    Exit;
+  end
+  else
+  begin
+    comp := GetParentComponent;
+  end;
+
+end;
+
+procedure TFrame_ENV_Nav.Label_ValueMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  if Assigned(Self.OnMouseDown) then
+  begin
+    Self.OnClick(Self);
+    Exit;
+  end;
+
+end;
+
+end.

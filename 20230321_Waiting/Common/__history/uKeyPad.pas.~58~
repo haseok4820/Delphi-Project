@@ -1,0 +1,245 @@
+ else
+      begin
+        PcmsMSG('자동 개시 실패 : 관리자에게 문의해주세요.', 2);
+      end;
+
+      OpenStatus := '1';
+      SALEORIGIN := FormatDateTime('YYYYMMDD', Now);
+
+    except
+      ON E: Exception do
+      begin
+        SetErrorLog('자동 개시 중 오류 : ' + E.Message);
+        PcmsMSG('개시 중 오류가 발생했습니다. ' + chr(13) + '관리자에게 문의하세요.', 2);
+        Result := False;
+        Exit;
+      end;
+    end;
+
+    SALEORIGIN := FormatDateTime('YYYYMMDD', Now);
+    Result := TRue;
+
+    if usePOS_EVENT_MANAGE > 0 then
+      DM.Send_Pos_Event(POS_EVENT_SW_OPEN, '', SALEORIGIN, CurPosNO, '0', '0');
+  end
+  else
+  begin
+    Result := TRue;
+  end;
+
+end;
+
+procedure TfmMain.GetCloseQty;
+var
+  i, j, k: Integer;
+  sName: String;
+begin
+  FillChar(MenuCloseQty, SizeOf(MenuCloseQty), #0);
+  FillChar(SetMenuCloseQty, SizeOf(SetMenuCloseQty), #0);
+
+  for i := 1 to 9 do
+  begin
+    for j := 1 to menuMaxPage do
+    begin
+      menuCloseQTY_BU[i, j] := MenuCloseQty[i, j];
+    end;
+
+  end;
+
+  WITH DM.IBQ do
+  begin
+    // 수정시는 미삭제
+    if Active then
+      Close;
+
+    if DM.IBT.Active = False then
+      DM.IBT.Active := TRue;
+
+    DM.IBT.Commit;
+    SQL.Clear;
+    SQL.Add(' SELECT A.ISEQ, A.MENUNO, B.NOWMAEIP, B.QTY, B.STOCKNAME FROM HMENU A INNER JOIN HSTOCK B ON A.STOCKCODE = B.STOCKCODE ORDER BY A.ISEQ, A.MENUNO ');
+    Open;
+    while NOT eof do
+    begin
+      i := FieldByName('ISEQ').asinteger;
+      j := FieldByName('MENUNO').asinteger;
+      sName := FieldByName('STOCKNAME').AsString;
+      if (i <= 50) AND (j <= menuMaxPage) then
+      begin
+        MenuCloseQty[i, j] := FieldByName('NOWMAEIP').asinteger;
+        k := FieldByName('QTY').asinteger;
+        if (k in [0, 2, 4, 6]) OR (usedisposableCup AND (k mod 10000 = 0)) then
+          menuClose[i, j] := '0'
+        else
+          menuClose[i, j] := '1';
+      end;
+      Next;
+
+    end;
+
+    if Active then
+      Close;
+    SQL.Clear;
+    SQL.Add(' SELECT B.STOCKCODE, A.INPUTAMT as SALEAMT, B.STOCKNAME, B.STOCKNAME1, B.STOCKNAME2, B.VAT as VAT, B.KITPRN, A.ISEQ, B.NOWMAEIP, B.QTY , B.STANDARD '
+      + ' FROM HSETMENU A ' + ' INNER JOIN HSTOCK B ' + ' ON A.SETCODE = B.STOCKCODE ' + ' ORDER BY A.ISEQ, A.INPUTQTY, A.SETCODE ');
+    Open;
+    i := 0;
+    j := 1;
+    while NOT eof do
+    begin
+      if i <> FieldByName('ISEQ').asinteger then
+      begin
+        i := FieldByName('ISEQ').asinteger;
+        j := 1;
+      end
+      else
+        inc(j);
+
+      if j <= 50 then
+      begin
+        SetMenuCloseQty[i, j] := FieldByName('NOWMAEIP').asinteger;
+      end;
+      i := FieldByName('ISEQ').asinteger;
+      Next;
+    end;
+    if Active then
+      Close;
+
+  end;
+end;
+
+function TfmMain.GetCouponYN: Boolean;
+var
+  mo: TModalResult;
+begin
+
+  if useYanolja then
+  begin
+    ynjinit;
+    with TfmTAKEOUT_01.Create(Self) do
+    begin
+
+      sViewType := 'COUPON';
+      mo := ShowModal;
+      if mo = mrYES then
+      begin
+        Result := False;
+        Exit;
+      end
+      else if mo = mrOK then
+      begin
+        // 용지 없으면 결제 취소 처리
+        if REC_PRINT.NO_PAPER = TRue then
+        begin
+          PcmsMSG('출력 용지가 없습니다.' + chr(13) + '관리자에게 문의해주세요.', 2);
+          Exit;
+        end;
+
+        useSALECoupon;
+
+        Result := TRue;
+      end;
+      Free;
+    end;
+  end;
+end;
+
+procedure TfmMain.GetShowSelTableNo();
+var
+  MinNum: Integer;
+  s: String;
+begin
+  if NonAutoPager = '1' then
+    MinNum := 0
+  else
+    MinNum := -1;
+
+  with TfmSelTable.Create(Self) do
+  begin
+    if ShowModal = mrOK then
+    begin
+      Tag := MinNum;
+      s := edID.Text;
+    end;
+    Free;
+  end;
+  if s = '포장' then
+  begin
+    iSelTableNo := 0;
+    lTable.Caption := '포장';
+
+  end
+  else if (noComma(s) > MinNum) AND (noComma(s) < 999) then
+  begin
+    iSelTableNo := StrToInt(s);
+    lTable.Caption := intToStr(iSelTableNo);
+  end;
+end;
+
+Function TfmMain.FirstAction(): Boolean;
+var
+  i, j, i1, i2, k, m, iSet, l, iStep, iSetOrderAmount: Integer;
+  sqltxt: String;
+  StockCode, stockName, KitPrn, CheckIn, ordTime, VATGB: String;
+  iSeq, fGaksu: Integer;
+  img: TImage;
+  bVisible: Boolean;
+  s: AnsiString;
+  iQty: Integer;
+begin
+
+  if KIOSK_SALE_TYPE = 1 then
+  begin
+    Result := FirstAction2();
+    Exit;
+  end
+  else if KIOSK_SALE_TYPE = 2 then
+  begin
+    Result := TRue;
+    Exit;
+  end;
+
+  SetErrorLog('FirstAction');
+  OrderSave := TRue;
+  iSelMenuList := 0;
+  Image8.Top := 0;
+  if (TAKEOUT_OPTION <> 1) then
+    Image8.Visible := False;
+
+  WITH DM.IBQ do
+  begin
+    // 수정시는 미삭제
+    if Active then
+      Close;
+
+    if TAKEOUT_OPTION = 4 then
+    begin
+      Close;
+      SQL.Clear;
+      SQL.Add('DELETE FROM HTABLE WHERE POSNO = :POSNO AND TABLENO = :TABLENO AND STOCKCODE = ''00000000'' ');
+      Params[0].asinteger := StrToInt(CurPosNO);
+      Params[1].asinteger := 1;
+      ExecSQL;
+      OrderSave := False;
+    end;
+    SQL.Clear;
+    SQL.Add('SELECT * FROM HTABLE_SUB WHERE POSNO = :POSNO AND TABLENO = :TABLENO ');
+    Params[0].asinteger := StrToInt(CurPosNO);
+    Params[1].asinteger := 1;
+    Open;
+    if not eof then
+    begin
+      Result := TRue;
+      ORDER_REC_AMT.PAY_AMT := FieldByName('Amount').asinteger;
+      ORDER_REC_AMT.ORDNO := FieldByName('OrdNo').asinteger;
+      ORDER_REC_AMT.CashSEQ := FieldByName('CashSEQ').asinteger;
+      ORDER_REC_AMT.CARDSEQ := FieldByName('CardSEQ').asinteger;
+      ORDER_REC_AMT.ORDER_TIME := FieldByName('DLNAME').AsString;
+      if useTableNoSel then
+        iSelTableNo := FieldByName('OrderINC').asinteger
+      else
+        iSelTableNo := -1;
+
+      Close;
+      SQL.Clear;
+      SQL.Add('SELECT * FROM HTABLE WHERE POSNO = :

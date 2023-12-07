@@ -1,0 +1,87 @@
+unit uList;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, ImagingComponents;
+
+type
+  TFormList = class(TForm)
+    LabelOK: TLabel;
+    ScrollBoxList: TScrollBox;
+    LabelTitle: TLabel;
+    ImageCancel: TImage;
+    procedure FormShow(Sender: TObject);
+    procedure ImageCancelClick(Sender: TObject);
+    procedure LabelOKClick(Sender: TObject);
+  private
+    { Private declarations }
+    procedure ShowMenus;
+  public
+    { Public declarations }
+  end;
+
+var
+  FormList: TFormList;
+
+implementation
+
+{$R *.dfm}
+
+uses uDM, Frame_Menu3;
+
+procedure TFormList.FormShow(Sender: TObject);
+begin
+  with ClientRect do
+  begin
+    SetWindowRgn(Handle, CreateRoundRectRgn(Left, Top, Right + 1, Bottom + 1, 30, 30), True);
+  end;
+  LabelTitle.Caption := '인원을 선택해주세요.';
+  ShowMenus;
+
+end;
+
+procedure TFormList.ImageCancelClick(Sender: TObject);
+begin
+  ModalResult := mrCancel;
+end;
+
+procedure TFormList.LabelOKClick(Sender: TObject);
+begin
+  ModalResult := mrOK;
+end;
+
+procedure TFormList.ShowMenus;
+var
+  i: integer;
+begin
+  //
+  for i := Low(arrStocks) to High(arrStocks) do
+  begin
+    with TFrameMenu3.Create(Self) do
+    begin
+      Parent := ScrollBoxList;
+      Name := 'FrameMenu_' + IntTOSTr(i);
+      case i of
+        0:
+          arrStocks[i].sName := '성인';
+        1:
+          arrStocks[i].sName := '청소년';
+        2:
+          arrStocks[i].sName := '어린이';
+        3:
+          arrStocks[i].sName := '노약자';
+        4:
+          arrStocks[i].sName := '우대';
+      end;
+      LabelName.Caption := arrStocks[i].sName;
+      SetBounds(10 + i * Width, (ScrollBoxList.Height - Height) div 2, Width - 20, Height);
+    end;
+    DM.RoundPanel(FindComponent('FrameMenu_' + IntTOSTr(i)));
+
+  end;
+
+end;
+
+end.

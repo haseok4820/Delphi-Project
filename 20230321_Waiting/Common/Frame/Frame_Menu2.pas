@@ -1,0 +1,42 @@
+unit Frame_Menu2;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
+  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, ImagingComponents, Vcl.ExtCtrls, Vcl.StdCtrls, Frame_ComboBox;
+
+type
+  TFrameMenu2 = class(TFrame)
+    Label_Name: TLabel;
+    Label_Amt: TLabel;
+    Label3: TLabel;
+    PanelQty: TPanel;
+    Label_Qty: TLabel;
+    Image1: TImage;
+    Frame_ENV_ComboBox1: TFrame_ENV_ComboBox;
+    procedure Image_PlusClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+implementation
+
+{$R *.dfm}
+
+procedure TFrameMenu2.Image_PlusClick(Sender: TObject);
+var
+  iTag: Integer;
+  iCnt: Integer;
+begin
+  //
+  iTag := (Sender as TImage).Tag;
+  Label_Qty.Tag := Label_Qty.Tag + iTag;
+  if Label_Qty.Tag < 0 then
+    Label_Qty.Tag := 0;
+  Label_Qty.Caption := IntToStr(Label_Qty.Tag);
+end;
+
+end.

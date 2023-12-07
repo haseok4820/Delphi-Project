@@ -1,0 +1,347 @@
+unit uKAKAOPAY_QR;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, SysUtils, Variants, Classes, Dialogs, System.json,
+  Controls,
+  ExtCtrls, Graphics, Forms, Winapi.TlHelp32, StdCtrls, uCommon, uDM;
+
+type
+  TResult_IS = record
+    iRes: Integer;
+    sRes: String;
+
+  end;
+
+function precheck(RecpNo: String): TResult_IS; // 파트너 TID 생성
+{ 0 : 실패, 1 : 정상, 2 : qrCreate 처리요망, 3 : Checkapprove로 처리요망 }
+function KakaoPayQRcreate(TID: String): string; // 결제 QR 생성
+function Checkkapprove(TID: String): Boolean; // 결제 상태 확인 TImeout 60 / 3초마다 반복 호출
+function KakaoQRDatasave(sQR: String): Integer;
+
+implementation
+
+const
+  sURL = 'https://iot4shop.asp2.kr';
+
+function precheck(RecpNo: String): TResult_IS;
+var
+  HTTP_KakaoPay: TidHTTP_Thread;
+  jsonObj: TJsonObject;
+
+  iCODE: Integer;
+  sMessage, sPartnerTID, sQRBarcode: String;
+begin
+  Result.iRes := 0;
+  SetErrorLog('카카오페이 QR 결제 요청');
+  if GMz = '' then
+    Exit;
+
+  HTTP_KakaoPay := TidHTTP_Thread.Create(True);
+  jsonObj := TJsonObject.Create;
+  try
+    try
+      with HTTP_KakaoPay do
+      begin
+        sReqUrl := sURL + '/kakaopay/precheck/' + GMz + '/' + CurPosNO + '/' + RecpNo{$IFDEF DEBUG} + '/TEST' {$ENDIF};
+
+        useSSL := True;
+        slHeaderList := TStringList.Create;
+        iReqType := 0;
+        Resume;
+        repeat
+          Application.ProcessMessages;
+        until bRecv;
+
+      sRes := cOPY(sRes, 1, pOS('}', sRes));
+        SetErrorLog('응답 : ' + sRes);
+        jsonObj := TJsonObject.ParseJSONValue(sRes) as TJsonObject;
+        iCODE := jsonObj.GetValue<Integer>('code', 0);
+        if iCODE = 200 then
+        begin
+          sMessage := jsonObj.GetValue<string>('message', '');
+          sPartnerTID := jsonObj.GetValue<string>('partner_tid', '');
+          sQRBarcode := jsonObj.GetValue<string>('qr_barcode', '');
+
+          // qr 바코드 값이 있으면, 바로 checkapprove 로 이동
+          if sQRBarcode <> '' then
+          begin
+            Result.iRes := 3;
+            Result.sRes := sQRBarcode;
+
+            SetErrorLog('카카오페이 QR 재결제 처리 진행');
+
+          end
+          else
+          begin
+            Result.iRes := 2;
+            Result.sRes := sPartnerTID;
+            SetErrorLog('카카오페이 QR 결제 처리 진행');
+
+          end;
+        end
+        else
+        begin
+          SetErrorLog('KakaoPay - precheck CODE : ' + InttoStr(iCODE));
+        end;
+      end;
+    except
+      ON E: Exception do
+      begin
+        SetErrorLog('KakaoPay - precheck Exception MSG : ' + E.Message);
+      end;
+    end;
+  finally
+    FreeAndNil(jsonObj);
+    FreeAndNil(HTTP_KakaoPay);
+  end;
+end;
+
+function KakaoPayQRcreate(TID: String): string;
+var
+  HTTP_KakaoPay: TidHTTP_Thread;
+  jsonObj: TJsonObject;
+
+  iCODE: Integer;
+  sMessage, sQR_barcode: String;
+begin
+  Result := '';
+  SetErrorLog('카카오페이 QR 정보 요청');
+  HTTP_KakaoPay := TidHTTP_Thread.Create(True);
+  jsonObj := TJsonObject.Create;
+  try
+    with jsonObj, ORDER_REC_AMT do
+    begin
+      AddPair('partner_id', sKakaoShop_ID);
+      AddPair('acquirer_id', sKakaoVAN_ID);
+      AddPair('partner_tid', TID);
+      AddPair('currency_code', 'KRW');
+      AddPair('total_amount', TJSONNumber(PAY_AMT));
+      AddPair('taxable_amount', TJSONNumber(PAY_AMT - NONET - VAT));
+      AddPair('tax_free_amount', TJSONNumber(NONET));
+      AddPair('tax_amount', TJSONNumber(VAT));
+      AddPair('service_charge', TJSONNumber(SVC));
+      AddPair('partner_discount_amount', TJSONNumber(0));
+      AddPair('partner_discount_rate', TJSONNumber(0));
+      AddPair('device_type', 'KIO');
+      AddPair('terminal_id', TermNo);
+      AddPair('device_id', CurPosNO);
+      AddPair('store_id', TJSONNull.Create);
+      AddPair('order_number', TJSONNull.Create);
+      AddPair('order_item', TJSONNull.Create);
+    end;
+
+    SetErrorLog('요청 : ' + jsonObj.ToString);
+    with HTTP_KakaoPay do
+    begin
+      sReqUrl := sURL + '/kakaopay/create/' + GMz + '/' + CurPosNO + '/'unit uKAKAOPAY_QR;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, SysUtils, Variants, Classes, Dialogs, System.json,
+  Controls,
+  ExtCtrls, Graphics, Forms, Winapi.TlHelp32, StdCtrls, uCommon, uDM;
+
+type
+  TResult_IS = record
+    iRes: Integer;
+    sRes: String;
+
+  end;
+
+function precheck(RecpNo: String): TResult_IS; // 파트너 TID 생성
+{ 0 : 실패, 1 : 정상, 2 : qrCreate 처리요망, 3 : Checkapprove로 처리요망 }
+function KakaoPayQRcreate(TID: String): string; // 결제 QR 생성
+function Checkkapprove(TID: String): Boolean; // 결제 상태 확인 TImeout 60 / 3초마다 반복 호출
+function KakaoQRDatasave(sQR: String): Integer;
+
+implementation
+
+const
+  sURL = 'https://iot4shop.asp2.kr';
+
+function precheck(RecpNo: String): TResult_IS;
+var
+  HTTP_KakaoPay: TidHTTP_Thread;
+  jsonObj: TJsonObject;
+
+  iCODE: Integer;
+  sMessage, sPartnerTID, sQRBarcode: String;
+begin
+  Result.iRes := 0;
+  SetErrorLog('카카오페이 QR 결제 요청');
+  if GMz = '' then
+    Exit;
+
+  HTTP_KakaoPay := TidHTTP_Thread.Create(True);
+  jsonObj := TJsonObject.Create;
+  try
+    try
+      with HTTP_KakaoPay do
+      begin
+        sReqUrl := sURL + '/kakaopay/precheck/' + GMz + '/' + CurPosNO + '/' + RecpNo{$IFDEF DEBUG} + '/TEST' {$ENDIF};
+
+        useSSL := True;
+        slHeaderList := TStringList.Create;
+        iReqType := 0;
+        Resume;
+        repeat
+          Application.ProcessMessages;
+        until bRecv;
+
+      sRes := cOPY(sRes, 1, pOS('}', sRes) + 1);
+        SetErrorLog('응답 : ' + sRes);
+        jsonObj := TJsonObject.ParseJSONValue(sRes) as TJsonObject;
+        iCODE := jsonObj.GetValue<Integer>('code', 0);
+        if iCODE = 200 then
+        begin
+          sMessage := jsonObj.GetValue<string>('message', '');
+          sPartnerTID := jsonObj.GetValue<string>('partner_tid', '');
+          sQRBarcode := jsonObj.GetValue<string>('qr_barcode', '');
+
+          // qr 바코드 값이 있으면, 바로 checkapprove 로 이동
+          if sQRBarcode <> '' then
+          begin
+            Result.iRes := 3;
+            Result.sRes := sQRBarcode;
+
+            SetErrorLog('카카오페이 QR 재결제 처리 진행');
+
+          end
+          else
+          begin
+            Result.iRes := 2;
+            Result.sRes := sPartnerTID;
+            SetErrorLog('카카오페이 QR 결제 처리 진행');
+
+          end;
+        end
+        else
+        begin
+          SetErrorLog('KakaoPay - precheck CODE : ' + InttoStr(iCODE));
+        end;
+      end;
+    except
+      ON E: Exception do
+      begin
+        SetErrorLog('KakaoPay - precheck Exception MSG : ' + E.Message);
+      end;
+    end;
+  finally
+    FreeAndNil(jsonObj);
+    FreeAndNil(HTTP_KakaoPay);
+  end;
+end;
+
+function KakaoPayQRcreate(TID: String): string;
+var
+  HTTP_KakaoPay: TidHTTP_Thread;
+  jsonObj: TJsonObject;
+
+  iCODE: Integer;
+  sMessage, sQR_barcode: String;
+begin
+  Result := '';
+  SetErrorLog('카카오페이 QR 정보 요청');
+  HTTP_KakaoPay := TidHTTP_Thread.Create(True);
+  jsonObj := TJsonObject.Create;
+  try
+    with jsonObj, ORDER_REC_AMT do
+    begin
+      AddPair('partner_id', sKakaoShop_ID);
+      AddPair('acquirer_id', sKakaoVAN_ID);
+      AddPair('partner_tid', TID);
+      AddPair('currency_code', 'KRW');
+      AddPair('total_amount', TJSONNumber(PAY_AMT));
+      AddPair('taxable_amount', TJSONNumber(PAY_AMT - NONET - VAT));
+      AddPair('tax_free_amount', TJSONNumber(NONET));
+      AddPair('tax_amount', TJSONNumber(VAT));
+      AddPair('service_charge', TJSONNumber(SVC));
+      AddPair('partner_discount_amount', TJSONNumber(0));
+      AddPair('partner_discount_rate', TJSONNumber(0));
+      AddPair('device_type', 'KIO');
+      AddPair('terminal_id', TermNo);
+      AddPair('device_id', CurPosNO);
+      AddPair('store_id', TJSONNull.Create);
+      AddPair('order_number', TJSONNull.Create);
+      AddPair('order_item', TJSONNull.Create);
+    end;
+
+    SetErrorLog('요청 : ' + jsonObj.ToString);
+    with HTTP_KakaoPay do
+    begin
+      sReqUrl := sURL + '/kakaopay/create/' + GMz + '/' + CurPosNO + + TID{$IFDEF DEBUG} + '/TEST' {$ENDIF};
+      slHeaderList := TStringList.Create;
+      ReqList := TStringList.Create;
+      useSSL := True;
+      iReqType := 1;
+
+      ReqList.Text := jsonObj.ToString;
+      Resume;
+      repeat
+        Application.ProcessMessages;
+      until bRecv;
+
+      sRes := cOPY(sRes, 1, pOS('}', sRes) + 1);
+      SetErrorLog('응답 : ' + sRes);
+      jsonObj := TJsonObject.ParseJSONValue(sRes) as TJsonObject;
+      iCODE := jsonObj.GetValue<Integer>('code', 0);
+      if iCODE = 200 then
+      begin
+        Result := jsonObj.GetValue<String>('qr_barcode', '');
+      end;
+    end;
+  finally
+    FreeAndNil(jsonObj);
+    FreeAndNil(HTTP_KakaoPay);
+  end;
+
+end;
+
+function Checkkapprove(TID: String): Boolean;
+var
+  HTTP_KakaoPay: TidHTTP_Thread;
+  jsonObj: TJsonObject;
+
+  iCODE: Integer;
+  sMessage: String;
+begin
+  Result := False;
+  SetErrorLog('카카오페이 QR 결제 상태 요청');
+  HTTP_KakaoPay := TidHTTP_Thread.Create(True);
+  jsonObj := TJsonObject.Create;
+  try
+
+    with HTTP_KakaoPay do
+    begin
+      sReqUrl := sURL + '/kakaopay/checkapprove/' + TID{$IFDEF DEBUG} + '/TEST' {$ENDIF};
+      slHeaderList := TStringList.Create;
+      useSSL := True;
+      iReqType := 0;
+      Resume;
+      repeat
+        Application.ProcessMessages;
+      until bRecv;
+
+      sRes := cOPY(sRes, 1, pOS('}', sRes) + 1);
+      SetErrorLog('응답 : ' + sRes);
+      jsonObj := TJsonObject.ParseJSONValue(sRes) as TJsonObject;
+      iCODE := jsonObj.GetValue<Integer>('code', 0);
+
+      Result := (iCODE = 200) or (iCODE = 201);
+    end;
+  finally
+    FreeAndNil(jsonObj);
+    FreeAndNil(HTTP_KakaoPay);
+  end;
+end;
+
+function KakaoQRDatasave(sQR: String): Integer;
+begin
+
+end;
+
+end.
+                                                                                                                                                                                                                                           

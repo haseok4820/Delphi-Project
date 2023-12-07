@@ -1,0 +1,260 @@
+object fmENV1_3: TfmENV1_3
+  Left = 0
+  Top = 0
+  BorderStyle = bsNone
+  Caption = 'fmENV1_3'
+  ClientHeight = 600
+  ClientWidth = 800
+  Color = clWhite
+  DoubleBuffered = True
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -21
+  Font.Name = #44256#46020' B'
+  Font.Style = []
+  Padding.Top = 10
+  OldCreateOrder = False
+  OnMouseWheel = FormMouseWheel
+  OnResize = FormResize
+  OnShow = FormShow
+  DesignSize = (
+    800
+    600)
+  PixelsPerInch = 96
+  TextHeight = 24
+  object Label_Guide: TLabel
+    Left = 10
+    Top = 55
+    Width = 780
+    Height = 25
+    Alignment = taRightJustify
+    Anchors = [akLeft, akTop, akRight]
+    AutoSize = False
+    Caption = #8251' '#49345#53468#48320#44221'('#51452#47928#52712#49548', '#51452#47928#50756#47308' '#46321') '#51089#50629#51008' '#54252#49828#44592#50640#49436' '#51652#54665#54644#51452#49464#50836'.'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = #44256#46020' B'
+    Font.Style = []
+    ParentFont = False
+    Layout = tlCenter
+  end
+  object PanelBottom: TPanel
+    AlignWithMargins = True
+    Left = 10
+    Top = 430
+    Width = 780
+    Height = 50
+    Margins.Left = 10
+    Margins.Top = 10
+    Margins.Right = 10
+    Margins.Bottom = 10
+    Anchors = [akLeft, akRight, akBottom]
+    BevelOuter = bvNone
+    Color = clWhite
+    ParentBackground = False
+    ShowCaption = False
+    TabOrder = 0
+    object ButtonUP: TButton
+      Tag = 1
+      Left = 0
+      Top = 0
+      Width = 390
+      Height = 50
+      Align = alLeft
+      Caption = #9664
+      TabOrder = 0
+      OnClick = ButtonScroll
+    end
+    object ButtonDown: TButton
+      Tag = -1
+      Left = 390
+      Top = 0
+      Width = 390
+      Height = 50
+      Align = alRight
+      Caption = #9654
+      TabOrder = 1
+      OnClick = ButtonScroll
+    end
+  end
+  inline FrmCombo_Pageing: TFrame_ENV_ComboBox
+    AlignWithMargins = True
+    Left = 340
+    Top = 5
+    Width = 290
+    Height = 50
+    Margins.Left = 10
+    Margins.Top = 0
+    Margins.Right = 10
+    Margins.Bottom = 0
+    Anchors = [akTop, akRight]
+    DoubleBuffered = True
+    Color = clBlack
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -21
+    Font.Name = #44256#46020' B'
+    Font.Style = []
+    Padding.Left = 2
+    Padding.Top = 2
+    Padding.Right = 2
+    Padding.Bottom = 2
+    ParentBackground = False
+    ParentColor = False
+    ParentDoubleBuffered = False
+    ParentFont = False
+    TabOrder = 1
+    OnClick = FrmCombo_PageingClick
+    ExplicitLeft = 340
+    ExplicitTop = 5
+    ExplicitWidth = 290
+    inherited Label_Key: TLabel
+      Width = 236
+      Hint = '( %1~ %2 )'#48264#51704' '#45824#44592#44148
+      Caption = ' ( 1~ 50 )'#48264#51704' '#45824#44592#44148
+      ExplicitWidth = 1006
+    end
+    inherited Label1: TLabel
+      Left = 238
+      ExplicitLeft = 1008
+    end
+  end
+  object Button_Search: TButton
+    Left = 640
+    Top = 5
+    Width = 150
+    Height = 50
+    Anchors = [akTop, akRight]
+    Caption = #44160#49353#55357#56590
+    TabOrder = 2
+    OnClick = Button_SearchClick
+  end
+  object RadioGroup1: TRadioGroup
+    Left = 10
+    Top = 5
+    Width = 320
+    Height = 50
+    Anchors = [akLeft, akTop, akRight]
+    Caption = #51312#54924#44396#48516
+    Columns = 3
+    ItemIndex = 0
+    Items.Strings = (
+      #51204#52404
+      #50756#47308
+      #45824#44592)
+    TabOrder = 3
+  end
+  inline Frame_ENV_Edit1: TFrame_ENV_Edit
+    Left = 10
+    Top = 490
+    Width = 300
+    Height = 50
+    Anchors = [akLeft, akBottom]
+    DoubleBuffered = True
+    Color = clSilver
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -21
+    Font.Name = #44256#46020' B'
+    Font.Style = []
+    Padding.Left = 1
+    Padding.Top = 1
+    Padding.Right = 1
+    Padding.Bottom = 1
+    ParentBackground = False
+    ParentColor = False
+    ParentDoubleBuffered = False
+    ParentFont = False
+    TabOrder = 4
+    ExplicitLeft = 10
+    ExplicitTop = 490
+    ExplicitWidth = 300
+    inherited Label_Key: TLabel
+      Caption = '('#50756#47308'/'#45824#44592') '#44148#49688
+    end
+    inherited Shape_BG: TShape
+      Width = 118
+      ExplicitWidth = 218
+    end
+    inherited Edit_Value: TEdit
+      Width = 108
+      Alignment = taCenter
+      ReadOnly = True
+      ExplicitWidth = 108
+    end
+  end
+  object Memo_TOTAL: TMemo
+    Left = 315
+    Top = 490
+    Width = 475
+    Height = 100
+    Anchors = [akLeft, akRight, akBottom]
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -21
+    Font.Name = 'D2Coding'
+    Font.Style = [fsBold]
+    ParentFont = False
+    ReadOnly = True
+    ScrollBars = ssVertical
+    TabOrder = 5
+    OnMouseEnter = Memo_TOTALMouseEnter
+    OnMouseLeave = Memo_TOTALMouseLeave
+  end
+  inline Frame_ENV_Edit2: TFrame_ENV_Edit
+    Left = 10
+    Top = 540
+    Width = 300
+    Height = 50
+    Anchors = [akLeft, akBottom]
+    DoubleBuffered = True
+    Color = clSilver
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -21
+    Font.Name = #44256#46020' B'
+    Font.Style = []
+    Padding.Left = 1
+    Padding.Top = 1
+    Padding.Right = 1
+    Padding.Bottom = 1
+    ParentBackground = False
+    ParentColor = False
+    ParentDoubleBuffered = False
+    ParentFont = False
+    TabOrder = 6
+    ExplicitLeft = 10
+    ExplicitTop = 540
+    ExplicitWidth = 300
+    inherited Label_Key: TLabel
+      Caption = #52509' '#51312#54924#44148#49688
+    end
+    inherited Shape_BG: TShape
+      Width = 118
+      ExplicitWidth = 218
+    end
+    inherited Edit_Value: TEdit
+      Width = 108
+      Alignment = taCenter
+      ReadOnly = True
+      ExplicitWidth = 108
+    end
+  end
+  object ListBox: TScrollBox
+    Left = 10
+    Top = 80
+    Width = 780
+    Height = 350
+    HorzScrollBar.Smooth = True
+    HorzScrollBar.Tracking = True
+    VertScrollBar.Smooth = True
+    VertScrollBar.Tracking = True
+    Anchors = [akLeft, akTop, akRight, akBottom]
+    BorderStyle = bsNone
+    Color = clSilver
+    Padding.Top = 2
+    ParentColor = False
+    TabOrder = 7
+  end
+end

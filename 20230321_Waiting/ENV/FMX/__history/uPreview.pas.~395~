@@ -1,0 +1,375 @@
+unit uPreview;
+
+interface
+
+uses
+  System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants, System.iniFiles,
+  FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.Controls.Presentation, FMX.StdCtrls, FMX.Objects,
+  Frame_Ticket, FMX.Layouts, FMX.Edit, FMX.EditBox, FMX.NumberBox, FMX.Platform.WIN, Winapi.Windows
+
+    ;
+
+type
+  TTicketPrntInfo = record
+    bUsed: Boolean; // 출력유무
+    sName: String; // 구분명
+    sText: String; // 출력명
+    iAlign: Single; // 출력정렬 (우측, 중앙, 좌측) 미리보기 전용
+    iExtend_X: Integer; // 확대 길이
+    iExtend_Y: Integer; // 확대 높이
+  end;
+
+  TFormMain = class(TForm)
+    Panel_Client: TPanel;
+    Rectangle_PrtHeader: TRectangle;
+    Label1: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
+    Label4: TLabel;
+    ScrollBox_OptionList: TScrollBox;
+    NumberBox_Bot: TNumberBox;
+    Label_Bot: TLabel;
+    NumberBox_Top: TNumberBox;
+    Label_Top: TLabel;
+    GroupBox_Type: TGroupBox;
+    Rectangle_Header: TRectangle;
+    Button_Close: TButton;
+    Label5: TLabel;
+    ScrollBox_Preview: TScrollBox;
+    Rectangle_Parent: TRectangle;
+    Button_Apply: TButton;
+    GroupBox1: TGroupBox;
+    Button_LenDefault: TButton;
+    NumberBox_Length: TNumberBox;
+    Label_Guide1: TLabel;
+    Label_Guide2: TLabel;
+    Rectangle_GiodeBG: TRectangle;
+    procedure FormShow(Sender: TObject);
+    procedure FormResize(Sender: TObject);
+    procedure Button_CloseClick(Sender: TObject);
+    procedure Button_ApplyClick(Sender: TObject);
+    procedure Button_LenDefaultClick(Sender: TObject);
+    procedure Label_TopClick(Sender: TObject);
+  private
+    { Private declarations }
+    procedure iniExecute(iType: Byte);
+    procedure ShowList;
+    procedure ShowPreview;
+    procedure SetPreview(iAlign: TTextAlign; iPosition: Single; sText: String);
+  public
+    { Public declarations }
+  end;
+
+const
+  INI_SAVE = 0;
+  INI_LOAD = 1;
+
+var
+  FormMain: TFormMain;
+  FormBG: TForm;
+  arrTicketInfo: array of TTicketPrntInfo;
+  iTicket_Length: Integer = 40;
+  iTicketTopNil: Integer = 3;
+  iTicketBotNil: Integer = 3;
+
+  arrTicket_1: array [0 .. 4] of String = (
+    'TITLE',
+    'ORDERNO',
+    'WAITPEOPLE',
+    'PRNTIME',
+    'NOTICE'
+  );
+
+implementation
+
+{$R *.fmx}
+
+procedure TFormMain.FormShow(Sender: TObject);
+var
+  i: Integer;
+  DelComp: TComponent;
+
+  iW: Single;
+begin
+  Rectangle_Parent.Position.X := (Width - Rectangle_Parent.Width) / 2;
+  Rectangle_Parent.Position.Y := (Height - Rectangle_Parent.Height) / 2;
+  // SetWindowPos(FmxHandleToHWND(FormMain.Handle), HWND_TOPMOST, Left, Top, Width, Height, 0);
+
+  iniExecute(INI_LOAD);
+  NumberBox_Length.Value := iTicket_Length;
+  NumberBox_Bot.Value := iTicketBotNil;
+  NumberBox_Top.Value := iTicketTopNil;
+  ShowList;
+end;
+
+procedure TFormMain.FormResize(Sender: TObject);
+begin
+  if ClientHeight < 550 then
+  begin
+    ClientHeight := 550;
+    mouse_event(MOUSEEVENTF_ABSOLUTE or MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
+  End;
+
+  if ClientWidth < 600 then
+  begin
+    ClientWidth := 600;
+    mouse_event(MOUSEEVENTF_ABSOLUTE or MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
+  End;
+end;
+
+procedure TFormMain.iniExecute(iType: Byte);
+const
+  cPRT = 'PRT';
+  cTICKET = 'TICKET';
+var
+  ini: TMemIniFile;
+  iniInfo: TTicketPrntInfo;
+
+  i: Word;
+begin
+  //
+  ini := TMemIniFile.Create('AIRORDER.ini', TEncoding.UTF8);
+  try
+    with ini do
+    begin
+      case iType of
+        INI_SAVE:
+          begin
+            WriteInteger(cPRT, 'LINELENGTH', iTicket_Length);
+            WriteInteger(cTICKET, 'TICKET_TOP', iTicketTopNil);
+            WriteInteger(cTICKET, 'TICKET_BOT', iTicketBotNil);
+            for i := Low(arrTicketInfo) to High(arrTicketInfo) do
+            begin
+              with arrTicketInfo[i] do
+              begin
+                WriteBool(cTICKET, arrTicket_1[i] + '_USED', bUsed);
+                WriteString(cTICKET, arrTicket_1[i] + '_NAME', sName);
+                WriteInteger(cTICKET, arrTicket_1[i] + '_X', Round(iExtend_X -1));
+                WriteInteger(cTICKET, arrTicket_1[i] + '_Y', Round(iExtend_Y -1));
+
+              end;
+            end;
+            UpdateFile;
+          end;
+        INI_LOAD:
+          begin
+            with iniInfo do
+            begin
+              iTicket_Length := ReadInteger(cPRT, 'LINELENGTH', iTicket_Length);
+              iTicketTopNil := ReadInteger(cTICKET, 'TICKET_TOP', iTicketTopNil);
+              iTicketBotNil := ReadInteger(cTICKET, 'TICKET_BOT', iTicketBotNil);
+              for i := Low(arrTicket_1) to High(arrTicket_1) do
+              begin
+                bUsed := ReadBool(cTICKET, arrTicket_1[i] + '_USED', bUsed);
+                sName := ReadString(cTICKET, arrTicket_1[i] + '_NAME', sName);
+                iExtend_X := ReadInteger(cTICKET, arrTicket_1[i] + '_X', iExtend_X) + 1;
+                iExtend_Y := ReadInteger(cTICKET, arrTicket_1[i] + '_Y', iExtend_Y) + 1;
+
+                sText := ReadString(cTICKET, arrTicket_1[i] + '_Text', sText);
+                iAlign := ReadInteger(cTICKET, arrTicket_1[i] + '_Align', 0);
+
+                INSERT(iniInfo, arrTicketInfo, High(arrTicketInfo) + 1);
+              end;
+            end;
+          end;
+      end;
+    end;
+  finally
+    ini.Free;
+  end;
+end;
+
+procedure TFormMain.Label_TopClick(Sender: TObject);
+var
+  i : integer;
+begin
+  i := arrTicketInfo[0].iExtend_X * 16 + arrTicketInfo[0].iExtend_Y;
+  ShowMessage(Chr(i));
+end;
+
+procedure TFormMain.ShowList;
+var
+  i: Integer;
+  DelComp: TComponent;
+
+  iL, iT, iW, iH: Single;
+
+  arrTicket: array of String;
+begin
+  // Ticket Option
+  if ScrollBox_OptionList.ComponentCount > 1 then
+  begin
+    for i := ScrollBox_OptionList.ComponentCount - 1 Downto 0 do
+    begin
+      DelComp := GroupBox_Type.Components[i];
+      FreeAndNil(DelComp);
+    end;
+  end;
+
+  for i := Low(arrTicketInfo) to High(arrTicketInfo) do
+  begin
+    with TFrameTicketList.Create(Self), arrTicketInfo[i] do
+    begin
+      Parent := ScrollBox_OptionList;
+      Align := TAlignLayout.Bottom;
+      Name := 'FrameTicketOption_' + IntToStR(i);
+      Tag := i;
+      CheckBox_Used.IsChecked := bUsed;
+      CheckBox_Used.Text := sName;
+
+      NumberBox_X.Value := iExtend_X;
+      NumberBox_X.Enabled := bUsed;
+      NumberBox_Y.Value := iExtend_Y;
+      NumberBox_Y.Enabled := bUsed;
+
+      Hint := 'PreivewOption';
+      Align := TAlignLayout.Top;
+    end;
+  end;
+  ShowPreview;
+end;
+
+procedure TFormMain.ShowPreview;
+var
+  i: Integer;
+  DelComp: TComponent;
+  sCompNAme: String;
+begin
+  iTicket_Length := Round(NumberBox_Length.Value);
+  ScrollBox_Preview.Width := 8.75 * iTicket_Length;
+
+  Rectangle_GiodeBG.Position.X := ScrollBox_Preview.Position.X;
+  Rectangle_GiodeBG.Width := ScrollBox_Preview.Width;
+
+  Label_Guide1.Position.X := ScrollBox_Preview.Position.X;
+  Label_Guide1.Width := ScrollBox_Preview.Width;
+
+  Label_Guide2.Position.X := ScrollBox_Preview.Position.X;
+  Label_Guide2.Width := ScrollBox_Preview.Width;
+
+  if ScrollBox_Preview.ComponentCount <> 0 then
+  begin
+    for i := ScrollBox_Preview.ComponentCount - 1 Downto 0 do
+    begin
+      DelComp := ScrollBox_Preview.Components[i];
+      if DelComp is TLabel then
+        FreeAndNil(DelComp)
+      else
+        sCompNAme := DelComp.UnitName;
+    end;
+    Application.ProcessMessages;
+  end;
+
+  // 상단 여백
+  for i := 0 to StrToInt(NumberBox_Top.Text) do
+  begin
+    with TLabel.Create(ScrollBox_Preview) do
+    begin
+      Parent := ScrollBox_Preview;
+      Align := TAlignLayout.Bottom;
+      AutoSize := False;
+      Name := 'Preview_Header_Margin' + IntToStR(i);
+      StyledSettings := [];
+      Text := '';
+      with TextSettings do
+      begin
+        with Font do
+        begin
+          Family := 'D2Coding';
+          Size := 16;
+        end;
+      end;
+      SetBounds(Left, 0, Width, 20);
+      Align := TAlignLayout.Top;
+    end;
+  end;
+  // 출력 영역
+  for i := Low(arrTicketInfo) to High(arrTicketInfo) do
+  begin
+    with arrTicketInfo[i] do
+    begin
+      if sText = '' then
+        sText := '테스트입니다.';
+      if bUsed then
+        SetPreview(TTextAlign(iAlign), iExtend_X * 10 + iExtend_Y, sText);
+    end;
+  end;
+{$IFDEF DEBUG}
+  // 길이 테스트용
+  sCompNAme := '';
+  for i := 1 to iTicket_Length do
+    sCompNAme := sCompNAme + IntToStR(i mod 10);
+  SetPreview(TTextAlign.Center, 11, sCompNAme);
+{$ENDIF}
+  // 하단 여백
+  for i := 0 to Round(NumberBox_Bot.Value) do
+  begin
+    with TLabel.Create(ScrollBox_Preview) do
+    begin
+      Parent := ScrollBox_Preview;
+      Align := TAlignLayout.Bottom;
+      AutoSize := False;
+      Name := 'Preview_Bottom_Margin' + IntToStR(i);
+      StyledSettings := [];
+      Text := '';
+      with TextSettings do
+      begin
+        with Font do
+        begin
+          Family := 'D2Coding';
+          Size := 16;
+        end;
+      end;
+      SetBounds(Left, 0, Width, 20);
+      Align := TAlignLayout.Top;
+    end;
+  end;
+end;
+
+procedure TFormMain.SetPreview(iAlign: TTextAlign; iPosition: Single; sText: String);
+var
+  sMSG: String;
+begin
+  with TLabel.Create(ScrollBox_Preview) do
+  begin
+    Parent := ScrollBox_Preview;
+    Align := TAlignLayout.Bottom;
+    StyledSettings := [];
+    Scale.X := Round(iPosition) div 10;
+    Scale.Y := Round(iPosition) mod 10;
+
+    sMSG := FloatToStr(Scale.X) + ' ' + FloatToStr(Scale.Y);
+    Text := sText;
+
+    with TextSettings do
+    begin
+      Font.Family := 'D2Coding';
+      Font.Size := 16;
+      HorzAlign := iAlign;
+    end;
+
+    AutoSize := False;
+    Height := Height + 25;
+
+    Align := TAlignLayout.Top;
+  end;
+end;
+
+procedure TFormMain.Button_ApplyClick(Sender: TObject);
+begin
+  ShowPreview;
+end;
+
+procedure TFormMain.Button_CloseClick(Sender: TObject);
+begin
+  iniExecute(INI_SAVE);
+  Close;
+  Application.Terminate;
+end;
+
+procedure TFormMain.Button_LenDefaultClick(Sender: TObject);
+begin
+  NumberBox_Length.Value := Button_LenDefault.Tag;
+end;
+
+end.

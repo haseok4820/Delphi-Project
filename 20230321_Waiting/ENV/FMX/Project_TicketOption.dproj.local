@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>1899-12-30 00:00:00.000.515,C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Unit1.pas=D:\최하석 작업문서\20230321_Waiting\ENV\FMX\uPreview.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.041,=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.524,C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Project_TicketOption.dproj=D:\최하석 작업문서\20230321_Waiting\ENV\FMX\Project_TicketOption.dproj</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.672,=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.808,C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Unit1.fmx=D:\최하석 작업문서\20230321_Waiting\ENV\FMX\Frame_Ticket.fmx</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.515,C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Unit1.fmx=D:\최하석 작업문서\20230321_Waiting\ENV\FMX\uPreview.fmx</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.808,C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Unit1.pas=D:\최하석 작업문서\20230321_Waiting\ENV\FMX\Frame_Ticket.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.022,C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Project3.dproj=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Project_TicketOption.dproj</Transaction>
+  </Transactions>
+	<ActiveMobileDevice>
+		<NoProfile iOSSimulator="iPhone5"/>
+	</ActiveMobileDevice>
+</BorlandProject>

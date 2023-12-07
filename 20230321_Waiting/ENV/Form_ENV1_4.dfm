@@ -1,0 +1,215 @@
+object fmENV1_4: TfmENV1_4
+  Left = 0
+  Top = 0
+  BorderStyle = bsNone
+  Caption = 'fmENV1_4'
+  ClientHeight = 600
+  ClientWidth = 1080
+  Color = clWhite
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -21
+  Font.Name = #44256#46020' B'
+  Font.Style = []
+  Padding.Left = 10
+  Padding.Top = 10
+  Padding.Right = 10
+  Padding.Bottom = 10
+  OldCreateOrder = False
+  OnClose = FormClose
+  OnResize = FormResize
+  OnShow = FormShow
+  DesignSize = (
+    1080
+    600)
+  PixelsPerInch = 96
+  TextHeight = 24
+  object Label_DBPath: TLabel
+    Left = 13
+    Top = 65
+    Width = 100
+    Height = 30
+    AutoSize = False
+    Caption = 'DB '#44221#47196
+    Layout = tlCenter
+  end
+  inline FrmEdit_DBIP: TFrame_ENV_Edit
+    Left = 10
+    Top = 10
+    Width = 695
+    Height = 50
+    Anchors = [akLeft, akTop, akRight]
+    DoubleBuffered = True
+    Color = clSilver
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -21
+    Font.Name = #44256#46020' B'
+    Font.Style = []
+    Padding.Left = 1
+    Padding.Top = 1
+    Padding.Right = 1
+    Padding.Bottom = 1
+    ParentBackground = False
+    ParentColor = False
+    ParentDoubleBuffered = False
+    ParentFont = False
+    TabOrder = 0
+    ExplicitLeft = 10
+    ExplicitTop = 10
+    ExplicitWidth = 695
+    inherited Label_Key: TLabel
+      Caption = #47700#51064' IP'
+      ExplicitHeight = 47
+    end
+    inherited Shape_BG: TShape
+      Width = 513
+      ExplicitWidth = 878
+      ExplicitHeight = 47
+    end
+    inherited Edit_Value: TEdit
+      Width = 503
+      MaxLength = 15
+      Text = '127.0.0.1'
+      ExplicitWidth = 503
+    end
+  end
+  object GroupBox1: TGroupBox
+    Left = 10
+    Top = 125
+    Width = 1060
+    Height = 450
+    Anchors = [akLeft, akTop, akRight, akBottom]
+    Caption = #51064#49604#44536#47353' '#48324#46020#51648#51221
+    TabOrder = 1
+    Visible = False
+    object Memo1: TMemo
+      AlignWithMargins = True
+      Left = 7
+      Top = 31
+      Width = 636
+      Height = 412
+      Margins.Left = 5
+      Margins.Top = 5
+      Margins.Right = 10
+      Margins.Bottom = 5
+      Align = alClient
+      TabOrder = 0
+    end
+    object Panel_Keypad: TPanel
+      AlignWithMargins = True
+      Left = 653
+      Top = 31
+      Width = 400
+      Height = 412
+      Margins.Left = 0
+      Margins.Top = 5
+      Margins.Right = 5
+      Margins.Bottom = 5
+      Align = alRight
+      BevelOuter = bvNone
+      Color = clSilver
+      ParentBackground = False
+      ShowCaption = False
+      TabOrder = 1
+    end
+  end
+  inline FrmEdit_POSNO: TFrame_ENV_Edit
+    Left = 710
+    Top = 10
+    Width = 180
+    Height = 50
+    Anchors = [akTop, akRight]
+    DoubleBuffered = True
+    Color = clSilver
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -21
+    Font.Name = #44256#46020' B'
+    Font.Style = []
+    Padding.Left = 1
+    Padding.Top = 1
+    Padding.Right = 1
+    Padding.Bottom = 1
+    ParentBackground = False
+    ParentColor = False
+    ParentDoubleBuffered = False
+    ParentFont = False
+    TabOrder = 2
+    ExplicitLeft = 710
+    ExplicitTop = 10
+    ExplicitWidth = 180
+    inherited Label_Key: TLabel
+      Width = 110
+      Caption = #51109#52824' '#48264#54840
+      ExplicitLeft = 1
+      ExplicitTop = 1
+      ExplicitWidth = 110
+    end
+    inherited Shape_BG: TShape
+      Left = 111
+      Width = 68
+      ExplicitLeft = 111
+      ExplicitWidth = 878
+      ExplicitHeight = 47
+    end
+    inherited Edit_Value: TEdit
+      Left = 121
+      Width = 58
+      MaxLength = 2
+      ExplicitLeft = 121
+      ExplicitWidth = 58
+    end
+  end
+  object Edit_DBPath: TEdit
+    Left = 100
+    Top = 65
+    Width = 790
+    Height = 32
+    Anchors = [akLeft, akTop, akRight]
+    TabOrder = 3
+    Text = 'C:\FOODCAFE\Database\'
+  end
+  object Button_Localhost: TButton
+    Left = 895
+    Top = 10
+    Width = 165
+    Height = 50
+    Anchors = [akTop, akRight]
+    Caption = 'localhost'
+    TabOrder = 4
+    OnClick = Button_LocalhostClick
+  end
+  object Button_Keyboard: TButton
+    Left = 10
+    Top = 540
+    Width = 1060
+    Height = 50
+    Align = alBottom
+    Caption = #53552#52824' '#53412#48372#46300' '#9000
+    TabOrder = 5
+    OnClick = Button_KeyboardClick
+  end
+  object Button_DBTest: TButton
+    Left = 895
+    Top = 65
+    Width = 165
+    Height = 37
+    Anchors = [akTop, akRight]
+    Caption = #50672#44208' '#53580#49828#53944
+    TabOrder = 6
+    OnClick = Button_DBTestClick
+  end
+  object Timer_Keypad: TTimer
+    Enabled = False
+    Interval = 10
+    OnTimer = Timer_KeypadTimer
+    Left = 528
+    Top = 288
+  end
+  object Timer_Auto: TTimer
+    OnTimer = Timer_AutoTimer
+    Left = 528
+    Top = 344
+  end
+end

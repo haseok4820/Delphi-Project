@@ -1,0 +1,45 @@
+unit Frame_CheckBox;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
+  System.Classes,
+  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls,
+  Vcl.ExtCtrls, ImagingComponents;
+
+type
+  TFrame_ENV_CheckBox = class(TFrame)
+    Label_MSG: TLabel;
+    Label_Check: TLabel;
+    procedure Image_CheckClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+implementation
+
+{$R *.dfm}
+
+uses uDM;
+
+procedure TFrame_ENV_CheckBox.Image_CheckClick(Sender: TObject);
+var
+  iTag: integer;
+begin
+  if Sender <> Nil then
+    iTag := (Sender as TLabel).Tag
+  else
+    iTag := -1;
+  Label_Check.Caption := arrYN[iTag];
+  // DM.Image_CheckBOX(iTag, Self);
+  if Assigned(Self.OnClick) then
+  begin
+    Self.OnClick(Self);
+  end;
+
+end;
+
+end.

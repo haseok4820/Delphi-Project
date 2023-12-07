@@ -1,0 +1,259 @@
+object Form_Main: TForm_Main
+  Left = 0
+  Top = 0
+  BorderStyle = bsNone
+  Caption = 'Form_Main'
+  ClientHeight = 768
+  ClientWidth = 1024
+  Color = 2236962
+  Constraints.MinHeight = 600
+  Constraints.MinWidth = 800
+  DoubleBuffered = True
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -27
+  Font.Name = #48729#44536#47112#52404
+  Font.Style = []
+  Padding.Left = 10
+  Padding.Top = 10
+  Padding.Right = 10
+  Padding.Bottom = 10
+  OldCreateOrder = False
+  Scaled = False
+  OnCreate = FormCreate
+  OnMouseDown = FormMouseDown
+  OnResize = FormResize
+  OnShow = FormShow
+  DesignSize = (
+    1024
+    768)
+  PixelsPerInch = 96
+  TextHeight = 36
+  object Panel_Parent: TPanel
+    Left = 614
+    Top = 10
+    Width = 400
+    Height = 748
+    Align = alRight
+    BevelOuter = bvNone
+    Caption = 'Panel_Parent'
+    Color = clWhite
+    ParentBackground = False
+    ShowCaption = False
+    TabOrder = 0
+    object Shape_Line: TShape
+      Left = 0
+      Top = 150
+      Width = 400
+      Height = 5
+      Align = alTop
+      Brush.Color = 2236962
+    end
+    object Panel_Edit: TPanel
+      Left = 0
+      Top = 0
+      Width = 400
+      Height = 150
+      Align = alTop
+      BevelOuter = bvNone
+      Color = clWhite
+      Padding.Top = 30
+      Padding.Right = 10
+      Padding.Bottom = 30
+      ParentBackground = False
+      ShowCaption = False
+      TabOrder = 0
+      object Label_Tel2: TLabel
+        Left = 242
+        Top = 80
+        Width = 33
+        Height = 40
+        Align = alRight
+        Alignment = taCenter
+        Caption = ' - '
+        Layout = tlCenter
+        ExplicitHeight = 36
+      end
+      object Label_Tel1: TLabel
+        Left = 0
+        Top = 80
+        Width = 127
+        Height = 40
+        Align = alClient
+        Alignment = taRightJustify
+        AutoSize = False
+        Caption = '  010   - '
+        Layout = tlCenter
+        ExplicitLeft = -3
+        ExplicitTop = 86
+        ExplicitWidth = 157
+      end
+      object Label_TelGuide: TLabel
+        Left = 0
+        Top = 30
+        Width = 390
+        Height = 50
+        Align = alTop
+        Alignment = taCenter
+        AutoSize = False
+        Caption = #51077#47141#54616#49888' '#48264#54840#47196' '#50508#47548#53665#51012' '#48372#45236#46300#47549#45768#45796'.'
+        Color = clWhite
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -16
+        Font.Name = #45208#45588#49828#53272#50612#46972#50868#46300' ExtraBold'
+        Font.Style = [fsBold]
+        ParentColor = False
+        ParentFont = False
+        Layout = tlCenter
+        OnClick = Label_TelGuideClick
+        ExplicitWidth = 359
+      end
+      object Edit2: TEdit
+        Tag = 2
+        Left = 275
+        Top = 80
+        Width = 115
+        Height = 40
+        Align = alRight
+        Alignment = taCenter
+        BevelInner = bvNone
+        BorderStyle = bsNone
+        MaxLength = 4
+        NumbersOnly = True
+        TabOrder = 0
+        OnChange = Edit_Change
+      end
+      object Edit1: TEdit
+        Tag = 1
+        Left = 127
+        Top = 80
+        Width = 115
+        Height = 40
+        Align = alRight
+        Alignment = taCenter
+        BevelInner = bvNone
+        BorderStyle = bsNone
+        MaxLength = 4
+        NumbersOnly = True
+        TabOrder = 1
+        OnChange = Edit_Change
+      end
+    end
+    object Panel_Keypad: TPanel
+      Left = 0
+      Top = 155
+      Width = 400
+      Height = 593
+      Align = alClient
+      BevelOuter = bvNone
+      Color = 8289918
+      ParentBackground = False
+      ShowCaption = False
+      TabOrder = 1
+    end
+  end
+  object Panel_Waiting: TPanel
+    Left = 10
+    Top = 635
+    Width = 595
+    Height = 120
+    Anchors = [akLeft, akRight, akBottom]
+    BevelOuter = bvNone
+    Color = clWhite
+    ParentBackground = False
+    TabOrder = 1
+    object Label_WaitInfo: TLabel
+      Left = 0
+      Top = 0
+      Width = 595
+      Height = 120
+      Hint = #54788#51116' '#45824#44592#54016#49688' : %Team'#54016', ('#50696#49345#45824#44592#49884#44036' : %Time'#48516')'
+      Align = alClient
+      Alignment = taCenter
+      Layout = tlCenter
+      ExplicitWidth = 9
+      ExplicitHeight = 36
+    end
+  end
+  object ScrollBox_Main: TScrollBox
+    Left = 13
+    Top = 165
+    Width = 595
+    Height = 460
+    VertScrollBar.Smooth = True
+    VertScrollBar.Style = ssFlat
+    VertScrollBar.Tracking = True
+    Anchors = [akLeft, akTop, akRight, akBottom]
+    AutoScroll = False
+    BorderStyle = bsNone
+    Color = 2236962
+    ParentColor = False
+    TabOrder = 2
+  end
+  object Panel_Help: TPanel
+    Left = 10
+    Top = 10
+    Width = 595
+    Height = 150
+    Anchors = [akLeft, akTop, akRight]
+    BevelOuter = bvNone
+    Color = 197380
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWhite
+    Font.Height = -27
+    Font.Name = 'Spoqa Han Sans Neo Bold'
+    Font.Style = []
+    Padding.Left = 10
+    Padding.Top = 5
+    Padding.Right = 10
+    Padding.Bottom = 10
+    ParentBackground = False
+    ParentFont = False
+    ShowCaption = False
+    TabOrder = 3
+    object Label_Title: TLabel
+      Left = 10
+      Top = 5
+      Width = 575
+      Height = 38
+      Align = alTop
+      Caption = #49324#50857#48169#48277' '#50504#45236
+      ExplicitWidth = 156
+    end
+    object Label1: TLabel
+      Left = 10
+      Top = 43
+      Width = 575
+      Height = 28
+      Align = alTop
+      Caption = '  - '#50500#47000#50640' '#47700#45684#47484' '#51060#50857#54644' '#51064#50896#49688#47484' '#51077#47141#54644#51452#49464#50836'.'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWhite
+      Font.Height = -20
+      Font.Name = 'Spoqa Han Sans Neo Bold'
+      Font.Style = []
+      ParentFont = False
+      WordWrap = True
+      ExplicitWidth = 392
+    end
+    object Label2: TLabel
+      Left = 10
+      Top = 71
+      Width = 575
+      Height = 56
+      Align = alTop
+      Caption = 
+        '  - '#51064#50896' '#49440#53469#51012' '#54616#49888#54980', '#50724#47480#51901' '#53412#54056#46300#47484' '#51060#50857#54616#50668', '#51204#54868#48264#54840#47484' '#51077#47141#54644#51452#49884#47732', '#51204#54868#48264#54840' '#46263#51088#47532#47196' '#51077#51109#51204' '#50504#45236#46300#47549#45768 +
+        #45796'.'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWhite
+      Font.Height = -20
+      Font.Name = 'Spoqa Han Sans Neo Bold'
+      Font.Style = []
+      ParentFont = False
+      WordWrap = True
+      ExplicitWidth = 573
+    end
+  end
+end

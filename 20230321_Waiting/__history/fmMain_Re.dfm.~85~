@@ -1,0 +1,269 @@
+object FormMain_Re: TFormMain_Re
+  Left = 0
+  Top = 0
+  BorderIcons = []
+  BorderStyle = bsNone
+  Caption = 'FormMain_Re'
+  ClientHeight = 600
+  ClientWidth = 800
+  Color = 197380
+  Constraints.MinHeight = 600
+  Constraints.MinWidth = 800
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -27
+  Font.Name = #48729#44536#47112#52404
+  Font.Style = []
+  Padding.Bottom = 10
+  OldCreateOrder = False
+  OnCreate = FormCreate
+  OnMouseDown = FormMouseDown
+  OnResize = FormResize
+  OnShow = FormShow
+  DesignSize = (
+    800
+    600)
+  PixelsPerInch = 96
+  TextHeight = 36
+  object ScrollBox_Menu: TScrollBox
+    Left = 0
+    Top = 235
+    Width = 800
+    Height = 232
+    VertScrollBar.Smooth = True
+    VertScrollBar.Style = ssFlat
+    VertScrollBar.Tracking = True
+    Align = alTop
+    Anchors = [akLeft, akTop, akRight, akBottom]
+    AutoScroll = False
+    BorderStyle = bsNone
+    Color = 2236962
+    ParentColor = False
+    TabOrder = 0
+    OnMouseDown = FormMouseDown
+  end
+  object Panel_Waiting: TPanel
+    Left = 10
+    Top = 470
+    Width = 480
+    Height = 120
+    Anchors = [akLeft, akRight, akBottom]
+    BevelOuter = bvNone
+    Color = clWhite
+    ParentBackground = False
+    TabOrder = 1
+    object Label_WaitInfo: TLabel
+      Left = 0
+      Top = 0
+      Width = 480
+      Height = 120
+      Hint = #54788#51116' '#45824#44592#54016#49688' : %Team'#54016', ('#50696#49345#45824#44592#49884#44036' : %Time'#48516')'
+      Align = alClient
+      Alignment = taCenter
+      Layout = tlCenter
+      ExplicitWidth = 9
+      ExplicitHeight = 36
+    end
+  end
+  object Panel_Help: TPanel
+    Left = 0
+    Top = 0
+    Width = 800
+    Height = 160
+    Align = alTop
+    BevelOuter = bvNone
+    Color = 197380
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWhite
+    Font.Height = -27
+    Font.Name = 'Spoqa Han Sans Neo Bold'
+    Font.Style = []
+    Padding.Left = 10
+    Padding.Top = 10
+    ParentBackground = False
+    ParentFont = False
+    TabOrder = 2
+    DesignSize = (
+      800
+      160)
+    object Label_Title: TLabel
+      Left = 10
+      Top = 10
+      Width = 790
+      Height = 38
+      Align = alTop
+      Caption = #49324#50857#48169#48277' '#50504#45236#55357#56546
+      OnClick = Label_TitleClick
+      ExplicitWidth = 193
+    end
+    object Label1: TLabel
+      Left = 10
+      Top = 48
+      Width = 790
+      Height = 35
+      Align = alTop
+      AutoSize = False
+      Caption = '  - '#50500#47000#50640' '#47700#45684#47484' '#51060#50857#54644' '#51064#50896#49688#47484' '#51077#47141#54644#51452#49464#50836'.'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWhite
+      Font.Height = -20
+      Font.Name = 'Spoqa Han Sans Neo Bold'
+      Font.Style = []
+      ParentFont = False
+      Layout = tlCenter
+      WordWrap = True
+      ExplicitLeft = 0
+      ExplicitTop = 38
+      ExplicitWidth = 1024
+    end
+    object Label2: TLabel
+      Left = 10
+      Top = 83
+      Width = 790
+      Height = 35
+      Align = alTop
+      AutoSize = False
+      Caption = '  - '#51077#51109' '#51064#50896' '#49440#53469#54980' '#54616#45800#50640' "'#51217#49688#54616#44592'"'#47484' '#45572#47476#49884#47732', '#51077#51109#50696#50557#46121#45768#45796'.'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWhite
+      Font.Height = -20
+      Font.Name = 'Spoqa Han Sans Neo Bold'
+      Font.Style = []
+      ParentFont = False
+      Layout = tlCenter
+      WordWrap = True
+      ExplicitLeft = 0
+      ExplicitTop = 73
+      ExplicitWidth = 1024
+    end
+    object Label6: TLabel
+      Left = 10
+      Top = 118
+      Width = 790
+      Height = 35
+      Align = alTop
+      AutoSize = False
+      Caption = '  - '#49324#50857#51473' '#47928#51032'/'#50724#47448#44032' '#48156#49373#54624' '#44221#50864', '#47588#51109' '#51649#50896#50640#44172' '#50504#45236' '#48148#46989#45768#45796'.  '
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWhite
+      Font.Height = -20
+      Font.Name = 'Spoqa Han Sans Neo Bold'
+      Font.Style = []
+      ParentFont = False
+      Layout = tlCenter
+      WordWrap = True
+      ExplicitLeft = -10
+      ExplicitTop = 129
+      ExplicitWidth = 1024
+    end
+    object Panel_Lanauage: TPanel
+      Left = 670
+      Top = 10
+      Width = 120
+      Height = 140
+      Anchors = [akTop, akRight]
+      BevelOuter = bvNone
+      Caption = '(V)'
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -21
+      Font.Name = 'Spoqa Han Sans Neo Bold'
+      Font.Style = []
+      ParentBackground = False
+      ParentFont = False
+      ShowCaption = False
+      TabOrder = 0
+      Visible = False
+      OnClick = Panel_OKClick
+      object Label_KOR: TLabel
+        Left = 0
+        Top = 105
+        Width = 120
+        Height = 35
+        Hint = #20013#22283#35486
+        Align = alTop
+        AutoSize = False
+        Caption = #20013#22283#35486
+        Transparent = False
+        Layout = tlCenter
+        ExplicitTop = 95
+        ExplicitWidth = 150
+      end
+      object Label3: TLabel
+        Left = 0
+        Top = 70
+        Width = 120
+        Height = 35
+        Hint = #26085#26412#35486
+        Align = alTop
+        AutoSize = False
+        Caption = #26085#26412#35486
+        Transparent = False
+        Layout = tlCenter
+        ExplicitTop = 60
+        ExplicitWidth = 150
+      end
+      object Label4: TLabel
+        Left = 0
+        Top = 35
+        Width = 120
+        Height = 35
+        Hint = 'English'
+        Align = alTop
+        AutoSize = False
+        Caption = 'English'
+        Transparent = False
+        Layout = tlCenter
+        ExplicitTop = 30
+        ExplicitWidth = 150
+      end
+      object Label5: TLabel
+        Left = 0
+        Top = 0
+        Width = 120
+        Height = 35
+        Hint = #54620#44397#50612
+        Align = alTop
+        AutoSize = False
+        Caption = #54620#44397#50612'(V)'
+        Color = clHotLight
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWhite
+        Font.Height = -21
+        Font.Name = 'Spoqa Han Sans Neo Bold'
+        Font.Style = []
+        ParentColor = False
+        ParentFont = False
+        Transparent = False
+        Layout = tlCenter
+        ExplicitWidth = 150
+      end
+    end
+  end
+  object Panel_OK: TPanel
+    Left = 500
+    Top = 470
+    Width = 290
+    Height = 120
+    Anchors = [akRight, akBottom]
+    BevelOuter = bvNone
+    Caption = #51217#49688#54616#44592
+    Color = clWhite
+    ParentBackground = False
+    TabOrder = 3
+    OnClick = Panel_OKClick
+  end
+  object Panel_Category: TPanel
+    Left = 0
+    Top = 160
+    Width = 800
+    Height = 75
+    Align = alTop
+    BevelOuter = bvNone
+    Color = 2236962
+    ParentBackground = False
+    TabOrder = 4
+    Visible = False
+  end
+end

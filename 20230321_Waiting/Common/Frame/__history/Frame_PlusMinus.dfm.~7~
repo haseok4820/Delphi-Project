@@ -1,0 +1,77 @@
+object Frame_Menu: TFrame_Menu
+  Left = 0
+  Top = 0
+  Width = 555
+  Height = 75
+  Color = clWhite
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -27
+  Font.Name = #48729#44536#47112#52404
+  Font.Style = []
+  Padding.Top = 5
+  Padding.Right = 5
+  Padding.Bottom = 10
+  ParentBackground = False
+  ParentColor = False
+  ParentFont = False
+  TabOrder = 0
+  DesignSize = (
+    555
+    75)
+  object Shape_BG: TShape
+    Left = 0
+    Top = 0
+    Width = 555
+    Height = 70
+    Anchors = [akLeft, akTop, akRight, akBottom]
+    Pen.Width = 2
+  end
+  object Label_Name: TLabel
+    Left = 0
+    Top = 5
+    Width = 338
+    Height = 60
+    Align = alClient
+    Layout = tlCenter
+    ExplicitWidth = 9
+    ExplicitHeight = 36
+  end
+  object Image_Plus: TImage
+    Tag = 1
+    Left = 490
+    Top = 5
+    Width = 60
+    Height = 60
+    Align = alRight
+    Stretch = True
+    OnClick = Image_MinusClick
+    ExplicitLeft = 496
+    ExplicitTop = 2
+  end
+  object Label_Qty: TLabel
+    Left = 398
+    Top = 5
+    Width = 92
+    Height = 60
+    Align = alRight
+    Alignment = taCenter
+    AutoSize = False
+    Layout = tlCenter
+    ExplicitLeft = 11
+    ExplicitTop = 11
+    ExplicitHeight = 36
+  end
+  object Image_Minus: TImage
+    Tag = -1
+    Left = 338
+    Top = 5
+    Width = 60
+    Height = 60
+    Align = alRight
+    Stretch = True
+    OnClick = Image_MinusClick
+    ExplicitLeft = 186
+    ExplicitTop = -21
+  end
+end

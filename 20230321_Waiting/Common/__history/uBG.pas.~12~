@@ -1,0 +1,49 @@
+unit uBG;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs;
+
+type
+  TForm_BG = class(TForm)
+    procedure FormCreate(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    constructor Create(AOwner: TComponent);
+  end;
+
+var
+  Form_BG: TForm_BG;
+
+implementation
+
+{$R *.dfm}
+
+uses fmMain_Re;
+
+constructor TForm_BG.Create(AOwner: TComponent);
+begin
+  inherited;
+  AlphaBlend := True;
+  AlphaBlendValue := 200;
+  SetBounds(FormMain_Re.Left, FormMain_Re.Top, FormMain_Re.Width, FormMain_Re.Height);
+end;
+
+procedure TForm_BG.FormCreate(Sender: TObject);
+begin
+//
+end;
+
+procedure TForm_BG.FormShow(Sender: TObject);
+begin
+  AlphaBlend := True;
+  AlphaBlendValue := 200;
+  SetWindowLong(Handle, GWL_EXSTYLE, WS_EX_NOACTIVATE);
+end;
+
+end.

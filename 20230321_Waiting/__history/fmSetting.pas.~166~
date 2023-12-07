@@ -1,0 +1,308 @@
+﻿unit fmSetting;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Frame_Nav, Frame_ComboBox, ImagingComponents, Vcl.StdCtrls;
+
+type
+  TFrom_Setting = class(TForm)
+    Panel_Header: TPanel;
+    Label_title: TLabel;
+    Image_Close: TImage;
+    Panel_footer: TPanel;
+    Label_Version: TLabel;
+    Label_DateTime: TLabel;
+    ButtonExit: TButton;
+    Panel_Body: TPanel;
+    Image_Resize: TImage;
+    Timer_DateTime: TTimer;
+    procedure FormCreate(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure ButtonExitClick(Sender: TObject);
+    procedure Image_CloseClick(Sender: TObject);
+    procedure Panel_HeaderMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+    procedure Image_ResizeClick(Sender: TObject);
+    procedure Timer_DateTimeTimer(Sender: TObject);
+    procedure FormResize(Sender: TObject);
+  private
+    { Private declarations }
+    procedure ShowCategory;
+    procedure CategoryClick(Sender: TObject);
+  public
+    { Public declarations }
+  protected
+    procedure CreateParams(var Params: TCreateParams); override;
+  end;
+
+CONST
+  iENV_Setting = 0;
+  iENV_Data = 1;
+  iENV_history = 2;
+  iENV_Conn = 3;
+  iENV_AS = 4;
+
+var
+  From_Setting: TFrom_Setting;
+  iMonitor: Byte;
+  Formbody: TForm;
+
+  arrENVList: array [0 .. 4] of String = (
+    '환경설정',
+    '입장관리',
+    '내역관리',
+    '연동관리',
+    'AS요청'
+  );
+
+  arrENVHint: array [0 .. 4] of String = (
+    '프로그램의 설정 및 장치정보를 관리합니다.',
+    '입장구분을 관리합니다.',
+    '입장내역을 관리합니다.',
+    '타 장치(POS) 연동정보를 관리합니다.',
+    '오류사항 및 이슈사항 발생시, 여기서 원격을 진행할 수 있습니다.'
+  );
+
+  arrWiseSaying: array [0 .. 6] of String = (
+    '나 아닌 누구도 자신을 구원할 수 없다. 스스로의 길을 걸어가야 한다.',
+    '남을 위한다는 명분으로 자신의 욕망을 합리화하지 말라',
+    '오늘의 우리는 과거의 우리가 생각한 모습이다. 인간은 생각한대로 이루어진다.',
+    '나는 어떤 행동에도 변하지 않고 닥쳐오는 운명의 존재를 믿지 않는다, 그러나, 행동하지 않는 사람에게 다가오는 운명은 믿는다.',
+    '활을 쏠때, 흔들리는 건 내 눈과, 솰시위를 당기는 손, 명중할 수 있을까 의심하는 마음이다. 과녁은 늘 제자리에 있다.',
+
+    '스스로 알을 꺠면 한 마리의 병아리가 되지만, 남이 깨주면 계란 프라이가 된다.',
+    '인생에서 가장 슬픈 세가지, 할 수 있었는데, 해야 했는데, 해야만 했는데'
+  );
+
+  arrPreview_Text: array of array of String;
+  // iRes  0 : Centeer, 1 : Left, 2 : Right
+  {
+    (
+    '[ 대 기 권 ]',
+    '주문번호 : 99',
+    '대기인원 : 성인 x 2',
+    '2023-04-19 04:00:00',
+    '입장시 대기권을 지참해주세요.'
+    )
+  }
+
+implementation
+
+{$R *.dfm}
+
+uses uDM, Form_ENV1_1, Form_ENV1_4, Form_ENV1_5, Form_ENV1_2, Form_ENV1_3;
+
+{ TFrom_Setting }
+
+procedure TFrom_Setting.CreateParams(var Params: TCreateParams);
+begin
+  inherited;
+  // 폼 사이즈 조절
+  Params.ExStyle := Params.ExStyle or WS_EX_STATICEDGE;
+  Params.Style := Params.Style or WS_SIZEBOX;
+end;
+
+procedure TFrom_Setting.ButtonExitClick(Sender: TObject);
+begin
+  if DM.PopupMsg(iPOPUP_YESNO, '주문접수 프로그램을 종료하시겠어요?') = iPOPUP_RESULT_OK then
+  begin
+    if Assigned(Formbody) then
+    begin
+      Formbody.Close;
+      Formbody.Free;
+      Formbody := nil;
+    end;
+    Application.Terminate;
+  end;
+end;
+
+procedure TFrom_Setting.CategoryClick(Sender: TObject);
+var
+  iTag: Integer;
+  i: Integer;
+begin
+  //
+  if Panel_footer.ControlCount <> 0 then
+  begin
+    for i := Panel_footer.ControlCount - 1 Downto 0 do
+    begin
+      with (Panel_footer.Controls[i] as TLabel) do
+      begin
+        Color := $00020203;
+        ParentFont := True;
+      end;
+    end;
+  end;
+
+  with (Sender as TLabel) do
+  begin
+    Transparent := False;
+    Color := clWhite;
+    Font.Color := clBlack;
+    Font.Style := [fsUnderline];
+    Font.Size := 26;
+  end;
+
+  if Assigned(Formbody) then
+  begin
+    Formbody.Close;
+    Formbody.Free;
+    Formbody := nil;
+  end;
+
+  iTag := (Sender as TLabel).Tag;
+  case iTag of
+    iENV_Setting:
+      Formbody := TfmENV1_1.Create(Self);
+    iENV_Data:
+      Formbody := TfmENV1_2.Create(Self);
+    iENV_history:
+      Formbody := TfmENV1_3.Create(Self);
+    iENV_Conn:
+      Formbody := TfmENV1_4.Create(Self);
+    iENV_AS:
+      Formbody := TfmENV1_5.Create(Self);
+  end;
+
+  if Assigned(Formbody) then
+  begin
+    with Formbody do
+    begin
+      Visible := False;
+      Align := alClient;
+      BevelOuter := bvNone;
+      Parent := Panel_Body;
+      SetBounds(Left, Top, Width, Height);
+
+      Application.ProcessMessages;
+      Visible := True;
+    end;
+  end;
+end;
+
+procedure TFrom_Setting.FormCreate(Sender: TObject);
+begin
+  SetBounds(Scn_X, Scn_Y, Scn_W, Scn_H);
+end;
+
+procedure TFrom_Setting.FormShow(Sender: TObject);
+begin
+  Formbody := nil;
+  Label_DateTime.Hint := arrWiseSaying[Random(Length(arrWiseSaying))];
+  ShowCategory;
+  // CategoryClick(FindComponent('LabelENV_0'));
+end;
+
+procedure TFrom_Setting.FormResize(Sender: TObject);
+var
+  i: Byte;
+  iL, iT, iW, iH: Integer;
+begin
+  if Panel_footer.ControlCount = 0 then
+    Exit;
+
+  iW := Panel_footer.ClientWidth div 5;
+  iH := Panel_footer.ClientHeight;
+  for i := Low(arrENVList) to High(arrENVList) do
+  begin
+    iL := i * iW;
+    iT := 0;
+    with (FindComponent('LabelENV_' + IntToStr(i + 1)) as TLabel) do
+    begin
+      SetBounds(iL, iT, iW, iH);
+    end;
+  end;
+
+end;
+
+procedure TFrom_Setting.Image_ResizeClick(Sender: TObject);
+begin
+  //
+  if (Self.Width <> Screen.Monitors[iMonitor].Width) OR (Self.Height <> Screen.Monitors[iMonitor].Height) then
+  begin
+    with Screen.Monitors[iMonitor] do
+    begin
+      SetBounds(Left, Top, Width, Height);
+    end;
+  end
+  else
+  begin
+    SetBounds(Left, Top, Constraints.MinWidth, Constraints.MinHeight);
+  end;
+end;
+
+procedure TFrom_Setting.Image_CloseClick(Sender: TObject);
+begin
+  if Assigned(Formbody) then
+  begin
+    Formbody.Close;
+    Formbody.Free;
+    Formbody := nil;
+  end;
+  ModalResult := mrOK;
+end;
+
+procedure TFrom_Setting.Panel_HeaderMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  ReleaseCapture;
+  SendMessage(Handle, WM_NCLBUTTONDOWN, HTCAPTION, 0);
+end;
+
+procedure TFrom_Setting.ShowCategory;
+var
+  DelControl: TControl;
+  i: Byte;
+  iL, iT, iW, iH: Integer;
+  {
+    0 : 설정관리
+    1 : 입장관리
+    2 : 내역관리
+    3 : 연동관리
+    4 : 원격관리
+  }
+begin
+  //
+  iW := Panel_footer.ClientWidth div 5;
+  iH := Panel_footer.ClientHeight;
+  if Panel_footer.ControlCount <> 0 then
+  begin
+    for i := Panel_footer.ControlCount - 1 Downto 0 do
+    begin
+      DelControl := Panel_footer.Controls[i];
+      FreeAndNil(DelControl);
+    end;
+  end;
+
+  for i := Low(arrENVList) to High(arrENVList) do
+  begin
+    iL := i * iW;
+    iT := 0;
+
+    with TLabel.Create(Self) do
+    begin
+      Parent := Panel_footer;
+      alignment := taCenter;
+      Align := alLeft;
+      WordWrap := True;
+      AutoSize := False;
+      Layout := tlCenter;
+
+      Tag := i;
+      Name := 'LabelENV_' + IntToStr(i + 1);
+      Caption := arrENVList[i];
+      Hint := arrENVHint[i];
+      SetBounds(iL, iT, iW, iH);
+
+      onClick := CategoryClick;
+    end;
+  end;
+
+end;
+
+procedure TFrom_Setting.Timer_DateTimeTimer(Sender: TObject);
+begin
+  Label_DateTime.Caption := '📆' + FormatDateTime('YYYY-MM-DD HH:MM', Now);
+end;
+
+end.

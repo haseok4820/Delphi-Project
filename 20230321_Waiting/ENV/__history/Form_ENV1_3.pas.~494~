@@ -1,0 +1,378 @@
+unit Form_ENV1_3;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Frame_ComboBox, Frame_Edit,
+  shellApi;
+
+type
+  TfmENV1_3 = class(TForm)
+    PanelBottom: TPanel;
+    ButtonUP: TButton;
+    ButtonDown: TButton;
+    FrmCombo_Pageing: TFrame_ENV_ComboBox;
+    Button_Search: TButton;
+    RadioGroup1: TRadioGroup;
+    Frame_ENV_Edit1: TFrame_ENV_Edit;
+    Memo_TOTAL: TMemo;
+    Frame_ENV_Edit2: TFrame_ENV_Edit;
+    ListBox: TScrollBox;
+    Label_Guide: TLabel;
+    procedure FormShow(Sender: TObject);
+    procedure FormResize(Sender: TObject);
+    procedure FormMouseWheel(Sender: TObject; Shift: TShiftState; WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean);
+
+    procedure FrmCombo_PageingClick(Sender: TObject);
+    procedure ButtonScroll(Sender: TObject);
+    procedure Button_SearchClick(Sender: TObject);
+    procedure Button_LogClick(Sender: TObject);
+    procedure Memo_TOTALMouseEnter(Sender: TObject);
+    procedure Memo_TOTALMouseLeave(Sender: TObject);
+  private
+    { Private declarations }
+    procedure ShowList(iSeq: Cardinal);
+    procedure FreeList;
+
+    procedure GetTotal;
+  public
+    { Public declarations }
+  end;
+
+const
+  iRANGE = 50;
+
+var
+  fmENV1_3: TfmENV1_3;
+  sLogFile: String;
+  arrPage: array of String;
+  iMIN, iMAX: Cardinal;
+
+implementation
+
+{$R *.dfm}
+
+uses Frame_WaitList, uDM;
+
+procedure TfmENV1_3.FormShow(Sender: TObject);
+begin
+  GetTotal;
+  iMIN := 1;
+  iMAX := iMIN * iRANGE;
+  sLogFile := sAPPPATH + '\Log\AIRK2_Log' + FormatDateTime('YYYYMMDD', NOW) + '.txt';
+  // Button_Log.Enabled := FileExists(sLogFile);
+end;
+
+procedure TfmENV1_3.FormResize(Sender: TObject);
+begin
+  ButtonUP.Width := PanelBottom.Width div 2;
+  ButtonDown.Width := ButtonUP.Width;
+
+end;
+
+procedure TfmENV1_3.Button_SearchClick(Sender: TObject);
+begin
+  FreeList;
+  ShowList(0);
+end;
+
+procedure TfmENV1_3.FormMouseWheel(Sender: TObject; Shift: TShiftState; WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean);
+begin
+  if WheelDelta >= 0 then
+    SendMEssage(ListBox.Handle, WM_HSCROLL, SB_PAGELEFT, 0)
+  else
+    SendMEssage(ListBox.Handle, WM_HSCROLL, SB_PAGERIGHT, 0);
+end;
+
+procedure TfmENV1_3.FrmCombo_PageingClick(Sender: TObject);
+var
+  Res: TResult_IS;
+begin
+  Res := DM.PopupList(arrPage);
+  if Res.iRes <> iPOPUP_USERCANCEL then
+  begin
+    with (Sender as TFrame_ENV_ComboBox) do
+    begin
+      Tag := Res.iRes;
+      Label_Key.Caption := Res.sRes;
+      iMIN := (Tag * iRANGE) + 1;
+      iMAX := iMIN + iRANGE - 1;
+    end;
+  end;
+end;
+
+procedure TfmENV1_3.GetTotal;
+var
+  i: Word;
+begin
+  //
+  if NOT DM.FDConn.Connected then
+    Exit;
+  with DM.FDQ do
+  begin
+    if Active then
+      Active := False;
+
+    SQL.Clear;
+    SQL.Text := 'SELECT MAX(PSEQ) FROM HREADYTABLE WHERE POSNO = ' + IntToStr(iDB_POSNO);
+    Open;
+    if Not Eof then
+    begin
+      i := FieldByName('MAX').AsInteger;
+      if i = 0 then
+      begin
+
+      end
+      else
+      begin
+        if i mod iRANGE = 0 then
+          SetLength(arrPage, i div iRANGE)
+        else
+          SetLength(arrPage, i div iRANGE + 1);
+        NExt;
+      end;
+    end;
+    Active := False;
+  end;
+
+  if i <> 0 then
+  begin
+    for i := Low(arrPage) to High(arrPage) do
+    begin
+      arrPage[i] := '( ' + IntToStr((i * iRANGE) + 1) + ' ~ ' + IntToStr((i + 1) * iRANGE) + ' )번째 대기건';
+    end;
+  end
+  else
+  begin
+    FrmCombo_Pageing.Visible := False;
+    Application.ProcessMessages;
+
+
+  end;
+end;
+
+procedure TfmENV1_3.Memo_TOTALMouseEnter(Sender: TObject);
+begin
+  if Assigned(OnMouseWheel) then
+    OnMouseWheel := nil;
+end;
+
+procedure TfmENV1_3.Memo_TOTALMouseLeave(Sender: TObject);
+begin
+  OnMouseWheel := FormMouseWheel;
+
+end;
+
+procedure TfmENV1_3.Button_LogClick(Sender: TObject);
+begin
+  // ShellExecute(Self.Handle, 'open', PChar('notepad'), PChar(sLogFile), nil, SW_SHOW);
+end;
+
+procedure TfmENV1_3.ButtonScroll(Sender: TObject);
+begin
+  if (Sender as TButton).Tag >= 0 then
+    SendMEssage(ListBox.Handle, WM_HSCROLL, SB_PAGELEFT, 0)
+  else
+    SendMEssage(ListBox.Handle, WM_HSCROLL, SB_PAGERIGHT, 0);
+end;
+
+procedure TfmENV1_3.ShowList(iSeq: Cardinal);
+var
+  iTotalCNT_Wait, iTotalCNT_Complete: Cardinal;
+  sDate, sTime: String;
+  sPSEQ, sPNDT, sRTIME, sKITPRN1, sSTOCKNAME, sQTY: String;
+  isTotalData: TResult_IS;
+  i, j, iPage: Integer;
+
+  arrWaitNumb: array of String; // 주문번호 수
+  arrWaitTime: array of String; // 주문일시 정보
+  arrWaitList: array of array of String; // 주문상품정보
+  arrWaitStockTotal: array of TResult_IS; // 총 대기(상품)종류
+begin
+  if NOT DM.FDConn.Connected then
+  begin
+    DM.PopupMsg('데이터가 연결되어 있지 않아,#13내역을 확인할 수 없습니다.');
+    Exit;
+  end;
+
+  with DM do
+  begin
+    with FDQ do
+    begin
+      if Active then
+        Active := False;
+
+      SQL.Clear;
+      SQL.Add(' SELECT H.KITPRN1, COUNT(H.TOTALCNT) as "WAITCnt" FROM');
+      SQL.Add(' ( ');
+      SQL.Add(' SELECT DISTINCT KITPRN1, PSEQ AS TOTALCNT FROM HREADYTABLE');
+      SQL.Add(' WHERE POSNO = ' + IntToStr(iDB_POSNO));
+      SQL.Add(' AND PSEQ BETWEEN ' + IntToStr(iMIN) + ' AND ' + IntToStr(iMAX));
+      SQL.Add(' ) AS H');
+      SQL.Add(' GROUP BY H.KITPRN1');
+
+      try
+        Open;
+        while Not Eof do
+        begin
+          if FieldByName('KITPRN1').AsString = '0' then
+            iTotalCNT_Wait := FieldByName('WAITCnt').AsInteger
+          else if FieldByName('KITPRN1').AsString = '1' then
+            iTotalCNT_Complete := FieldByName('WAITCnt').AsInteger;
+          NExt;
+        end;
+      except
+        On E: Exception do
+        begin
+          LogText('SQL Err : ' + E.Message);
+          iTotalCNT_Wait := 0;
+          iTotalCNT_Complete := 0;
+        end;
+      end;
+    end;
+
+    SetLength(arrWaitNumb, iTotalCNT_Wait + iTotalCNT_Complete);
+    SetLength(arrWaitList, Length(arrWaitNumb));
+
+    if Length(arrWaitNumb) = 0 then
+    begin
+      DM.PopupMsg('검색된 내역이 없습니다.');
+      Exit;
+    end;
+    // ---------------------------------------------------------------------------------
+
+    with FDQ do
+    begin
+      if Active then
+        Active := False;
+      SQL.Clear;
+      SQL.Add(' SELECT PSEQ, PNDT, RTIME, KITPRN1, STOCKNAME, QTY FROM HREADYTABLE h ');
+      SQL.Add(' WHERE POSNO = ' + IntToStr(iDB_POSNO));
+      SQL.Add(' AND PSEQ BETWEEN ' + IntToStr(iMIN) + ' AND ' + IntToStr(iMAX));
+      case RadioGroup1.ItemIndex of
+        1: // 완료내역
+          begin
+            SQL.Add(' WHERE KITPRN1 = 1 ');
+
+          end;
+        2: // 대기내역
+          begin
+            SQL.Add(' WHERE KITPRN1 = 0 ');
+          end;
+      end;
+      SQL.Add(' ORDER BY ISEQ DESC, PSEQ DESC ');
+
+      Open;
+    end;
+
+    while Not FDQ.Eof do
+    begin
+      with FDQ do
+      begin
+        sDate := FieldByName('PNDT').AsString;
+        sTime := FieldByName('RTIME').AsString;
+
+        sPSEQ := '대기번호 : ' + FieldByName('PSEQ').AsString;
+        sPNDT := Copy(sDate, 1, 4) + '-' + Copy(sDate, 5, 2) + '-' + Copy(sDate, 7, 2);
+        sRTIME := Copy(sTime, 1, 2) + ':' + Copy(sTime, 3, 2);
+        sKITPRN1 := FieldByName('KITPRN1').AsString;
+        sSTOCKNAME := FieldByName('STOCKNAME').AsString;
+        sQTY := FieldByName('QTY').AsString;
+      end;
+      // 주문정보
+      for i := Low(arrWaitNumb) to High(arrWaitNumb) do
+      begin
+        if arrWaitNumb[i] = sPSEQ then
+        begin
+          INSERT(sPNDT + ' ' + sRTIME, arrWaitTime, High(arrWaitTime) + 1);
+          INSERT(sSTOCKNAME + ' X ' + sQTY, arrWaitList[i], High(arrWaitList[i]) + 1);
+          Break;
+        end
+        else if Trim(arrWaitNumb[i]) = '' then
+        begin
+          arrWaitNumb[i] := sPSEQ;
+          INSERT(sPNDT + ' ' + sRTIME, arrWaitTime, High(arrWaitTime) + 1);
+          INSERT(sSTOCKNAME + ' X ' + sQTY, arrWaitList[i], High(arrWaitList[i]) + 1);
+          Break;
+        end;
+      end;
+
+      // 총합
+      if Length(arrWaitStockTotal) = 0 then
+        SetLength(arrWaitStockTotal, 1);
+      for i := Low(arrWaitStockTotal) to High(arrWaitStockTotal) do
+      begin
+        if arrWaitStockTotal[i].sRes = sSTOCKNAME then
+        begin
+          arrWaitStockTotal[i].iRes := arrWaitStockTotal[i].iRes + StrToIntDef(sQTY, 1);
+          Break;
+        end
+        else if i = High(arrWaitStockTotal) then
+        begin
+          isTotalData.iRes := StrToIntDef(sQTY, 1);
+          isTotalData.sRes := sSTOCKNAME;
+          INSERT(isTotalData, arrWaitStockTotal, High(arrWaitStockTotal) + 1);
+        end;
+
+      end;
+      FDQ.NExt;
+    end;
+  end;
+
+  if Length(arrWaitTime) = 0 then
+  begin
+    DM.PopupMsg('검색된 내역이 없습니다.');
+    Exit;
+  end;
+
+  for i := Low(arrWaitList) to High(arrWaitList) do
+  begin
+    with TFrame_WaitInfo.Create(Self) do
+    begin
+      Align := alRight;
+      Parent := ListBox;
+      Name := 'FrameWaitList' + IntToStr(i);
+
+      Label_WaitNO.Caption := arrWaitNumb[i] + #13#10 + arrWaitTime[i];
+      Memo_List.Lines.BeginUpdate;
+      for j := Low(arrWaitList[i]) to High(arrWaitList[i]) do
+        Memo_List.Lines.Add(arrWaitList[i, j]);
+      Memo_List.Lines.EndUpdate;
+      Align := alLeft;
+    end;
+  end;
+
+  Application.ProcessMessages;
+
+  // Total
+  Frame_ENV_Edit1.Edit_Value.Text := IntToStr(iTotalCNT_Complete) + '/' + IntToStr(iTotalCNT_Wait);
+  Frame_ENV_Edit2.Edit_Value.Text := IntToStr(iTotalCNT_Complete + iTotalCNT_Wait);
+
+  Memo_TOTAL.Clear;
+  Memo_TOTAL.Lines.BeginUpdate;
+  for i := Low(arrWaitStockTotal) to High(arrWaitStockTotal) do
+  begin
+    iPage := 40 - (Length(AnsiString(arrWaitStockTotal[i].sRes)) - Length(arrWaitStockTotal[i].sRes));
+    Memo_TOTAL.Lines.Add(Format('%-' + IntToStr(iPage) + 's', [arrWaitStockTotal[i].sRes]) + IntToStr(arrWaitStockTotal[i].iRes));
+  end;
+  Memo_TOTAL.Lines.EndUpdate;
+
+end;
+
+procedure TfmENV1_3.FreeList;
+var
+  i, iPage: Integer;
+  DelControl: TControl;
+begin
+  if ListBox.ControlCount <> 0 then
+  begin
+    for i := ListBox.ControlCount - 1 Downto 0 do
+    begin
+      DelControl := ListBox.Controls[i];
+      FreeAndNil(DelControl);
+    end;
+  end;
+end;
+
+end.

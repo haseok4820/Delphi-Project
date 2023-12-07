@@ -1,0 +1,68 @@
+object FrameTicketList: TFrameTicketList
+  Padding.Left = 5.000000000000000000
+  Padding.Top = 5.000000000000000000
+  Padding.Right = 15.000000000000000000
+  Padding.Bottom = 5.000000000000000000
+  Size.Width = 480.000000000000000000
+  Size.Height = 50.000000000000000000
+  Size.PlatformDefault = False
+  object CheckBox_Used: TCheckBox
+    Align = Left
+    Position.X = 5.000000000000000000
+    Position.Y = 5.000000000000000000
+    Size.Width = 60.000000000000000000
+    Size.Height = 40.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 0
+    OnChange = CheckBox_UsedChange
+    OnClick = CheckBox_UsedChange
+  end
+  object Label_Name: TLabel
+    Align = Client
+    StyledSettings = [Family, Style, FontColor]
+    Size.Width = 290.000000000000000000
+    Size.Height = 40.000000000000000000
+    Size.PlatformDefault = False
+    TextSettings.Font.Size = 20.000000000000000000
+    Text = #44396#48516#47749#51012' '#51077#47141
+    TabOrder = 1
+  end
+  object NumberBox_X: TNumberBox
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    Align = Right
+    TabOrder = 3
+    Cursor = crIBeam
+    Min = 1.000000000000000000
+    Max = 3.000000000000000000
+    Value = 1.000000000000000000
+    TextSettings.Font.Size = 20.000000000000000000
+    TextSettings.HorzAlign = Center
+    Position.X = 360.000000000000000000
+    Position.Y = 5.000000000000000000
+    Margins.Left = 5.000000000000000000
+    Margins.Right = 5.000000000000000000
+    Size.Width = 50.000000000000000000
+    Size.Height = 40.000000000000000000
+    Size.PlatformDefault = False
+    StyledSettings = [Family, Style, FontColor]
+    OnMouseLeave = NumberBox_YMouseLeave
+  end
+  object NumberBox_Y: TNumberBox
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    Align = Right
+    TabOrder = 2
+    Cursor = crIBeam
+    Min = 1.000000000000000000
+    Max = 3.000000000000000000
+    Value = 1.000000000000000000
+    TextSettings.Font.Size = 20.000000000000000000
+    TextSettings.HorzAlign = Center
+    Position.X = 415.000000000000000000
+    Position.Y = 5.000000000000000000
+    Size.Width = 50.000000000000000000
+    Size.Height = 40.000000000000000000
+    Size.PlatformDefault = False
+    StyledSettings = [Family, Style, FontColor]
+    OnMouseLeave = NumberBox_YMouseLeave
+  end
+end

@@ -1,0 +1,318 @@
+unit Form_ENV1_4;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, System.RegularExpressions,
+  Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Frame_Edit, Vcl.StdCtrls, Vcl.ExtCtrls;
+
+type
+  TfmENV1_4 = class(TForm)
+    FrmEdit_DBIP: TFrame_ENV_Edit;
+    GroupBox1: TGroupBox;
+    Memo1: TMemo;
+    Panel_Keypad: TPanel;
+    Timer_Keypad: TTimer;
+    FrmEdit_POSNO: TFrame_ENV_Edit;
+    Edit_DBPath: TEdit;
+    Label_DBPath: TLabel;
+    Timer_Auto: TTimer;
+    Button_Localhost: TButton;
+    Button_Keyboard: TButton;
+    Button_DBTest: TButton;
+    procedure Timer_KeypadTimer(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure FormResize(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+
+    procedure Button_PathClick(Sender: TObject);
+    procedure Keypad_MouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+    procedure Keypad_MouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+    procedure Timer_AutoTimer(Sender: TObject);
+    procedure Button_LocalhostClick(Sender: TObject);
+    procedure Button_KeyboardClick(Sender: TObject);
+    procedure Button_DBTestClick(Sender: TObject);
+  private
+    { Private declarations }
+    procedure Keypad_Click(Sender: TObject);
+    procedure Keypad_MouseEnter(Sender: TObject);
+    procedure Keypad_MouseLeave(Sender: TObject);
+
+    function IPChk(IPVal: String): Boolean;
+  public
+    { Public declarations }
+  end;
+
+var
+  fmENV1_4: TfmENV1_4;
+  arrKey_Caption: array [0 .. 12] of String = (
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9',
+    '.',
+    '0',
+    '지우기',
+    'Enter'
+  );
+  arrKey_Byte: array [0 .. 12] of Byte = (
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    110,
+    48,
+    8,
+    13
+  );
+
+implementation
+
+{$R *.dfm}
+
+uses uDM;
+
+procedure TfmENV1_4.Button_PathClick(Sender: TObject);
+begin
+  Edit_DBPath.Text := 'C:\FOODCAFE\Database\';
+end;
+
+procedure TfmENV1_4.Button_LocalhostClick(Sender: TObject);
+begin
+  FrmEdit_DBIP.Edit_Value.Text := '127.0.0.1';
+end;
+
+procedure TfmENV1_4.Button_DBTestClick(Sender: TObject);
+var
+  sMSG: String;
+  bReturn: Boolean;
+begin
+  //
+  (Sender as TButton).Caption := '연결 통신중입니다...';
+  (Sender as TButton).Enabled := False;
+  try
+
+    bReturn := DM.FDConn.Connected;
+    DM.SetBG(True);
+    try
+      if NOT IPChk(FrmEdit_DBIP.Edit_Value.Text) then
+      begin
+        FrmEdit_DBIP.Edit_Value.SetFocus;
+        sMSG := '메인 IP를 확인해주세요.#13유효하지 않은 IP형식입니다.';
+        Exit;
+      end;
+
+      FrmEdit_DBIP.Hint := sDB_IP;
+      Edit_DBPath.Hint := sDB_PATH;
+
+      sDB_IP := FrmEdit_DBIP.Edit_Value.Text;
+      sDB_PATH := Edit_DBPath.Text;
+
+      if DM.DB_Connect then
+      begin
+        sMSG := 'DB 테스트 연결 성공';
+        bReturn := False;
+      end
+      else
+        sMSG := 'DB 테스트 연결 실패: 지속적으로 실패할경우, 프로그램을 재실행해주세요.';
+    except
+      ON E: Exception do
+      begin
+        sMSG := E.Message;
+        sMSG := '연결 실패 :  연동정보(IP, 경로)를 확인해주세요.';
+      end;
+    end;
+  finally
+    DM.SetBG(False);
+    DM.PopupMsg(sMSG);
+    (Sender as TButton).Enabled := True;
+    (Sender as TButton).Caption := '연결 테스트';
+    sDB_IP := FrmEdit_DBIP.Hint;
+    sDB_PATH := Edit_DBPath.Hint;
+
+    if bReturn then
+      DM.DB_Connect;
+  end;
+end;
+
+procedure TfmENV1_4.Button_KeyboardClick(Sender: TObject);
+begin
+  DM.PopupKeyboard;
+end;
+
+procedure TfmENV1_4.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  sDB_IP := FrmEdit_DBIP.Edit_Value.Text;
+  iDB_POSNO := StrToIntDef(FrmEdit_POSNO.Edit_Value.Text, 1);
+  sDB_PATH := Edit_DBPath.Text;
+end;
+
+procedure TfmENV1_4.FormResize(Sender: TObject);
+begin
+  // Timer_Keypad.Enabled := True;
+end;
+
+procedure TfmENV1_4.FormShow(Sender: TObject);
+begin
+  // Timer_Keypad.Enabled := True;
+  Button_DBTest.Visible := DM.FDConn.Connected;
+  if NOT Button_DBTest.Visible then
+  begin
+    Edit_DBPath.Width := Button_DBTest.Width + Button_DBTest.Left - Edit_DBPath.Left;
+  end;
+
+
+  FrmEdit_DBIP.Edit_Value.Text := sDB_IP;
+  FrmEdit_POSNO.Edit_Value.Text := IntToStr(iDB_POSNO);
+
+  Edit_DBPath.Text := sDB_PATH;
+end;
+
+function TfmENV1_4.IPChk(IPVal: String): Boolean;
+var
+  RegIPAddress: String;
+begin
+  //
+  RegIPAddress := '\b' + //
+    '(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.' + '(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.' + '(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.' +
+    '(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b';
+
+  if TRegEx.IsMatch(IPVal, RegIPAddress) then
+    Result := True
+  else
+    Result := False;
+end;
+
+procedure TfmENV1_4.Keypad_Click(Sender: TObject);
+var
+  bChk: Boolean;
+  iKey: Byte;
+  i: Integer;
+begin
+  if Sender <> nil then
+    iKey := (Sender as TLabel).Tag;
+
+  if (Sender = nil) then
+  begin
+    bChk := True;
+    for i := 0 to Memo1.Lines.Count - 1 do
+    begin
+      if NOT IPChk(Memo1.Lines[i]) then
+      begin
+        DM.PopupMsg('[' + IntToStr(i + 1) + ']번째 값은,#13올바르지 않은 IP 형식입니다.');
+        bChk := False;
+        Break;
+      end;
+    end;
+  end
+  else
+  begin
+    Keybd_Event(iKey, MapVirtualKey(iKey, 0), 0, 0);
+    Keybd_Event(iKey, MapVirtualKey(iKey, 0), KEYEVENTF_KEYUP, 0);
+  end;
+
+end;
+
+procedure TfmENV1_4.Keypad_MouseEnter(Sender: TObject);
+begin
+  //
+  with (Sender as TLabel) do
+  begin
+    Color := $00222222;
+    Font.Color := clWhite;
+  end;
+end;
+
+procedure TfmENV1_4.Keypad_MouseLeave(Sender: TObject);
+begin
+  //
+  with (Sender as TLabel) do
+  begin
+    Color := clWhite;
+    Font.Color := clBlack;
+  end;
+end;
+
+procedure TfmENV1_4.Keypad_MouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  Timer_Auto.Interval := 1000;
+  Timer_Auto.Tag := (Sender as TLabel).Tag;
+  Timer_Auto.Enabled := True;
+end;
+
+procedure TfmENV1_4.Keypad_MouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  Timer_Auto.Enabled := False;
+end;
+
+procedure TfmENV1_4.Timer_AutoTimer(Sender: TObject);
+begin
+  if Timer_Auto.Interval >= 100 then
+    Timer_Auto.Interval := Timer_Auto.Interval div 2;
+  Label_DBPath.Tag := Timer_Auto.Tag;
+  Keypad_Click(Label_DBPath);
+end;
+
+procedure TfmENV1_4.Timer_KeypadTimer(Sender: TObject);
+var
+  iLeft, iTop, iWidth, iHeight: Integer;
+  i, j, iFontSize: Cardinal;
+begin
+  Timer_Keypad.Enabled := False;
+  if Panel_Keypad.ControlCount <> 0 then
+  begin
+    for i := Panel_Keypad.ControlCount - 1 Downto 0 do
+      (Panel_Keypad.Controls[i] as TControl).Free;
+  end;
+
+  iFontSize := Font.Size;
+  iWidth := Panel_Keypad.Width div 3;
+  iHeight := Panel_Keypad.Height div 5;
+  for i := Low(arrKey_Caption) to High(arrKey_Caption) do
+  begin
+    j := i div 3;
+    with TLabel.Create(Self) do
+    begin
+      Parent := Panel_Keypad;
+      Transparent := False;
+      Color := clWhite;
+      AutoSize := False;
+      Layout := tlCenter;
+      Alignment := taCenter;
+
+      Caption := arrKey_Caption[i];
+      Tag := arrKey_Byte[i];
+
+      iLeft := i mod 3 * iWidth;
+      iTop := j * iHeight;
+
+      Font.Size := iFontSize;
+
+      if i = High(arrKey_Caption) then
+        SetBounds(iLeft + 1, iTop + 1, (iWidth * 3) - 2, iHeight - 2)
+      else
+        SetBounds(iLeft + 1, iTop + 1, iWidth - 2, iHeight - 2);
+      OnClick := Keypad_Click;
+      OnMouseEnter := Keypad_MouseEnter;
+      OnMouseLeave := Keypad_MouseLeave;
+      OnMouseDown := Keypad_MouseDown;
+      OnMouseUp := Keypad_MouseUp;
+
+    end;
+  end;
+
+  Memo1.SetFocus;
+end;
+
+end.

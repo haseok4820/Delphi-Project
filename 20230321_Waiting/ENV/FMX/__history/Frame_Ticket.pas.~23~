@@ -1,0 +1,49 @@
+unit Frame_Ticket;
+
+interface
+
+uses
+  System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
+  FMX.Types, FMX.Graphics, FMX.Controls, FMX.Forms, FMX.Dialogs, FMX.StdCtrls, FMX.Edit, FMX.Controls.Presentation,
+  FMX.EditBox, FMX.NumberBox;
+
+type
+  TFrameTicketList = class(TFrame)
+    CheckBox_Used: TCheckBox;
+    Label_Name: TLabel;
+    NumberBox_X: TNumberBox;
+    NumberBox_Y: TNumberBox;
+    procedure CheckBox_UsedChange(Sender: TObject);
+    procedure NumberBox_YMouseLeave(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+implementation
+
+{$R *.fmx}
+
+uses uPreview;
+
+procedure TFrameTicketList.CheckBox_UsedChange(Sender: TObject);
+begin
+  arrTicketInfo[Tag].bUsed := CheckBox_Used.IsChecked;
+  NumberBox_X.Enabled := CheckBox_Used.IsChecked;
+  NumberBox_Y.Enabled := CheckBox_Used.IsChecked;
+
+  if Assigned(Self.OnClick) then
+    Self.OnClick(Self);
+end;
+
+procedure TFrameTicketList.NumberBox_YMouseLeave(Sender: TObject);
+begin
+  arrTicketInfo[Tag].iExtend_X := NumberBox_X.Value;
+  arrTicketInfo[Tag].iExtend_Y := StrToIntDef(NumberBox_Y.Text, 1);
+
+  if Assigned(Self.OnClick) then
+    Self.OnClick(Self);
+end;
+
+end.

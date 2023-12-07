@@ -1,0 +1,238 @@
+unit uKeyPad;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls;
+
+type
+  TForm_Keypad = class(TForm)
+    Panel_Keypad: TPanel;
+    Shape_Line: TShape;
+    Panel_Edit: TPanel;
+    Label_Tel2: TLabel;
+    Label_Tel1: TLabel;
+    Label_Guide: TLabel;
+    Edit2: TEdit;
+    Edit1: TEdit;
+    Label_Cancel: TLabel;
+    procedure FormShow(Sender: TObject);
+    procedure Label_CancelClick(Sender: TObject);
+    procedure Edit2Change(Sender: TObject);
+  private
+    { Private declarations }
+    procedure Keypad_Click(Sender: TObject);
+    procedure Keypad_MouseEnter(Sender: TObject);
+    procedure Keypad_MouseLeave(Sender: TObject);
+  public
+    { Public declarations }
+  end;
+
+var
+  Form_Keypad: TForm_Keypad;
+  sTel: String;
+  arrKey_Caption: array [0 .. 11] of String = (
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9',
+    '지우기',
+    '0',
+    '확인'
+  );
+  arrKey_Byte: array [0 .. 11] of Byte = (
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    8,
+    48,
+    13
+  );
+
+implementation
+
+{$R *.dfm}
+
+uses uDM;
+
+procedure TForm_Keypad.Edit2Change(Sender: TObject);
+begin
+  if Length((Sender as TEdit).Text) = 4 then
+  begin
+    case (Sender as TEdit).Tag of
+      1:
+        begin
+          Edit2.SetFocus;
+        end;
+      2:
+        begin
+          // Keypad_Click(nil);
+        end;
+    end;
+  end
+  else if Length((Sender as TEdit).Text) = 0 then
+  begin
+    if (Sender as TEdit).Tag = 2 then
+    begin
+      Edit1.SetFocus;
+    end;
+  end;
+end;
+
+procedure TForm_Keypad.FormShow(Sender: TObject);
+var
+  i, j: Integer;
+
+  iTop, iLeft, iWidth, iHeight: Integer;
+
+  RectFont: TRect;
+  lFontLabel: TLabel;
+  iFontSize: Byte;
+
+begin
+  //
+  with ClientRect do
+  begin
+    SetWindowRgn(Handle, CreateRoundRectRgn(Left, Top, Right + 1, Bottom + 1, 30, 30), True);
+  end;
+
+  if Panel_Keypad.ControlCount <> 0 then
+  begin
+    for i := Panel_Keypad.ControlCount - 1 to 0 do
+    begin
+      (Panel_Keypad.Controls[i] as TObject).Free;
+    end;
+  end;
+
+  j := 0;
+  iWidth := Panel_Keypad.Width div 3;
+  iHeight := Panel_Keypad.Height div 4;
+
+  // 폰트 사이즈 자동조절
+  lFontLabel := TLabel.Create(Self);
+  try
+    with lFontLabel do
+    begin
+      Parent := Self;
+      Width := iWidth;
+      Height := iHeight;
+    end;
+
+    RectFont := Default (TRect);
+    RectFont.Right := lFontLabel.Width;
+    RectFont.Height := lFontLabel.Height;
+
+    for i := 40 Downto 20 do
+    begin
+      Canvas.Font.Size := i;
+      Canvas.TextRect(RectFont, arrKey_Caption[High(arrKey_Caption) - 2], [tfCalcRect]);
+
+      if ((RectFont.Right - RectFont.Left) < lFontLabel.Width) AND ((RectFont.Bottom - RectFont.Top) < lFontLabel.Height) then
+      begin
+        iFontSize := i - 5;
+        Break;
+      end;
+    end;
+  finally
+    lFontLabel.Free;
+    lFontLabel := nil;
+  end;
+
+  for i := Low(arrKey_Caption) to High(arrKey_Caption) do
+  begin
+    j := i div 3;
+    with TLabel.Create(Self) do
+    begin
+      Parent := Panel_Keypad;
+      Transparent := False;
+      Color := clWhite;
+      AutoSize := False;
+      Layout := tlCenter;
+      Alignment := taCenter;
+
+      Caption := arrKey_Caption[i];
+      Tag := arrKey_Byte[i];
+
+      iLeft := i mod 3 * iWidth;
+      iTop := j * iHeight;
+
+      Font.Size := iFontSize;
+
+      SetBounds(iLeft + 1, iTop + 1, iWidth - 2, iHeight - 2);
+      OnClick := Keypad_Click;
+      OnMouseEnter := Keypad_MouseEnter;
+      OnMouseLeave := Keypad_MouseLeave;
+
+    end;
+  end;
+
+  Edit1.SetFocus;
+end;
+
+procedure TForm_Keypad.Keypad_Click(Sender: TObject);
+var
+  iKey: Byte;
+begin
+  if Sender <> nil then
+    iKey := (Sender as TLabel).Tag;
+
+  if (Sender = nil) OR (iKey = 13) then
+  begin
+
+    sTel := Edit1.Text + Edit2.Text;
+    if Length(sTel) <> 8 then
+    begin
+      DM.PopupMsg('입력하신 전화번호를 확인해주세요.#13실패사유:유효하지 않은 전화번호');
+    end
+    else
+    begin
+      ModalResult := mrOK;
+
+    end;
+  end
+  else
+  begin
+    Keybd_Event(iKey, MapVirtualKey(iKey, 0), 0, 0);
+    Keybd_Event(iKey, MapVirtualKey(iKey, 0), KEYEVENTF_KEYUP, 0);
+  end;
+
+end;
+
+procedure TForm_Keypad.Keypad_MouseEnter(Sender: TObject);
+begin
+  //
+  with (Sender as TLabel) do
+  begin
+    Color := $00222222;
+    Font.Color := clWhite;
+  end;
+end;
+
+procedure TForm_Keypad.Keypad_MouseLeave(Sender: TObject);
+begin
+  //
+  with (Sender as TLabel) do
+  begin
+    Color := clWhite;
+    Font.Color := clBlack;
+  end;
+end;
+
+procedure TForm_Keypad.Label_CancelClick(Sender: TObject);
+begin
+  ModalResult := mrCancel;
+end;
+
+end.

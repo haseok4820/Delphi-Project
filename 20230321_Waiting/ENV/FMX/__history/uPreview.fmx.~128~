@@ -1,0 +1,339 @@
+object FormMain: TFormMain
+  Left = 0
+  Top = 0
+  BorderStyle = ToolWindow
+  Caption = 'AirTicket_Preview'
+  ClientHeight = 550
+  ClientWidth = 800
+  Fill.Color = xA1111111
+  Fill.Kind = Solid
+  Padding.Left = 10.000000000000000000
+  Padding.Top = 10.000000000000000000
+  Padding.Right = 10.000000000000000000
+  Padding.Bottom = 10.000000000000000000
+  Transparency = True
+  FormStyle = StayOnTop
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  FullScreen = True
+  OnResize = FormResize
+  OnShow = FormShow
+  DesignerMasterStyle = 0
+  object Rectangle_Parent: TRectangle
+    Fill.Color = claWhite
+    Position.X = 10.000000000000000000
+    Position.Y = 10.000000000000000000
+    RotationCenter.X = 0.000000000000000000
+    RotationCenter.Y = 0.000000000000000000
+    Size.Width = 780.000000000000000000
+    Size.Height = 530.000000000000000000
+    Size.PlatformDefault = False
+    object Rectangle_GiodeBG: TRectangle
+      Fill.Color = claGhostwhite
+      Position.X = 430.000000000000000000
+      Position.Y = 50.000000000000000000
+      Size.Width = 350.000000000000000000
+      Size.Height = 75.000000000000000000
+      Size.PlatformDefault = False
+    end
+    object Panel_Client: TPanel
+      Align = Client
+      Size.Width = 430.000000000000000000
+      Size.Height = 480.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 0
+      object Rectangle_PrtHeader: TRectangle
+        Align = Top
+        Fill.Color = claWhite
+        Padding.Left = 5.000000000000000000
+        Padding.Top = 5.000000000000000000
+        Padding.Right = 15.000000000000000000
+        Padding.Bottom = 5.000000000000000000
+        Position.Y = 80.000000000000000000
+        Size.Width = 430.000000000000000000
+        Size.Height = 55.000000000000000000
+        Size.PlatformDefault = False
+        object Label1: TLabel
+          Align = Left
+          AutoTranslate = False
+          StyledSettings = [Family, FontColor]
+          Position.X = 5.000000000000000000
+          Position.Y = 5.000000000000000000
+          Size.Width = 60.000000000000000000
+          Size.Height = 45.000000000000000000
+          Size.PlatformDefault = False
+          TextSettings.Font.Size = 15.000000000000000000
+          TextSettings.HorzAlign = Center
+          Text = #52636#47141#50976#47924
+          TabOrder = 0
+        end
+        object Label2: TLabel
+          Align = Client
+          AutoTranslate = False
+          StyledSettings = [Family, FontColor]
+          Size.Width = 240.000000000000000000
+          Size.Height = 45.000000000000000000
+          Size.PlatformDefault = False
+          TextSettings.Font.Size = 15.000000000000000000
+          TextSettings.HorzAlign = Center
+          Text = #44396#48516#47749
+          TabOrder = 1
+        end
+        object Label3: TLabel
+          Align = Right
+          AutoTranslate = False
+          StyledSettings = [Family, FontColor]
+          Margins.Left = 5.000000000000000000
+          Margins.Right = 5.000000000000000000
+          Position.X = 310.000000000000000000
+          Position.Y = 5.000000000000000000
+          Size.Width = 50.000000000000000000
+          Size.Height = 45.000000000000000000
+          Size.PlatformDefault = False
+          TextSettings.Font.Size = 15.000000000000000000
+          TextSettings.HorzAlign = Center
+          Text = #54869#45824'    ('#44032#47196')'
+          TabOrder = 2
+        end
+        object Label4: TLabel
+          Align = Right
+          AutoTranslate = False
+          StyledSettings = [Family, FontColor]
+          Position.X = 365.000000000000000000
+          Position.Y = 5.000000000000000000
+          Size.Width = 50.000000000000000000
+          Size.Height = 45.000000000000000000
+          Size.PlatformDefault = False
+          TextSettings.Font.Size = 15.000000000000000000
+          TextSettings.HorzAlign = Center
+          Text = #54869#45824'    ('#49464#47196')'
+          TabOrder = 3
+        end
+      end
+      object ScrollBox_OptionList: TScrollBox
+        Align = Client
+        Size.Width = 430.000000000000000000
+        Size.Height = 297.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 0
+        Viewport.Width = 430.000000000000000000
+        Viewport.Height = 297.000000000000000000
+      end
+      object GroupBox_Type: TGroupBox
+        Anchors = [akLeft, akTop, akRight]
+        StyledSettings = [Family, Style, FontColor, Other]
+        Padding.Left = 10.000000000000000000
+        Padding.Top = 10.000000000000000000
+        Padding.Right = 10.000000000000000000
+        Padding.Bottom = 10.000000000000000000
+        Position.X = 2.000000000000000000
+        Position.Y = 2.000000000000000000
+        Size.Width = 271.000000000000000000
+        Size.Height = 75.000000000000000000
+        Size.PlatformDefault = False
+        Text = #54000#53011#52636#47141#50976#54805
+        TextSettings.Font.Size = 15.000000000000000000
+        Visible = False
+        TabOrder = 1
+      end
+      object Button_Apply: TButton
+        Align = Bottom
+        StyledSettings = [Family, Size, Style, FontColor, Other]
+        Position.Y = 432.000000000000000000
+        Size.Width = 430.000000000000000000
+        Size.Height = 48.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 2
+        Text = #48120#47532#48372#44592' '#49352#47196#44256#52840
+        TextSettings.Font.Size = 1.000000000000000000
+        OnClick = Button_ApplyClick
+      end
+      object Label_Guide1: TLabel
+        Anchors = [akTop, akRight]
+        StyledSettings = [Family, Size, FontColor]
+        Position.X = 430.000000000000000000
+        Size.Width = 350.000000000000000000
+        Size.Height = 40.000000000000000000
+        Size.PlatformDefault = False
+        TextSettings.Font.StyleExt = {00070000000000000004000000}
+        TextSettings.HorzAlign = Center
+        Text = #8251' '#54532#47536#53552' '#44592#51333#50640' '#46384#46972', '#52264#51060#44032' '#51080#51012' '#49688' '#51080#49845#45768#45796'.'
+        TabOrder = 4
+      end
+      object Label_Guide2: TLabel
+        Anchors = [akTop, akRight]
+        StyledSettings = [Family, Size, FontColor]
+        Position.X = 430.000000000000000000
+        Position.Y = 30.000000000000000000
+        Size.Width = 350.000000000000000000
+        Size.Height = 40.000000000000000000
+        Size.PlatformDefault = False
+        TextSettings.Font.StyleExt = {00070000000000000004000000}
+        TextSettings.HorzAlign = Center
+        Text = #8251' Rexod, Bixolon, Sam4s '#51060#50857' '#44032#45733#54633#45768#45796'. '
+        TabOrder = 3
+      end
+      object Panel_Header: TPanel
+        Align = Top
+        Padding.Top = 5.000000000000000000
+        Padding.Bottom = 5.000000000000000000
+        Size.Width = 430.000000000000000000
+        Size.Height = 80.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 5
+        object Panel_PaddingInfo: TPanel
+          Align = Right
+          Position.X = 260.000000000000000000
+          Position.Y = 5.000000000000000000
+          Size.Width = 170.000000000000000000
+          Size.Height = 70.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 4
+          object NumberBox_Bot: TNumberBox
+            Touch.InteractiveGestures = [LongTap, DoubleTap]
+            Anchors = [akTop, akRight]
+            TabOrder = 0
+            Cursor = crIBeam
+            Min = 1.000000000000000000
+            Max = 5.000000000000000000
+            Value = 1.000000000000000000
+            TextSettings.Font.Size = 15.000000000000000000
+            TextSettings.HorzAlign = Center
+            Position.X = 80.000000000000000000
+            Position.Y = 35.000000000000000000
+            Size.Width = 80.000000000000000000
+            Size.Height = 33.000000000000000000
+            Size.PlatformDefault = False
+            StyledSettings = [Family, Style, FontColor]
+          end
+          object Label_Bot: TLabel
+            Anchors = [akTop, akRight]
+            StyledSettings = [Family, Style, FontColor]
+            Position.X = 5.000000000000000000
+            Position.Y = 35.000000000000000000
+            Size.Width = 70.000000000000000000
+            Size.Height = 35.000000000000000000
+            Size.PlatformDefault = False
+            TextSettings.Font.Size = 15.000000000000000000
+            TextSettings.HorzAlign = Trailing
+            Text = #54616#45800#50668#48177' :'
+            TabOrder = 5
+          end
+          object NumberBox_Top: TNumberBox
+            Touch.InteractiveGestures = [LongTap, DoubleTap]
+            TabOrder = 2
+            Cursor = crIBeam
+            Min = 1.000000000000000000
+            Max = 5.000000000000000000
+            Value = 1.000000000000000000
+            TextSettings.Font.Size = 15.000000000000000000
+            TextSettings.HorzAlign = Center
+            Position.X = 80.000000000000000000
+            Size.Width = 80.000000000000000000
+            Size.Height = 33.000000000000000000
+            Size.PlatformDefault = False
+            StyledSettings = [Family, Style, FontColor]
+          end
+          object Label_Top: TLabel
+            StyledSettings = [Family, Style, FontColor]
+            Position.X = 5.000000000000000000
+            Size.Width = 70.000000000000000000
+            Size.Height = 35.000000000000000000
+            Size.PlatformDefault = False
+            TextSettings.Font.Size = 15.000000000000000000
+            TextSettings.HorzAlign = Trailing
+            Text = #49345#45800#50668#48177' :'
+            TabOrder = 6
+          end
+        end
+        object GroupBox1: TGroupBox
+          Align = Client
+          Padding.Left = 10.000000000000000000
+          Padding.Top = 25.000000000000000000
+          Padding.Right = 10.000000000000000000
+          Padding.Bottom = 10.000000000000000000
+          Size.Width = 260.000000000000000000
+          Size.Height = 70.000000000000000000
+          Size.PlatformDefault = False
+          Text = #52636#47141' '#46972#51064#48324' '#44600#51060
+          TabOrder = 3
+          object Button_LenDefault: TButton
+            Tag = 40
+            Align = Right
+            Position.X = 180.000000000000000000
+            Position.Y = 25.000000000000000000
+            Size.Width = 70.000000000000000000
+            Size.Height = 35.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 0
+            Text = #44592#48376#44050
+            OnClick = Button_LenDefaultClick
+          end
+          object NumberBox_Length: TNumberBox
+            Touch.InteractiveGestures = [LongTap, DoubleTap]
+            Align = Client
+            TabOrder = 1
+            Cursor = crIBeam
+            Min = 30.000000000000000000
+            Max = 50.000000000000000000
+            Value = 40.000000000000000000
+            Size.Width = 170.000000000000000000
+            Size.Height = 35.000000000000000000
+            Size.PlatformDefault = False
+          end
+        end
+      end
+    end
+    object Rectangle_Header: TRectangle
+      Align = Top
+      Fill.Color = claBlack
+      Padding.Left = 10.000000000000000000
+      Padding.Top = 5.000000000000000000
+      Padding.Right = 5.000000000000000000
+      Padding.Bottom = 5.000000000000000000
+      Size.Width = 780.000000000000000000
+      Size.Height = 50.000000000000000000
+      Size.PlatformDefault = False
+      object Button_Close: TButton
+        Align = Right
+        StyledSettings = [Family, Size, Style, FontColor, Other]
+        Position.X = 650.000000000000000000
+        Position.Y = 5.000000000000000000
+        Size.Width = 125.000000000000000000
+        Size.Height = 40.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 0
+        Text = #51200#51109' '#48143' '#45803#44592
+        TextSettings.Font.Size = 1.000000000000000000
+        OnClick = Button_CloseClick
+      end
+      object Label5: TLabel
+        Align = Client
+        StyledSettings = []
+        Scale.Y = 1.100000023841858000
+        Size.Width = 640.000000000000000000
+        Size.Height = 36.363636016845700000
+        Size.PlatformDefault = False
+        TextSettings.Font.Family = #44404#47548#52404
+        TextSettings.Font.Size = 28.000000000000000000
+        TextSettings.Font.StyleExt = {00070000000000000004000000}
+        TextSettings.FontColor = claWhite
+        Text = #52636#47141' '#49345#49464#49444#51221
+        TabOrder = 1
+      end
+    end
+    object ScrollBox_Preview: TScrollBox
+      Align = Right
+      Margins.Top = 75.000000000000000000
+      Position.X = 430.000000000000000000
+      Position.Y = 125.000000000000000000
+      Size.Width = 350.000000000000000000
+      Size.Height = 405.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 2
+      Viewport.Width = 350.000000000000000000
+      Viewport.Height = 405.000000000000000000
+    end
+  end
+end

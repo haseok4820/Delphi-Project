@@ -1,0 +1,140 @@
+object Form_KeypadTel: TForm_KeypadTel
+  Left = 0
+  Top = 0
+  BorderStyle = bsNone
+  Caption = 'Form_KeypadTel'
+  ClientHeight = 600
+  ClientWidth = 400
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -27
+  Font.Name = #48729#44536#47112#52404
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poMainFormCenter
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 36
+  object Shape_Line: TShape
+    Left = 0
+    Top = 150
+    Width = 400
+    Height = 5
+    Align = alTop
+    Brush.Color = 2236962
+  end
+  object Panel_Keypad: TPanel
+    Left = 0
+    Top = 155
+    Width = 400
+    Height = 445
+    Align = alClient
+    BevelOuter = bvNone
+    Color = 8289918
+    ParentBackground = False
+    ShowCaption = False
+    TabOrder = 0
+  end
+  object Panel_Edit: TPanel
+    Left = 0
+    Top = 0
+    Width = 400
+    Height = 150
+    Align = alTop
+    BevelOuter = bvNone
+    Color = clWhite
+    Padding.Top = 30
+    Padding.Right = 10
+    Padding.Bottom = 30
+    ParentBackground = False
+    ShowCaption = False
+    TabOrder = 1
+    object Label_Tel2: TLabel
+      Left = 242
+      Top = 80
+      Width = 33
+      Height = 40
+      Align = alRight
+      Alignment = taCenter
+      Caption = ' - '
+      Layout = tlCenter
+      ExplicitHeight = 36
+    end
+    object Label_Tel1: TLabel
+      Left = 0
+      Top = 80
+      Width = 127
+      Height = 40
+      Align = alClient
+      Alignment = taRightJustify
+      AutoSize = False
+      Caption = '  010   - '
+      Layout = tlCenter
+      ExplicitLeft = -3
+      ExplicitTop = 86
+      ExplicitWidth = 157
+    end
+    object Label_Guide: TLabel
+      Left = 0
+      Top = 30
+      Width = 390
+      Height = 50
+      Align = alTop
+      Alignment = taCenter
+      AutoSize = False
+      Caption = #51077#47141#54616#49888' '#48264#54840#47196' '#50508#47548#53665#51012' '#48372#45236#46300#47549#45768#45796'.'
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -16
+      Font.Name = #45208#45588#49828#53272#50612#46972#50868#46300' ExtraBold'
+      Font.Style = [fsBold]
+      ParentColor = False
+      ParentFont = False
+      Layout = tlCenter
+      ExplicitWidth = 359
+    end
+    object Label_Cancel: TLabel
+      Left = 310
+      Top = 0
+      Width = 81
+      Height = 36
+      AutoSize = False
+      Caption = #45803#44592' X'
+      OnClick = Label_CancelClick
+    end
+    object Edit2: TEdit
+      Tag = 2
+      Left = 275
+      Top = 80
+      Width = 115
+      Height = 40
+      Align = alRight
+      Alignment = taCenter
+      BevelInner = bvNone
+      BorderStyle = bsNone
+      MaxLength = 4
+      NumbersOnly = True
+      TabOrder = 0
+      Text = '2'
+      OnChange = Edit2Change
+    end
+    object Edit1: TEdit
+      Tag = 1
+      Left = 127
+      Top = 80
+      Width = 115
+      Height = 40
+      Align = alRight
+      Alignment = taCenter
+      BevelInner = bvNone
+      BorderStyle = bsNone
+      MaxLength = 4
+      NumbersOnly = True
+      TabOrder = 1
+      Text = '1'
+      OnChange = Edit2Change
+    end
+  end
+end

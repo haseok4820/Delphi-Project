@@ -1,0 +1,1042 @@
+object fmENV1_1: TfmENV1_1
+  Left = 0
+  Top = 0
+  BorderStyle = bsNone
+  Caption = 'fmENV1_1'
+  ClientHeight = 600
+  ClientWidth = 780
+  Color = clWhite
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -27
+  Font.Name = #44256#46020' B'
+  Font.Style = []
+  OldCreateOrder = False
+  OnClose = FormClose
+  OnMouseWheel = FormMouseWheel
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 31
+  object ScrollBoxMain: TScrollBox
+    Left = 0
+    Top = 0
+    Width = 780
+    Height = 600
+    VertScrollBar.Position = 124
+    VertScrollBar.Smooth = True
+    VertScrollBar.Tracking = True
+    Align = alClient
+    Padding.Left = 10
+    Padding.Top = 10
+    Padding.Right = 10
+    Padding.Bottom = 10
+    TabOrder = 0
+    object GroupBox1: TGroupBox
+      AlignWithMargins = True
+      Left = 10
+      Top = -104
+      Width = 739
+      Height = 200
+      Margins.Left = 0
+      Margins.Top = 10
+      Margins.Right = 0
+      Margins.Bottom = 0
+      Align = alTop
+      Caption = ' '#54532#47536#53552' '#49444#51221
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -21
+      Font.Name = #44256#46020' B'
+      Font.Style = []
+      Padding.Left = 8
+      Padding.Right = 8
+      Padding.Bottom = 8
+      ParentFont = False
+      TabOrder = 0
+      DesignSize = (
+        739
+        200)
+      inline FrmCombo_PrnBaudRate: TFrame_ComboBox_Prn
+        Left = 10
+        Top = 110
+        Width = 420
+        Height = 80
+        Anchors = [akLeft, akTop, akRight]
+        DoubleBuffered = True
+        Color = clSilver
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -21
+        Font.Name = #44256#46020' B'
+        Font.Style = []
+        Padding.Left = 2
+        Padding.Top = 1
+        Padding.Right = 2
+        Padding.Bottom = 1
+        ParentBackground = False
+        ParentColor = False
+        ParentDoubleBuffered = False
+        ParentFont = False
+        TabOrder = 0
+        ExplicitLeft = 10
+        ExplicitTop = 110
+        ExplicitWidth = 420
+        inherited Panel_Parent: TPanel
+          Width = 416
+          ExplicitWidth = 416
+          inherited Label_Title: TLabel
+            Caption = #49549#46020#44050
+          end
+          inherited COMBO: TFrame_ENV_ComboBox
+            Width = 236
+            ExplicitLeft = 170
+            ExplicitWidth = 236
+            inherited Label_Key: TLabel
+              Width = 182
+              Caption = '9600bps'
+              ExplicitWidth = 472
+            end
+            inherited Label1: TLabel
+              Left = 184
+              ExplicitLeft = 588
+            end
+          end
+        end
+      end
+      inline FrmCombo_PrnPort: TFrame_ComboBox_Prn
+        Left = 10
+        Top = 30
+        Width = 420
+        Height = 80
+        Anchors = [akLeft, akTop, akRight]
+        DoubleBuffered = True
+        Color = clSilver
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -21
+        Font.Name = #44256#46020' B'
+        Font.Style = []
+        Padding.Left = 2
+        Padding.Top = 1
+        Padding.Right = 2
+        Padding.Bottom = 1
+        ParentBackground = False
+        ParentColor = False
+        ParentDoubleBuffered = False
+        ParentFont = False
+        TabOrder = 1
+        ExplicitLeft = 10
+        ExplicitTop = 30
+        ExplicitWidth = 420
+        inherited Panel_Parent: TPanel
+          Width = 416
+          ExplicitWidth = 416
+          inherited Label_Title: TLabel
+            Caption = #52636#47141#51109#52824#54252#53944
+          end
+          inherited COMBO: TFrame_ENV_ComboBox
+            Width = 236
+            ExplicitLeft = 170
+            ExplicitWidth = 236
+            inherited Label_Key: TLabel
+              Width = 182
+              Caption = 'COM1'
+              ExplicitWidth = 472
+            end
+            inherited Label1: TLabel
+              Left = 184
+              ExplicitLeft = 588
+            end
+          end
+        end
+      end
+      object Button_PrnTest: TButton
+        Left = 439
+        Top = 26
+        Width = 290
+        Height = 164
+        Align = alRight
+        Caption = #54532#47536#53552' '#53580#49828#53944
+        TabOrder = 2
+        OnClick = Button_PrnTestClick
+        ExplicitLeft = 425
+      end
+    end
+    object GroupBox3: TGroupBox
+      AlignWithMargins = True
+      Left = 10
+      Top = 286
+      Width = 739
+      Height = 310
+      Margins.Left = 0
+      Margins.Top = 10
+      Margins.Right = 0
+      Margins.Bottom = 0
+      Align = alTop
+      Caption = ' '#51217#49688' '#49444#51221
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -21
+      Font.Name = #44256#46020' B'
+      Font.Style = []
+      Padding.Left = 8
+      Padding.Right = 8
+      Padding.Bottom = 8
+      ParentFont = False
+      TabOrder = 1
+      DesignSize = (
+        739
+        310)
+      inline FrmCombo_KakaoAlert: TFrame_ComboBox_Prn
+        Left = 10
+        Top = 30
+        Width = 720
+        Height = 80
+        Anchors = [akLeft, akTop, akRight]
+        DoubleBuffered = True
+        Color = clSilver
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -21
+        Font.Name = #44256#46020' B'
+        Font.Style = []
+        Padding.Left = 2
+        Padding.Top = 1
+        Padding.Right = 2
+        Padding.Bottom = 1
+        ParentBackground = False
+        ParentColor = False
+        ParentDoubleBuffered = False
+        ParentFont = False
+        TabOrder = 0
+        ExplicitLeft = 10
+        ExplicitTop = 30
+        ExplicitWidth = 720
+        inherited Panel_Parent: TPanel
+          Width = 716
+          ExplicitWidth = 716
+          inherited Label_Title: TLabel
+            Caption = #50508#47548#53665' '#50976#47924
+          end
+          inherited COMBO: TFrame_ENV_ComboBox
+            Width = 536
+            ExplicitLeft = 170
+            ExplicitWidth = 536
+            inherited Label_Key: TLabel
+              Width = 482
+              Caption = #49324#50857#50504#54632
+              ExplicitWidth = 771
+            end
+            inherited Label1: TLabel
+              Left = 484
+              ExplicitLeft = 752
+            end
+          end
+        end
+      end
+      inline FrmCombo_Font: TFrame_ComboBox_Prn
+        Left = 10
+        Top = 110
+        Width = 720
+        Height = 80
+        Anchors = [akLeft, akTop, akRight]
+        DoubleBuffered = True
+        Color = clSilver
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -21
+        Font.Name = #44256#46020' B'
+        Font.Style = []
+        Padding.Left = 2
+        Padding.Top = 1
+        Padding.Right = 2
+        Padding.Bottom = 1
+        ParentBackground = False
+        ParentColor = False
+        ParentDoubleBuffered = False
+        ParentFont = False
+        TabOrder = 1
+        ExplicitLeft = 10
+        ExplicitTop = 110
+        ExplicitWidth = 720
+        inherited Panel_Parent: TPanel
+          Width = 716
+          ExplicitWidth = 716
+          inherited Label_Title: TLabel
+            Caption = #49884#49828#53596' '#54256#53944
+          end
+          inherited COMBO: TFrame_ENV_ComboBox
+            Width = 536
+            ExplicitLeft = 170
+            ExplicitWidth = 536
+            inherited Label_Key: TLabel
+              Width = 482
+              Caption = #44256#46020' B ('#44592#48376')'
+              ExplicitWidth = 771
+            end
+            inherited Label1: TLabel
+              Left = 484
+              ExplicitLeft = 752
+            end
+          end
+        end
+      end
+      inline FrmEdit_XCnt: TFrame_ENV_Edit
+        Left = 10
+        Top = 190
+        Width = 250
+        Height = 50
+        DoubleBuffered = True
+        Color = clSilver
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -21
+        Font.Name = #44256#46020' B'
+        Font.Style = []
+        Padding.Left = 1
+        Padding.Top = 1
+        Padding.Right = 1
+        Padding.Bottom = 1
+        ParentBackground = False
+        ParentColor = False
+        ParentDoubleBuffered = False
+        ParentFont = False
+        TabOrder = 3
+        ExplicitLeft = 10
+        ExplicitTop = 190
+        ExplicitWidth = 250
+        inherited Label_Key: TLabel
+          Width = 160
+          Caption = #51064#50896' '#44032#47196'('#50676')'#44050
+          ExplicitLeft = 1
+          ExplicitTop = 1
+          ExplicitWidth = 160
+        end
+        inherited Shape_BG: TShape
+          Left = 161
+          Width = 88
+          ExplicitLeft = 161
+          ExplicitWidth = 88
+        end
+        inherited Edit_Value: TEdit
+          Left = 171
+          Width = 78
+          MaxLength = 2
+          NumbersOnly = True
+          ExplicitLeft = 171
+          ExplicitWidth = 78
+        end
+      end
+      inline FrmEdit_YCnt: TFrame_ENV_Edit
+        Left = 10
+        Top = 240
+        Width = 250
+        Height = 50
+        DoubleBuffered = True
+        Color = clSilver
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -21
+        Font.Name = #44256#46020' B'
+        Font.Style = []
+        Padding.Left = 1
+        Padding.Top = 1
+        Padding.Right = 1
+        Padding.Bottom = 1
+        ParentBackground = False
+        ParentColor = False
+        ParentDoubleBuffered = False
+        ParentFont = False
+        TabOrder = 4
+        OnClick = FrmEdit_YCntClick
+        ExplicitLeft = 10
+        ExplicitTop = 240
+        ExplicitWidth = 250
+        inherited Label_Key: TLabel
+          Width = 160
+          Caption = #51064#50896' '#49464#47196'('#54665')'#44050
+          ExplicitLeft = 1
+          ExplicitTop = 1
+          ExplicitWidth = 160
+        end
+        inherited Shape_BG: TShape
+          Left = 161
+          Width = 88
+          ExplicitLeft = 161
+          ExplicitWidth = 238
+        end
+        inherited Edit_Value: TEdit
+          Left = 171
+          Width = 78
+          MaxLength = 2
+          NumbersOnly = True
+          ExplicitLeft = 171
+          ExplicitWidth = 78
+        end
+      end
+      object Button_MenuDefault: TButton
+        Left = 560
+        Top = 239
+        Width = 170
+        Height = 50
+        Anchors = [akTop, akRight]
+        Caption = #44592#48376#44050
+        TabOrder = 5
+        OnClick = Button_MenuDefaultClick
+      end
+      object Panel_BreakTime: TPanel
+        Left = 260
+        Top = 190
+        Width = 470
+        Height = 50
+        Anchors = [akLeft, akTop, akRight]
+        BevelOuter = bvNone
+        BorderWidth = 1
+        Color = clSilver
+        ParentBackground = False
+        ShowCaption = False
+        TabOrder = 2
+        object Label_BreakTime: TLabel
+          Left = 311
+          Top = 1
+          Width = 48
+          Height = 48
+          Align = alClient
+          Alignment = taCenter
+          Caption = '~'
+          Color = clWhite
+          ParentColor = False
+          Transparent = False
+          Layout = tlCenter
+          ExplicitWidth = 13
+          ExplicitHeight = 24
+        end
+        inline FrmCheck_BreakTime: TFrame_ENV_CheckBox
+          Left = 1
+          Top = 1
+          Width = 200
+          Height = 48
+          Hint = #49444#51221#54620' '#49884#44036#46041#50504#51008' '#45824#44592#51217#49688#47484' '#47561#49845#45768#45796'.'
+          Align = alLeft
+          DoubleBuffered = True
+          Color = clWhite
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -21
+          Font.Name = #44256#46020' B'
+          Font.Style = []
+          Padding.Left = 5
+          Padding.Top = 5
+          Padding.Right = 5
+          Padding.Bottom = 5
+          ParentBackground = False
+          ParentColor = False
+          ParentDoubleBuffered = False
+          ParentFont = False
+          TabOrder = 0
+          OnClick = FrameCheckClick
+          ExplicitLeft = 1
+          ExplicitTop = 1
+          ExplicitWidth = 200
+          ExplicitHeight = 48
+          inherited Label_MSG: TLabel
+            Width = 132
+            Height = 32
+            Caption = #51116#47308#51456#48708#49884#44036
+            ExplicitWidth = 117
+          end
+          inherited Label_Check: TLabel
+            Height = 38
+            ExplicitLeft = 4
+            ExplicitTop = 5
+            ExplicitHeight = 38
+          end
+        end
+        object DTP_BreakStart: TDateTimePicker
+          Left = 201
+          Top = 1
+          Width = 110
+          Height = 48
+          Align = alLeft
+          Date = 45015.833333333340000000
+          Format = 'HH:mm'
+          Time = 45015.833333333340000000
+          Kind = dtkTime
+          TabOrder = 1
+        end
+        object DTP_BreakEnd: TDateTimePicker
+          Left = 359
+          Top = 1
+          Width = 110
+          Height = 48
+          Align = alRight
+          Date = 45015.833333333340000000
+          Format = 'HH:mm'
+          Time = 45015.833333333340000000
+          Kind = dtkTime
+          TabOrder = 2
+        end
+      end
+      inline FrmCombo_MenuType: TFrame_ComboBox_Prn
+        Left = 260
+        Top = 240
+        Width = 300
+        Height = 50
+        Anchors = [akLeft, akTop, akRight]
+        DoubleBuffered = True
+        Color = clSilver
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -21
+        Font.Name = #44256#46020' B'
+        Font.Style = []
+        Padding.Left = 2
+        Padding.Top = 1
+        Padding.Right = 2
+        Padding.Bottom = 1
+        ParentBackground = False
+        ParentColor = False
+        ParentDoubleBuffered = False
+        ParentFont = False
+        TabOrder = 6
+        ExplicitLeft = 260
+        ExplicitTop = 240
+        ExplicitWidth = 300
+        ExplicitHeight = 50
+        inherited Panel_Parent: TPanel
+          Width = 296
+          Height = 48
+          Padding.Left = 0
+          Padding.Top = 0
+          Padding.Right = 0
+          Padding.Bottom = 0
+          ExplicitWidth = 296
+          ExplicitHeight = 48
+          inherited Label_Title: TLabel
+            Left = 0
+            Top = 0
+            Width = 100
+            Height = 48
+            Caption = #50976#54805
+            ExplicitLeft = 0
+            ExplicitTop = 0
+            ExplicitWidth = 100
+            ExplicitHeight = 48
+          end
+          inherited COMBO: TFrame_ENV_ComboBox
+            AlignWithMargins = False
+            Left = 100
+            Top = 0
+            Width = 196
+            Height = 48
+            ExplicitLeft = 100
+            ExplicitTop = 0
+            ExplicitWidth = 196
+            ExplicitHeight = 48
+            inherited Label_Key: TLabel
+              Width = 142
+              Height = 44
+              Caption = #50976#54805'1'
+              ExplicitLeft = -1
+              ExplicitTop = 2
+              ExplicitWidth = 142
+              ExplicitHeight = 44
+            end
+            inherited Label1: TLabel
+              Left = 144
+              Height = 44
+              ExplicitLeft = 144
+              ExplicitHeight = 44
+            end
+          end
+        end
+      end
+    end
+    object GroupBox4: TGroupBox
+      Left = 10
+      Top = 596
+      Width = 739
+      Height = 180
+      Align = alTop
+      Caption = ' '#50808#44397#50612' '#49444#51221
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -21
+      Font.Name = #44256#46020' B'
+      Font.Style = []
+      Padding.Left = 8
+      Padding.Right = 8
+      Padding.Bottom = 8
+      ParentFont = False
+      TabOrder = 2
+      Visible = False
+      inline FrmCheckBox_4: TFrame_ENV_CheckBox
+        Left = 430
+        Top = 110
+        Width = 150
+        Height = 60
+        DoubleBuffered = True
+        Color = clWhite
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -21
+        Font.Name = #44256#46020' B'
+        Font.Style = []
+        Padding.Left = 10
+        Padding.Top = 5
+        Padding.Right = 5
+        Padding.Bottom = 5
+        ParentBackground = False
+        ParentColor = False
+        ParentDoubleBuffered = False
+        ParentFont = False
+        TabOrder = 0
+        ExplicitLeft = 430
+        ExplicitTop = 110
+        ExplicitWidth = 150
+        inherited Label_MSG: TLabel
+          Left = 65
+          Width = 77
+          Height = 44
+          Caption = #51473#44397#50612
+          ExplicitLeft = 65
+          ExplicitWidth = 59
+        end
+        inherited Label_Check: TLabel
+          Left = 10
+          ExplicitLeft = 10
+        end
+      end
+      inline FrmCheckBox_3: TFrame_ENV_CheckBox
+        Left = 290
+        Top = 110
+        Width = 150
+        Height = 60
+        DoubleBuffered = True
+        Color = clWhite
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -21
+        Font.Name = #44256#46020' B'
+        Font.Style = []
+        Padding.Left = 10
+        Padding.Top = 5
+        Padding.Right = 5
+        Padding.Bottom = 5
+        ParentBackground = False
+        ParentColor = False
+        ParentDoubleBuffered = False
+        ParentFont = False
+        TabOrder = 1
+        ExplicitLeft = 290
+        ExplicitTop = 110
+        ExplicitWidth = 150
+        inherited Label_MSG: TLabel
+          Left = 65
+          Width = 77
+          Height = 44
+          Caption = #51068#48376#50612
+          ExplicitLeft = 65
+          ExplicitWidth = 58
+        end
+        inherited Label_Check: TLabel
+          Left = 10
+          ExplicitLeft = 10
+        end
+      end
+      inline FrmCheckBox_2: TFrame_ENV_CheckBox
+        Left = 150
+        Top = 110
+        Width = 150
+        Height = 60
+        DoubleBuffered = True
+        Color = clWhite
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -21
+        Font.Name = #44256#46020' B'
+        Font.Style = []
+        Padding.Left = 10
+        Padding.Top = 5
+        Padding.Right = 5
+        Padding.Bottom = 5
+        ParentBackground = False
+        ParentColor = False
+        ParentDoubleBuffered = False
+        ParentFont = False
+        TabOrder = 2
+        ExplicitLeft = 150
+        ExplicitTop = 110
+        ExplicitWidth = 150
+        inherited Label_MSG: TLabel
+          Left = 65
+          Width = 77
+          Height = 44
+          Caption = #50689#50612
+          ExplicitLeft = 65
+          ExplicitWidth = 38
+        end
+        inherited Label_Check: TLabel
+          Left = 10
+          ExplicitLeft = 10
+        end
+      end
+      inline FrmCheckBox_1: TFrame_ENV_CheckBox
+        Left = 10
+        Top = 110
+        Width = 150
+        Height = 60
+        DoubleBuffered = True
+        Color = clWhite
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -21
+        Font.Name = #44256#46020' B'
+        Font.Style = []
+        Padding.Left = 10
+        Padding.Top = 5
+        Padding.Right = 5
+        Padding.Bottom = 5
+        ParentBackground = False
+        ParentColor = False
+        ParentDoubleBuffered = False
+        ParentFont = False
+        TabOrder = 3
+        ExplicitLeft = 10
+        ExplicitTop = 110
+        ExplicitWidth = 150
+        inherited Label_MSG: TLabel
+          Left = 65
+          Width = 77
+          Height = 44
+          Caption = #54620#44397#50612
+          ExplicitLeft = 65
+          ExplicitWidth = 59
+        end
+        inherited Label_Check: TLabel
+          Left = 10
+          ExplicitLeft = 10
+        end
+      end
+      inline FrmCombo_DefaultLan: TFrame_ComboBox_Prn
+        Left = 10
+        Top = 26
+        Width = 719
+        Height = 80
+        Align = alTop
+        DoubleBuffered = True
+        Color = clSilver
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -21
+        Font.Name = #44256#46020' B'
+        Font.Style = []
+        Padding.Left = 2
+        Padding.Top = 1
+        Padding.Right = 2
+        Padding.Bottom = 1
+        ParentBackground = False
+        ParentColor = False
+        ParentDoubleBuffered = False
+        ParentFont = False
+        TabOrder = 4
+        ExplicitLeft = 10
+        ExplicitTop = 26
+        ExplicitWidth = 719
+        inherited Panel_Parent: TPanel
+          Width = 715
+          ExplicitWidth = 715
+          inherited Label_Title: TLabel
+            Caption = #44592#48376#50616#50612
+            ExplicitHeight = 58
+          end
+          inherited COMBO: TFrame_ENV_ComboBox
+            Width = 535
+            ExplicitLeft = 170
+            ExplicitWidth = 535
+            inherited Label_Key: TLabel
+              Width = 481
+              Caption = #54620#44397#50612' ('#49440#53469#54620' '#50616#50612#47196', '#50857#51648#44032' '#52636#47141#46121#45768#45796'.)'
+              ExplicitWidth = 771
+            end
+            inherited Label1: TLabel
+              Left = 483
+              ExplicitLeft = 752
+            end
+          end
+        end
+      end
+    end
+    object GroupBox2: TGroupBox
+      AlignWithMargins = True
+      Left = 10
+      Top = 106
+      Width = 739
+      Height = 170
+      Margins.Left = 0
+      Margins.Top = 10
+      Margins.Right = 0
+      Margins.Bottom = 0
+      Align = alTop
+      Caption = ' '#52636#47141' '#49444#51221
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -21
+      Font.Name = #44256#46020' B'
+      Font.Style = []
+      Padding.Left = 8
+      Padding.Right = 8
+      Padding.Bottom = 8
+      ParentFont = False
+      TabOrder = 3
+      DesignSize = (
+        739
+        170)
+      object Button_Preview: TButton
+        Left = 590
+        Top = 30
+        Width = 140
+        Height = 130
+        Anchors = [akTop, akRight]
+        Caption = '   '#49345#49464#49444#51221'      '#48120#47532#48372#44592' '
+        TabOrder = 0
+        WordWrap = True
+        OnClick = Button_PreviewClick
+      end
+      inline FrmCombo_PrnType: TFrame_ComboBox_Prn
+        Left = 10
+        Top = 30
+        Width = 580
+        Height = 80
+        Anchors = [akLeft, akTop, akRight]
+        Constraints.MinWidth = 300
+        DoubleBuffered = True
+        Color = clSilver
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -21
+        Font.Name = #44256#46020' B'
+        Font.Style = []
+        Padding.Left = 2
+        Padding.Top = 1
+        Padding.Right = 2
+        Padding.Bottom = 1
+        ParentBackground = False
+        ParentColor = False
+        ParentDoubleBuffered = False
+        ParentFont = False
+        TabOrder = 1
+        ExplicitLeft = 10
+        ExplicitTop = 30
+        ExplicitWidth = 580
+        inherited Panel_Parent: TPanel
+          Width = 576
+          ExplicitWidth = 576
+          inherited Label_Title: TLabel
+            Caption = #52636#47141#50976#54805
+            ExplicitHeight = 58
+          end
+          inherited COMBO: TFrame_ENV_ComboBox
+            Width = 396
+            ExplicitLeft = 170
+            ExplicitWidth = 396
+            inherited Label_Key: TLabel
+              Width = 342
+              Caption = #50976#54805'1'
+              ExplicitWidth = 632
+            end
+            inherited Label1: TLabel
+              Left = 344
+              ExplicitLeft = 752
+            end
+          end
+        end
+      end
+      inline FrmEdit_PrnTitle: TFrame_ENV_Edit
+        Left = 10
+        Top = 110
+        Width = 400
+        Height = 50
+        Anchors = [akLeft, akTop, akRight]
+        DoubleBuffered = True
+        Color = clSilver
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -21
+        Font.Name = #44256#46020' B'
+        Font.Style = []
+        Padding.Left = 1
+        Padding.Top = 1
+        Padding.Right = 1
+        Padding.Bottom = 1
+        ParentBackground = False
+        ParentColor = False
+        ParentDoubleBuffered = False
+        ParentFont = False
+        TabOrder = 2
+        ExplicitLeft = 10
+        ExplicitTop = 110
+        ExplicitWidth = 400
+        inherited Label_Key: TLabel
+          Caption = #52636#47141' '#53440#51060#53952
+        end
+        inherited Shape_BG: TShape
+          Width = 218
+          ExplicitWidth = 448
+        end
+        inherited Edit_Value: TEdit
+          Width = 208
+          ExplicitWidth = 138
+        end
+      end
+      inline FrmEdit_TopPadding: TFrame_ENV_Edit
+        Left = 10
+        Top = 160
+        Width = 230
+        Height = 50
+        DoubleBuffered = True
+        Color = clSilver
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -21
+        Font.Name = #44256#46020' B'
+        Font.Style = []
+        Padding.Left = 1
+        Padding.Top = 1
+        Padding.Right = 1
+        Padding.Bottom = 1
+        ParentBackground = False
+        ParentColor = False
+        ParentDoubleBuffered = False
+        ParentFont = False
+        TabOrder = 3
+        Visible = False
+        ExplicitLeft = 10
+        ExplicitTop = 160
+        ExplicitWidth = 230
+        inherited Label_Key: TLabel
+          Caption = #49345#45800' '#50668#48177
+          ExplicitLeft = 1
+          ExplicitTop = 1
+        end
+        inherited Shape_BG: TShape
+          Width = 48
+          ExplicitWidth = 68
+        end
+        inherited Edit_Value: TEdit
+          Width = 38
+          MaxLength = 1
+          NumbersOnly = True
+          ExplicitWidth = 38
+        end
+      end
+      inline FrmEdit_BotPadding: TFrame_ENV_Edit
+        Left = 240
+        Top = 160
+        Width = 170
+        Height = 50
+        DoubleBuffered = True
+        Color = clSilver
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -21
+        Font.Name = #44256#46020' B'
+        Font.Style = []
+        Padding.Left = 1
+        Padding.Top = 1
+        Padding.Right = 1
+        Padding.Bottom = 1
+        ParentBackground = False
+        ParentColor = False
+        ParentDoubleBuffered = False
+        ParentFont = False
+        TabOrder = 4
+        Visible = False
+        ExplicitLeft = 240
+        ExplicitTop = 160
+        ExplicitWidth = 170
+        inherited Label_Key: TLabel
+          Width = 120
+          Caption = #54616#45800' '#50668#48177
+          ExplicitLeft = 1
+          ExplicitTop = 1
+          ExplicitWidth = 120
+        end
+        inherited Shape_BG: TShape
+          Left = 121
+          Width = 48
+          ExplicitWidth = 68
+        end
+        inherited Edit_Value: TEdit
+          Left = 131
+          Width = 38
+          MaxLength = 1
+          NumbersOnly = True
+          ExplicitWidth = 38
+        end
+      end
+      object Button_PrtDefault: TButton
+        Left = 410
+        Top = 110
+        Width = 180
+        Height = 50
+        Anchors = [akLeft, akTop, akRight]
+        Caption = #44592#48376#44050
+        TabOrder = 5
+        OnClick = Button_PrtDefaultClick
+      end
+      inline FrmEdit_PrnLength: TFrame_ENV_Edit
+        Left = 410
+        Top = 110
+        Width = 180
+        Height = 50
+        Anchors = [akTop, akRight]
+        DoubleBuffered = True
+        Color = clSilver
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -21
+        Font.Name = #44256#46020' B'
+        Font.Style = []
+        Padding.Left = 1
+        Padding.Top = 1
+        Padding.Right = 1
+        Padding.Bottom = 1
+        ParentBackground = False
+        ParentColor = False
+        ParentDoubleBuffered = False
+        ParentFont = False
+        TabOrder = 6
+        Visible = False
+        ExplicitLeft = 410
+        ExplicitTop = 110
+        ExplicitWidth = 180
+        inherited Label_Key: TLabel
+          Width = 100
+          Caption = #44600#51060
+          ExplicitLeft = 1
+          ExplicitTop = 1
+          ExplicitWidth = 100
+        end
+        inherited Shape_BG: TShape
+          Left = 101
+          Width = 78
+          ExplicitLeft = 101
+          ExplicitWidth = 68
+        end
+        inherited Edit_Value: TEdit
+          Left = 111
+          Width = 68
+          MaxLength = 2
+          NumbersOnly = True
+          ExplicitLeft = 111
+          ExplicitWidth = 38
+        end
+      end
+    end
+  end
+  object Timer_Preview: TTimer
+    Left = 672
+    Top = 232
+  end
+end

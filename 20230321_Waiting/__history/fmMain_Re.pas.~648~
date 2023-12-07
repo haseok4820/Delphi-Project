@@ -1,0 +1,573 @@
+unit fmMain_Re;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, System.DateUtils,
+  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, uPOPUP;
+
+type
+  TFormMain_Re = class(TForm)
+    ScrollBox_Menu: TScrollBox;
+    Panel_Waiting: TPanel;
+    Label_WaitInfo: TLabel;
+    Panel_Help: TPanel;
+    Panel_OK: TPanel;
+    Panel_Category: TPanel;
+    Label_Title: TLabel;
+    Label1: TLabel;
+    Label2: TLabel;
+    Panel_Lanauage: TPanel;
+    Label_KOR: TLabel;
+    Label3: TLabel;
+    Label4: TLabel;
+    Label5: TLabel;
+    Label6: TLabel;
+    Timer_BreakTime: TTimer;
+    procedure FormCreate(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure FormResize(Sender: TObject);
+    procedure FormMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+
+    procedure FrameMenuClick(Sender: TObject);
+    procedure Panel_OKClick(Sender: TObject);
+    procedure Label_TitleClick(Sender: TObject);
+    procedure Timer_BreakTimeTimer(Sender: TObject);
+  private
+    { Private declarations }
+
+    procedure SetForm;
+    procedure SetMenu;
+    procedure SetTicket(WaitNo: String);
+  public
+    { Public declarations }
+  end;
+
+var
+  FormMain_Re: TFormMain_Re;
+  FormBreak: TForm;
+  Form_Alert: TForm_POPUP;
+  iTOTALCNT: Integer; // 총 인원
+
+implementation
+
+{$R *.dfm}
+
+uses uDM, fmSetting, Frame_Menu1, Frame_Menu3, Frame_Menu4, uBG;
+
+{$IFDEF DEBUG}
+
+procedure TFormMain_Re.CreateParams(var Params: TCreateParams);
+begin
+end;
+
+{$ENDIF}
+
+procedure TFormMain_Re.FormCreate(Sender: TObject);
+var
+  i: Byte;
+begin
+
+{$IFDEF DEBUG}
+  if Screen.MonitorCount > 1 then
+    i := 1
+  else
+    i := 0;
+{$ELSE}
+  i := 0;
+{$ENDIF}
+  with Screen.Monitors[i] do
+  begin
+    Scn_X := Left;
+    Scn_Y := Top;
+    Scn_W := Width;
+    Scn_H := Height;
+    SetBounds(Left, Top, Width, Height);
+  end;
+
+  FormBreak := Nil;
+end;
+
+procedure TFormMain_Re.FormMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+{$IFDEF DEBUG}
+  ReleaseCapture;
+  SendMessage(Handle, WM_NCLBUTTONDOWN, HTCAPTION, 0);
+  {
+    Scn_X := Left;
+    Scn_Y := Top;
+    Scn_W := Width;
+    Scn_H := Height;
+  }
+{$ENDIF}
+end;
+
+procedure TFormMain_Re.FormResize(Sender: TObject);
+begin
+  Scn_X := Left;
+  Scn_Y := Top;
+  Scn_W := Width;
+  Scn_H := Height;
+  SetForm;
+end;
+
+procedure TFormMain_Re.FormShow(Sender: TObject);
+begin
+  if NOT Panel_Category.Visible then
+    ScrollBox_Menu.Height := ScrollBox_Menu.Height + Panel_Category.Height - 30;
+
+  SetForm;
+  OnResize := FormResize;
+end;
+
+procedure TFormMain_Re.FrameMenuClick(Sender: TObject);
+var
+  i, iTag: Integer;
+begin
+  iTOTALCNT := 0;
+  case iMenuViewType of
+    0: // 리스트형
+      begin
+        iTag := (Sender as TFrameMenu1).Tag;
+        arrWaitingInfo[iTag].iRes := (Sender as TFrameMenu1).Label_Qty.Tag;
+      end;
+    1: // 배열형
+      begin
+        iTag := (Sender as TFrameMenu3).Tag;
+        arrWaitingInfo[iTag].iRes := (Sender as TFrameMenu3).Label_Qty.Tag;
+      end;
+    2: // 배열버튼형
+      begin
+        iTag := (Sender as TFrameMenu4).Tag;
+        arrWaitingInfo[iTag].iRes := (Sender as TFrameMenu4).Panel_List.Tag;
+      end;
+  end;
+
+  for i := Low(arrWaitingInfo) to High(arrWaitingInfo) do
+    iTOTALCNT := iTOTALCNT + arrWaitingInfo[i].iRes;
+end;
+
+procedure TFormMain_Re.Label_TitleClick(Sender: TObject);
+var
+  sRes: String;
+begin
+  Timer_BreakTime.Enabled := False;
+  if Assigned(FormBreak) OR Assigned(Form_Alert) then
+  begin
+    FreeAndnil(FormBreak);
+    FreeAndnil(Form_Alert);
+  end;
+
+  try
+    sRes := DM.PopupKeyPad('Login');
+    if sRes = '1234' then
+    begin
+      From_Setting := TFrom_Setting.Create(self);
+      with From_Setting do
+      begin
+        ShowModal;
+        Free;
+      end;
+
+      DM.SetMenus;
+    end
+    else if sRes <> '' then
+      DM.PopupMsg('관리자 암호가 일치하지 않습니다.');
+  finally
+    DM.Saveini;
+    SetForm;
+  end;
+
+end;
+
+procedure TFormMain_Re.Panel_OKClick(Sender: TObject);
+var
+  iTag: Integer;
+  bTel: Boolean;
+  sTel: String;
+  Res: TResult_IS;
+begin
+  //
+  if iTOTALCNT = 0 then
+  begin
+    DM.PopupMsg('먼저 입장인원을 지정해주세요.');
+    Exit;
+  end;
+
+  bTel := False;
+  case iKakaoAlert of
+    0:
+      begin
+        sTel := '';
+        bTel := True;
+      end;
+    1:
+      begin
+        repeat
+          iTag := DM.PopupMsg(iPOPUP_YESNO, '카카오 알림톡을 받아보시겠어요?,#13입장하실때, 알림톡으로 안내드립니다.');
+          case iTag of
+            iPOPUP_RESULT_OK:
+              begin
+                sTel := DM.PopupKeyPad('Tel');
+                if sTel <> '' then
+                begin
+                  sTel := '010' + sTel;
+                  bTel := True;
+                end;
+              end;
+            iPOPUP_RESULT_CANCEL:
+              begin
+                sTel := '';
+                bTel := True;
+              end;
+            iPOPUP_USERCANCEL:
+              begin
+                sTel := 'Cancel';
+                bTel := True;
+              end;
+          end;
+        until bTel;
+      end;
+    2:
+      begin
+        repeat
+          sTel := DM.PopupKeyPad('Tel');
+          if sTel <> '' then
+          begin
+            bTel := True;
+          end;
+        until bTel;
+
+      end;
+  end;
+
+  if Pos('Cancel', sTel) <> 0 then
+  begin
+    DM.PopupMsg('주문접수가 취소되었습니다.#13다시 시도해주세요.');
+    Exit;
+  end;
+
+  Res := DM.SetWaiting(iWAITING_INSERT, sTel);
+  if Res.iRes = 0 then
+  begin
+    // 성공
+    DM.PopupMsg('대기접수가 완료되었습니다.#13접수대기권을 챙겨주세요.#13#13입장번호:' + Res.sRes);
+    SetTicket(Res.sRes);
+  end
+  else
+    // 실패
+    DM.PopupMsg('대기접수에 실패했습니다.#13매장직원에 문의해주세요.#13실패사유:' + Res.sRes);
+  SetForm;
+end;
+
+procedure TFormMain_Re.SetForm;
+begin
+  // UI
+  Delete(arrWaitingInfo, 0, Length(arrWaitingInfo));
+  DM.RoundPanel(Panel_Waiting);
+  DM.RoundPanel(Panel_OK);
+  // DM.GetWait;
+  if Panel_Waiting.Width <= 550 then
+    Label_WaitInfo.Caption := StringReplace(Label_WaitInfo.Hint, ',', #13#10, [rfReplaceAll])
+  else
+    Label_WaitInfo.Caption := Label_WaitInfo.Hint;
+
+  Label_WaitInfo.Caption := StringReplace(Label_WaitInfo.Caption, '%Team', IntToStR(iWaitTeam), [rfIgnoreCase]);
+  Label_WaitInfo.Caption := StringReplace(Label_WaitInfo.Caption, '%Time', IntToStR(iWaitTeam * 3), [rfIgnoreCase]);
+
+  // Menu
+  SetMenu;
+
+  if bBreakTime then
+    Timer_BreakTime.Enabled := True;
+end;
+
+procedure TFormMain_Re.SetMenu;
+var
+  i, j: Integer;
+  iL, iT, iW, iH: Integer;
+  sName, sNotice: String;
+
+  DelControl: TControl;
+
+begin
+  //
+  iTOTALCNT := 0;
+  i := DM.GetMenus;
+  if i = 0 then
+  begin
+    Exit;
+  end;
+
+  SetLength(arrWaitingInfo, Length(arrStocks));
+  iH := (ScrollBox_Menu.Height - (iCnt_Rows * 10)) div iCnt_Rows;
+  iW := (ScrollBox_Menu.Width - (iCnt_Cols * 10)) div iCnt_Cols;
+
+  if ScrollBox_Menu.ControlCount <> 0 then
+  begin
+    for i := ScrollBox_Menu.ControlCount - 1 Downto 0 do
+    begin
+      DelControl := ScrollBox_Menu.Controls[i];
+      FreeAndnil(DelControl);
+    end;
+  end;
+
+  for i := Low(arrStocks) to High(arrStocks) do
+  begin
+    j := i div iCnt_Cols;
+    iT := (j * (iH + 10));
+    iT := iT + 5;
+
+    j := i mod iCnt_Cols;
+    iL := (j * (iW + 10));
+    iL := iL + 5;
+
+    with arrStocks[i] do
+    begin
+      sCode := IntToStR(i);
+      if not bUsed then
+        Continue;
+    end;
+
+    with arrWaitingInfo[i] do
+    begin
+      iRes := 0;
+      sRes := arrStocks[i].sName;
+    end;
+
+    sName := StringReplace(arrStocks[i].sName, '#13', #13#10, [rfReplaceAll]);
+    sNotice := StringReplace(arrStocks[i].sNotice, '#13', #13#10, [rfReplaceAll]);
+
+    case iMenuViewType of
+      0: // 리스트형
+        begin
+          with TFrameMenu1.Create(self) do
+          begin
+            Parent := ScrollBox_Menu;
+            Anchors := [akLeft, akRight];
+            Name := 'FrameMenu_' + IntToStR(i);
+            Tag := i;
+            Label_Name.Caption := sName;
+            Label_Minus.Width := iH - 10;
+            Label_Plus.Width := iH - 10;
+
+            SetBounds(iL, iT, iW, iH);
+            Application.ProcessMessages;
+            if (iW < 500) then
+              Panel_Qty.Width := iW div 2;
+
+            Label_Minus.Width := (iW div 2) div 3;
+            Label_Plus.Width := (iW div 2) div 3;
+            if iH > (iW div 3) then
+            begin
+              Panel_Qty.Padding.Top := (iH - ((iW div 2) div 3)) div 2 - 5;
+              Panel_Qty.Padding.Bottom := (iH - ((iW div 2) div 3)) div 2 - 5;
+              Panel_Qty.AlignWithMargins := True;
+              Panel_Qty.Margins.Right := 5;
+            end;
+
+            onClick := FrameMenuClick;
+          end;
+        end;
+      1: // 배열형
+        begin
+          with TFrameMenu3.Create(self) do
+          begin
+            Parent := ScrollBox_Menu;
+            Anchors := [akLeft, akRight];
+            Name := 'FrameMenu_' + IntToStR(i);
+            Tag := i;
+            Label_Name.Caption := sName;
+            if arrStocks[i].sNotice <> '' then
+            begin
+              Label_Notice.Align := alTop;
+              Label_Notice.Caption := sNotice;
+              Label_Notice.Height := (iH div 2) - Panel_Qty.Height;
+            end
+            else
+            begin
+              Label_Name.Align := alClient;
+              Label_Name.Layout := tlCenter;
+              Label_Notice.Visible := False;
+            end;
+            SetBounds(iL, iT, iW, iH);
+            Label_Notice.Align := alBottom;
+
+            if iH < 200 then
+            begin
+              Label_Notice.Visible := False;
+              Label_Name.Align := alClient;
+              Label_Name.Height := iH div 2;
+              Panel_Qty.Align := alBottom;
+              Panel_Qty.Height := iH div 2;
+            end;
+
+            Label_Plus.Width := iW div 3;
+            Label_Minus.Width := iW div 3;
+            onClick := FrameMenuClick;
+          end;
+        end;
+      2: // 배열버튼형
+        begin
+          with TFrameMenu4.Create(self) do
+          begin
+            Parent := ScrollBox_Menu;
+            Anchors := [akLeft, akRight];
+            Name := 'FrameMenu_' + IntToStR(i);
+            Tag := i;
+            Label_Name.Caption := sName;
+            if arrStocks[i].sNotice <> '' then
+              Label_Notice.Caption := sNotice
+            else
+              Label_Notice.Visible := False;
+
+            if arrStocks[i].iMAX = 0 then
+              arrStocks[i].iMAX := 5;
+
+            for j := 0 to arrStocks[i].iMAX do
+            begin
+              with TLabel.Create(self) do
+              begin
+                Parent := Panel_List;
+                Align := alRight;
+                Layout := tlCenter;
+                Alignment := taCenter;
+                Transparent := False;
+                AlignWithMargins := True;
+                AutoSize := False;
+
+                Name := 'Label_Qty' + IntToStR((i * 1000) + j);
+                Caption := IntToStR(j);
+                Color := clGray;
+                Font.Color := clWhite;
+
+                Width := iW div (arrStocks[i].iMAX + 1) - 6;
+                Align := alLeft;
+                onClick := ButtonQtyClick;
+              end;
+            end;
+
+            SetBounds(iL, iT, iW, iH);
+            onClick := FrameMenuClick;
+          end;
+        end;
+    end;
+    DM.RoundPanel(FindComponent('FrameMenu_' + IntToStR(i)));
+  end;
+
+end;
+
+procedure TFormMain_Re.SetTicket(WaitNo: String);
+var
+  Res: TResult_IS;
+  i: Integer;
+begin
+  //
+  for i := Low(arrTicket_Info) to High(arrTicket_Info) do
+  begin
+    with arrTicket_Info[i] do
+    begin
+      if i = Low(arrTicket_Info) then
+      begin
+        // 타이틀
+        sText := sTicketTitle;
+        iAlign := 0;
+      end
+      else
+      begin
+        case i of
+          1:
+            begin
+              sText := '대기번호 : ' + WaitNo;
+            end;
+          2:
+            begin
+              sText := '대기인원 : ' + IntToStR(iTOTALCNT);
+            end;
+          3:
+            begin
+              sText := '접수일시 : ' + FormatDateTime('YYYY-MM-DD HH:MM:SS', NOW);
+            end;
+          4:
+            begin
+              sText := '입장시 해당 출력물을 꼭 지참해주세요!';
+            end;
+        end;
+
+      end;
+    end;
+  end;
+
+  Res := DM.PrintTicket;
+  if Res.iRes <> 0 then
+  begin
+    DM.PopupMsg(Res.sRes);
+  end;
+end;
+
+procedure TFormMain_Re.Timer_BreakTimeTimer(Sender: TObject);
+var
+  sMSG: String;
+  iH, iW: Integer;
+  tNowTime: TTIme;
+begin
+  Timer_BreakTime.Enabled := False;
+  tNowTime := Time;
+  if bBreakTime then
+  begin
+    try
+      if CompareTime(tBreakEnd, tNowTime) = 1 then
+      begin
+        sMSG := '1';
+      end;
+      if CompareTime(tBreakStart, tNowTime) = -1 then
+      begin
+        sMSG := '2';
+      end;
+      sMSG := TimeToStr(tBreakStart) + #13#10 + TimeToStr(tBreakEnd) + #13#10 + TimeToStr(tNowTime);
+      if (CompareTime(tBreakStart, tNowTime) = -1) AND (CompareTime(tBreakEnd, tNowTime) = 1) AND NOT Assigned(FormBreak) then
+      begin
+        FormBreak := TForm.Create(self);
+        with FormBreak do
+        begin
+          AlphaBlend := True;
+          AlphaBlendValue := 150;
+          BorderStyle := bsNone;
+          Color := clBlack;
+          sMSG := IntToStR(self.Top + Panel_Category.Top) + ' ' + IntToStR(self.Top);
+
+          Show;
+          SetBounds(self.Left, self.Top + Panel_Category.Top, self.Width, self.Height);
+        end;
+
+        Form_Alert := TForm_POPUP.Create(self);
+        with Form_Alert do
+        begin
+          iH := Scn_H div 2;
+          iW := Scn_W div 5;
+
+          SetBounds(Left, Top, iW, iH);
+          Timer_Timeout.Enabled := False;
+          ImageCancel.Visible := False;
+          Label_Title.Caption := '알림';
+          Label_MSG.Caption := '현재 재료 준비 시간입니다.' + #13#10 + '다음 시간부터 이용이 가능합니다.' + #13#10 + TimeToStr(tBreakEnd);
+          Label_Timeout.Caption := '준비시간 : ' + TimeToStr(tBreakStart) + ' ~ ' + TimeToStr(tBreakEnd);
+          Panel_Footer.Visible := False;
+          Show;
+
+          SetWindowPos(Handle, HWND_TOPMOST, Left, Top, Width, Height, 0);
+
+        end;
+      end
+      else if (CompareTime(tBreakEnd, tNowTime) = -1) AND (Assigned(FormBreak) OR Assigned(FormBreak)) then
+      begin
+        FreeAndnil(FormBreak);
+        FreeAndnil(Form_Alert);
+      end;
+    finally
+      Timer_BreakTime.Enabled := True;
+    end;
+  end;
+end;
+
+end.

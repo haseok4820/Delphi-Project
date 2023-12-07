@@ -1,0 +1,62 @@
+object FrameMenu4: TFrameMenu4
+  Left = 0
+  Top = 0
+  Width = 320
+  Height = 240
+  Color = clWhite
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -27
+  Font.Name = #44256#46020' B'
+  Font.Style = []
+  ParentBackground = False
+  ParentColor = False
+  ParentFont = False
+  TabOrder = 0
+  object LabelName: TLabel
+    Left = 0
+    Top = 0
+    Width = 320
+    Height = 40
+    Align = alClient
+    Alignment = taCenter
+    AutoSize = False
+    Caption = 'test'
+    Layout = tlCenter
+    ExplicitLeft = 68
+    ExplicitTop = 8
+    ExplicitWidth = 80
+    ExplicitHeight = 60
+  end
+  object Label1: TLabel
+    Left = 0
+    Top = 40
+    Width = 320
+    Height = 100
+    Align = alBottom
+    Alignment = taCenter
+    AutoSize = False
+    Caption = #49345#54408' '#49444#47749#51012' '#51077#47141#54644#51452#49464#50836'.'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clGray
+    Font.Height = -21
+    Font.Name = #44256#46020' B'
+    Font.Style = []
+    ParentFont = False
+    Layout = tlCenter
+    WordWrap = True
+    ExplicitTop = 34
+  end
+  object Panel_List: TPanel
+    Left = 0
+    Top = 140
+    Width = 320
+    Height = 100
+    Align = alBottom
+    BevelOuter = bvNone
+    Color = clBlack
+    ParentBackground = False
+    ShowCaption = False
+    TabOrder = 0
+  end
+end

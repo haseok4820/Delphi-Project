@@ -1,0 +1,65 @@
+unit Frame_Menu3;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
+  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, ImagingComponents, Vcl.ExtCtrls;
+
+type
+  TFrameMenu3 = class(TFrame)
+    Panel_Qty: TPanel;
+    Label_Qty: TLabel;
+    Label_Name: TLabel;
+    Label_Notice: TLabel;
+    Label_Minus: TLabel;
+    Label_Plus: TLabel;
+    procedure Label_QtyClick(Sender: TObject);
+    procedure FrameClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+implementation
+
+{$R *.dfm}
+
+uses uDM;
+
+procedure TFrameMenu3.Label_QtyClick(Sender: TObject);
+var
+  iTag: Integer;
+begin
+  //
+  iTag := (Sender as TLabel).Tag;
+  Label_Qty.Tag := Label_Qty.Tag + iTag;
+  if Label_Qty.Tag < 0 then
+  begin
+    Label_Qty.Tag := 0;
+    Exit;
+  end
+  else if (arrStocks[Tag].iMAX <> 0) AND (Label_Qty.Tag > arrStocks[Tag].iMAX) then
+  begin
+    Label_Qty.Tag := arrStocks[Tag].iMAX;
+    Exit;
+  end;
+  Label_Qty.Caption := IntToStr(Label_Qty.Tag);
+
+  if Assigned(Self.OnClick) then
+    Self.OnClick(Self);
+end;
+
+procedure TFrameMenu3.FrameClick(Sender: TObject);
+var
+  iRes: Integer;
+begin
+  iRes := StrToIntDef(DM.PopupKeyPad(''), 0);
+  Label_Qty.Tag := iRes;
+  Label_Qty.Caption := IntToStr(Label_Qty.Tag);
+  if Assigned(Self.OnClick) then
+    Self.OnClick(Self);
+end;
+
+end.

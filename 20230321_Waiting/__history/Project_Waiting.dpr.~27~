@@ -1,0 +1,58 @@
+program Project_Waiting;
+
+uses
+  Vcl.Forms,
+  Winapi.Windows,
+  uDM in 'uDM.pas' {DM: TDataModule},
+  fmMain in 'fmMain.pas' {Form_Main},
+  fmSetting in 'fmSetting.pas' {From_Setting},
+
+  Form_ENV1_1 in 'ENV\Form_ENV1_1.pas' {fmENV1_1},
+  Form_ENV1_2 in 'ENV\Form_ENV1_2.pas' {fmENV1_2},
+  Form_ENV1_3 in 'ENV\Form_ENV1_3.pas' {fmENV1_3},
+  Form_ENV1_4 in 'ENV\Form_ENV1_4.pas' {fmENV1_4},
+  Form_ENV1_5 in 'ENV\Form_ENV1_5.pas' {fmENV1_5},
+
+  uPOPUP in 'Common\uPOPUP.pas' {Form_POPUP},
+  uListBOX in 'Common\uListBOX.pas' {FormList},
+  uBG in 'Common\uBG.pas' {Form_BG},
+  Frame_Menu1 in 'Common\Frame\Frame_Menu1.pas' {FrameMenu1: TFrame},
+  Frame_Menu2 in 'Common\Frame\Frame_Menu2.pas' {FrameMenu2: TFrame},
+  Frame_Menu3 in 'Common\Frame\Frame_Menu3.pas' {FrameMenu3: TFrame},
+  Frame_CheckBox in 'Common\Frame\Frame_CheckBox.pas' {Frame_ENV_CheckBox: TFrame},
+  Frame_CheckBox_Prn in 'Common\Frame\Frame_CheckBox_Prn.pas' {Frame_ENV_CheckBox_Prn: TFrame},
+  Frame_ComboBox in 'Common\Frame\Frame_ComboBox.pas' {Frame_ENV_ComboBox: TFrame},
+  Frame_ComboBox_Title in 'Common\Frame\Frame_ComboBox_Title.pas' {Frame_ComboBox_Prn: TFrame},
+  Frame_Control in 'Common\Frame\Frame_Control.pas' {Frame_SYS_Control: TFrame},
+  Frame_doubleComboBox_Title in 'Common\Frame\Frame_doubleComboBox_Title.pas' {Frame_ENV_DoubleComboBox_Title: TFrame},
+  Frame_Download in 'Common\Frame\Frame_Download.pas' {FrameDownload: TFrame},
+  Frame_Edit in 'Common\Frame\Frame_Edit.pas' {Frame_ENV_Edit: TFrame},
+  Frame_LoadFile in 'Common\Frame\Frame_LoadFile.pas' {Frame_ENV_LoadFile: TFrame},
+  Frame_MenuInfo in 'Common\Frame\Frame_MenuInfo.pas' {Frame_ENV_MenuInfo: TFrame},
+  Frame_Nav in 'Common\Frame\Frame_Nav.pas' {Frame_ENV_Nav: TFrame},
+  Frame_YN in 'Common\Frame\Frame_YN.pas' {Frame_ENV_YN: TFrame},
+  fmMain_Re in 'fmMain_Re.pas' {FormMain_Re},
+  uKeyPad in 'Common\uKeyPad.pas' {Form_Keypad},
+  uPrintTest in 'Common\uPrintTest.pas' {FormPrtTest},
+  Frame_Menu4 in 'Common\Frame\Frame_Menu4.pas' {FrameMenu4: TFrame},
+//  mnEdit in 'Unit\mnEdit.pas',
+  Frame_WaitList in 'ENV\Frame\Frame_WaitList.pas' {Frame_WaitInfo: TFrame},
+  Frame_PeopleList in 'ENV\Frame\Frame_PeopleList.pas' {Frame_People: TFrame};
+
+{$R *.res}
+
+var
+  Mutex: THandle;
+
+begin
+  Mutex := CreateMutex(nil, True, 'Foodcafe_K');
+  if (Mutex <> 0) and (GetLastError = 0) then
+  begin
+    Application.Initialize;
+    ReportMemoryLeaksOnShutdown := True;
+    Application.MainFormOnTaskbar := True;
+    Application.CreateForm(TDM, DM);
+  Application.CreateForm(TFormMain_Re, FormMain_Re);
+  Application.Run;
+  end;
+end.

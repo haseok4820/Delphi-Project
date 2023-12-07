@@ -1,0 +1,47 @@
+unit Frame_PlusMinus;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
+  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls;
+
+type
+  TFrame_Menu = class(TFrame)
+    Label_Name: TLabel;
+    Image_Plus: TImage;
+    Label_Qty: TLabel;
+    Image_Minus: TImage;
+    Shape_BG: TShape;
+    procedure Image_MinusClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+implementation
+
+var
+  iCnt: Integer;
+
+{$R *.dfm}
+
+procedure TFrame_Menu.Image_MinusClick(Sender: TObject);
+var
+  iTag: Integer;
+begin
+  //
+  iTag := (Sender as TImage).Tag;
+  iCnt := iCnt + iTag;
+  if iCnt < 0 then
+  begin
+    iCnt := 0;
+    Exit;
+  end;
+
+  Label_Qty.Caption := IntToStr(iCnt);
+
+end;
+
+end.

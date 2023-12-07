@@ -1,0 +1,506 @@
+unit fmMain;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.OleCtrls, WMPLib_TLB, ImagingComponents;
+
+type
+  TForm_Main = class(TForm)
+    Panel_Parent: TPanel;
+    Panel_Waiting: TPanel;
+    Panel_Edit: TPanel;
+    Label_Tel2: TLabel;
+    Edit1: TEdit;
+    Edit2: TEdit;
+    Label_Tel1: TLabel;
+    Panel_Keypad: TPanel;
+    Label_TelGuide: TLabel;
+    Shape_Line: TShape;
+    Label_WaitInfo: TLabel;
+    ScrollBox_Main: TScrollBox;
+    Panel_Help: TPanel;
+    Label_Title: TLabel;
+    Label1: TLabel;
+    Label2: TLabel;
+    procedure FormCreate(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure FormResize(Sender: TObject);
+    procedure FormMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+
+    procedure Edit_Change(Sender: TObject);
+    procedure Label_TelGuideClick(Sender: TObject);
+  private
+    { Private declarations }
+    procedure FormClear;
+    procedure SetKeypad;
+    procedure SetTable; // unused
+    procedure SetMenus;
+    procedure SetWaiting;
+
+    procedure Keypad_Click(Sender: TObject);
+    procedure Keypad_MouseEnter(Sender: TObject);
+    procedure Keypad_MouseLeave(Sender: TObject);
+
+  public
+    { Public declarations }
+
+{$IFDEF DEBUG}
+  protected
+    procedure CreateParams(var Params: TCreateParams); override;
+{$ENDIF}
+  end;
+
+var
+  Form_Main: TForm_Main;
+  bFormShow: Boolean = False;
+  arrKey_Caption: array [0 .. 11] of String = (
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9',
+    '지우기',
+    '0',
+    '확인'
+  );
+  arrKey_Byte: array [0 .. 11] of Byte = (
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    8,
+    48,
+    13
+  );
+
+implementation
+
+{$R *.dfm}
+
+uses uDM, Frame_Menu2, uListBOX;
+{ TForm5 }
+
+{$IFDEF DEBUG}
+
+procedure TForm_Main.CreateParams(var Params: TCreateParams);
+begin
+  inherited;
+  // 폼 사이즈 조절
+  Params.ExStyle := Params.ExStyle or WS_EX_STATICEDGE;
+  Params.Style := Params.Style or WS_SIZEBOX;
+end;
+
+{$ENDIF}
+
+procedure TForm_Main.Edit_Change(Sender: TObject);
+begin
+  if Length((Sender as TEdit).Text) = 4 then
+  begin
+    case (Sender as TEdit).Tag of
+      1:
+        begin
+          Edit2.SetFocus;
+        end;
+      2:
+        begin
+          // Keypad_Click(nil);
+        end;
+    end;
+  end
+  else if Length((Sender as TEdit).Text) = 0 then
+  begin
+    if (Sender as TEdit).Tag = 2 then
+    begin
+      Edit1.SetFocus;
+    end;
+  end;
+end;
+
+procedure TForm_Main.FormClear;
+begin
+  Edit1.Text := '';
+  Edit2.Text := '';
+
+  SetWaiting;
+  SetMenus;
+  DM.RoundPanel(Panel_Parent);
+  DM.RoundPanel(Panel_Help);
+  DM.RoundPanel(Panel_Waiting);
+  DM.RoundPanel(ScrollBox_Main);
+
+  if bFormShow then
+    Edit1.SetFocus;
+
+  SetKeypad;
+end;
+
+procedure TForm_Main.FormCreate(Sender: TObject);
+var
+  i: Byte;
+begin
+
+{$IFDEF DEBUG}
+  if Screen.MonitorCount > 1 then
+    i := 1
+  else
+    i := 0;
+{$ELSE}
+  i := 0;
+{$ENDIF}
+  with Screen.Monitors[i] do
+  begin
+    SetBounds(Left, Top, Width, Height);
+  end;
+end;
+
+procedure TForm_Main.FormMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+{$IFDEF DEBUG}
+  ReleaseCapture;
+  SendMessage(Handle, WM_NCLBUTTONDOWN, HTCAPTION, 0);
+{$ENDIF}
+end;
+
+procedure TForm_Main.FormResize(Sender: TObject);
+begin
+  if bFormShow then
+    FormClear;
+end;
+
+procedure TForm_Main.FormShow(Sender: TObject);
+begin
+  Edit1.SetFocus;
+  Label_TelGuideClick(nil);
+  Label_WaitInfo.Caption := StringReplace(Label_WaitInfo.Hint, ',', #13#10, [rfReplaceAll]);
+  bFormShow := True;
+  FormClear;
+  SetKeypad;
+
+end;
+
+procedure TForm_Main.SetKeypad;
+var
+  i, j: Integer;
+
+  iTop, iLeft, iWidth, iHeight: Integer;
+
+  RectFont: TRect;
+  lFontLabel: TLabel;
+  iFontSize: Byte;
+
+  DelControl : TControl;
+
+begin
+  //
+  if Panel_Keypad.ControlCount <> 0 then
+  begin
+    for i := Panel_Keypad.ControlCount - 1 to 0 do
+    begin
+      DelControl := Panel_Keypad.Controls[i];
+      FreeAndNil(DelControl);
+
+    end;
+  end;
+
+  j := 0;
+  iWidth := Panel_Keypad.Width div 3;
+  iHeight := Panel_Keypad.Height div 4;
+
+  // 폰트 사이즈 자동조절
+  lFontLabel := TLabel.Create(Self);
+  try
+    with lFontLabel do
+    begin
+      Parent := Self;
+      Width := iWidth;
+      Height := iHeight;
+    end;
+
+    RectFont := Default (TRect);
+    RectFont.Right := lFontLabel.Width;
+    RectFont.Height := lFontLabel.Height;
+
+    for i := 40 Downto 20 do
+    begin
+      Canvas.Font.Size := i;
+      Canvas.TextRect(RectFont, arrKey_Caption[High(arrKey_Caption) - 2], [tfCalcRect]);
+
+      if ((RectFont.Right - RectFont.Left) < lFontLabel.Width) AND ((RectFont.Bottom - RectFont.Top) < lFontLabel.Height) then
+      begin
+        iFontSize := i - 5;
+        Break;
+      end;
+    end;
+  finally
+    lFontLabel.Free;
+    lFontLabel := nil;
+  end;
+
+  for i := Low(arrKey_Caption) to High(arrKey_Caption) do
+  begin
+    j := i div 3;
+    with TLabel.Create(Self) do
+    begin
+      Parent := Panel_Keypad;
+      Transparent := False;
+      Color := clWhite;
+      AutoSize := False;
+      Layout := tlCenter;
+      Alignment := taCenter;
+
+      Caption := arrKey_Caption[i];
+      Tag := arrKey_Byte[i];
+
+      iLeft := i mod 3 * iWidth;
+      iTop := j * iHeight;
+
+      Font.Size := iFontSize;
+
+      SetBounds(iLeft + 1, iTop + 1, iWidth - 2, iHeight - 2);
+      OnClick := Keypad_Click;
+      OnMouseEnter := Keypad_MouseEnter;
+      OnMouseLeave := Keypad_MouseLeave;
+
+    end;
+  end;
+end;
+
+procedure TForm_Main.SetMenus;
+var
+  i: Integer;
+begin
+  //
+  ScrollBox_Main.Visible := False;
+  DM.SetMenus;
+  for i := ScrollBox_Main.ControlCount - 1 Downto 0 do
+  begin
+    ScrollBox_Main.Controls[i].Free;
+  end;
+
+  if Height > Width then
+    Exit;
+
+  for i := Low(arrStocks) to High(arrStocks) do
+  begin
+    with TFrameMenu2.Create(Self) do
+    begin
+      case i of
+        0:
+          arrStocks[i].sName := '성인';
+        1:
+          arrStocks[i].sName := '청소년';
+        2:
+          arrStocks[i].sName := '어린이';
+        3:
+          arrStocks[i].sName := '노약자';
+        4:
+          arrStocks[i].sName := '우대';
+      end;
+      PanelQty.Left := Label_Amt.Width - PanelQty.Width;
+      PanelQty.Anchors := [akRight, akBottom];
+      Parent := ScrollBox_Main;
+      Name := 'FrameMenu_' + IntToStr(i);
+      Tag := i;
+      Hint := arrStocks[i].sCode;
+      Label_Name.Caption := arrStocks[i].sName;
+
+      Height := ScrollBox_Main.Height div 5;
+      SetBounds(0, 5 + (Height * i), ScrollBox_Main.Width, Height -5);
+    end;
+    DM.RoundPanel(FindComponent('FrameMenu_' + IntToStr(i)));
+  end;
+
+  ScrollBox_Main.Visible := True;
+end;
+
+procedure TForm_Main.SetTable;
+var
+  i: Integer;
+  iL, iT, iW, iH: Integer;
+begin
+  // 700 X 700
+  if ScrollBox_Main.ControlCount <> 0 then
+  begin
+    // 초기화
+    for i := ScrollBox_Main.ControlCount - 1 to 0 do
+    begin
+      (ScrollBox_Main.Controls[i] as TObject).Free;
+    end;
+
+    // 좌석 처리
+    for i := Low(arrTables) to High(arrTables) do
+    begin
+      with TLabel.Create(Self) do
+      begin
+        Parent := ScrollBox_Main;
+        Name := 'Table_' + IntToStr(i);
+        Tag := arrTables[i].iSeq;
+        Caption := arrTables[i].sTableName;
+
+        iL := arrTables[i].iX;
+        iT := arrTables[i].iY;
+        iW := arrTables[i].iW;
+        iH := arrTables[i].iH;
+
+        SetBounds(iL, iT, iW, iH);
+      end;
+
+    end;
+
+  end;
+
+end;
+
+procedure TForm_Main.SetWaiting;
+begin
+  //
+  DM.GetWait;
+  Label_WaitInfo.Caption := StringReplace(Label_WaitInfo.Hint, '%Team', IntToStr(iWaitTeam), [rfIgnoreCase]);
+  Label_WaitInfo.Caption := StringReplace(Label_WaitInfo.Caption, '%Time', IntToStr(iWaitTeam * 5), [rfIgnoreCase]);
+
+  if Label_WaitInfo.Width <= 550 then
+  begin
+    Label_WaitInfo.Caption := StringReplace(Label_WaitInfo.Caption, ',', #13, [rfReplaceAll])
+  end;
+end;
+
+procedure TForm_Main.Keypad_Click(Sender: TObject);
+var
+  iKey: Byte;
+  sTel: String;
+  Res: TResult_IS;
+
+  mo: TModalResult;
+begin
+  if Sender <> nil then
+    iKey := (Sender as TLabel).Tag;
+
+  if (Sender = nil) OR (iKey = 13) then
+  begin
+
+    sTel := Edit1.Text + Edit2.Text;
+    if Length(sTel) <> 8 then
+    begin
+      DM.PopupMsg('입력하신 전화번호를 확인해주세요.#13실패사유:유효하지 않은 전화번호');
+    end
+    else
+    begin
+      // 인원 선택
+      DM.SetBG(True);
+      with TFormList.Create(Self) do
+      begin
+        ShowModal;
+        mo := ModalResult;
+        Free;
+      end;
+      DM.SetBG(False);
+
+      if mo <> mrOk then
+        Exit;
+
+      Res := DM.SetWaiting(iWAITING_INSERT, sTel);
+      if {$IFDEF DEBUG} True {$ELSE} Res.iRes = 0{$ENDIF} then
+      begin
+        // 성공
+        DM.PopupMsg('대기접수가 완료되었습니다..#13매장 근처에서 잠시만 기다려주세요.#13#13입장번호:' + Res.sRes);
+        FormClear;
+      end
+      else
+      begin
+        // 실패
+        DM.PopupMsg('대기접수에 실패했습니다.#13매장직원에 문의해주세요.#13실패사유:' + Res.sRes);
+      end;
+    end;
+  end
+  else
+  begin
+    Keybd_Event(iKey, MapVirtualKey(iKey, 0), 0, 0);
+    Keybd_Event(iKey, MapVirtualKey(iKey, 0), KEYEVENTF_KEYUP, 0);
+  end;
+
+end;
+
+procedure TForm_Main.Keypad_MouseEnter(Sender: TObject);
+begin
+  //
+  with (Sender as TLabel) do
+  begin
+    Color := $00222222;
+    Font.Color := clWhite;
+  end;
+end;
+
+procedure TForm_Main.Keypad_MouseLeave(Sender: TObject);
+begin
+  //
+  with (Sender as TLabel) do
+  begin
+    Color := clWhite;
+    Font.Color := clBlack;
+  end;
+end;
+
+procedure TForm_Main.Label_TelGuideClick(Sender: TObject);
+begin
+  DoubleBuffered := False;
+  if (Edit1.Text = '0736') AND (Edit2.Text = '7773') then
+  begin
+    Application.Terminate;
+  end
+  else
+  begin
+    // 가로형
+    if Width > Height then
+    begin
+      Panel_Parent.Align := alRight;
+      Panel_Parent.Width := 400;
+      ScrollBox_Main.Visible := True;
+      Panel_Waiting.Align := alNone;
+    end
+    // 세로형
+    else
+    begin
+      Panel_Keypad.Visible := False;
+      Panel_Parent.Align := alNone;
+      Panel_Parent.SetBounds((Width - 600) div 2, (Height - 800) div 2 - 100, 600, 1000);
+      ScrollBox_Main.Visible := False;
+
+      Edit1.Width := Panel_Parent.Width div 4;
+      Edit1.Align := alLeft;
+
+      Label_Tel2.Width := Edit1.Width;
+      Label_Tel2.Align := alLeft;
+
+      Edit2.Width := Edit1.Width;
+      Edit2.Align := alLeft;
+
+      Edit2.Align := alRight;
+      Label_Tel2.Align := alRight;
+      Edit1.Align := alRight;
+
+      Panel_Waiting.Width := 600;
+      Panel_Waiting.Left := Panel_Parent.Left;
+
+      Application.ProcessMessages;
+      Sleep(100);
+      Application.ProcessMessages;
+
+      Panel_Keypad.Visible := True;
+    end;
+    FormClear;
+  end;
+  DoubleBuffered := True;
+end;
+
+end.

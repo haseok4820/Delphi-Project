@@ -1,0 +1,316 @@
+﻿unit Form_ENV1_2;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Frame_Edit, Frame_ComboBox, Vcl.ExtCtrls, Frame_CheckBox,
+  Frame_PeopleList;
+
+type
+  TfmENV1_2 = class(TForm)
+    Label_Seq: TLabel;
+    Label_Visible: TLabel;
+    Label_Name: TLabel;
+    Label_Notice: TLabel;
+    Label_MAX: TLabel;
+    Button_Add: TButton;
+    Button_Del: TButton;
+    PanelRight: TPanel;
+    ButtonUP: TButton;
+    ButtonDown: TButton;
+    GroupBox1: TGroupBox;
+    Button_Change: TButton;
+    Edit_Renewal: TEdit;
+    Label1: TLabel;
+    Edit_Original: TEdit;
+    CheckBox_Update: TCheckBox;
+    Button_Keyboard: TButton;
+    Frame_ENV_ComboBox1: TFrame_ENV_ComboBox;
+    Button_Preview: TButton;
+    ScrollBox: TScrollBox;
+    Label2: TLabel;
+    ButtonClear: TButton;
+    procedure FormShow(Sender: TObject);
+    procedure FormResize(Sender: TObject);
+
+    procedure CheckBox_UpdateClick(Sender: TObject);
+    procedure ButtonScroll(Sender: TObject);
+    procedure Button_KeyboardClick(Sender: TObject);
+    procedure Button_UpdateClick(Sender: TObject);
+    procedure Button_ChangeClick(Sender: TObject);
+    procedure FrmClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormMouseWheel(Sender: TObject; Shift: TShiftState; WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean);
+    procedure ButtonClearClick(Sender: TObject);
+  private
+    { Private declarations }
+    procedure SavePeoples;
+    procedure ShowPeoples;
+    procedure UpdatePeople(bADD: Boolean);
+  public
+    { Public declarations }
+  end;
+
+var
+  fmENV1_2: TfmENV1_2;
+  iSel_SEQ: Integer = -1;
+
+implementation
+
+{$R *.dfm}
+
+uses uDM;
+
+procedure TfmENV1_2.Button_ChangeClick(Sender: TObject);
+var
+  sMSG, s1, s2: String;
+  Item_Change: TDB_STOCK;
+begin
+  SavePeoples;
+  s1 := Edit_Original.Text;
+  s2 := Edit_Renewal.Text;
+
+  sMSG := s1 + '번과 ' + s2 + '번과 위치를 변경하시겠습니까?';
+  if ((s1 <> '') AND (s2 <> '')) AND (DM.PopupMsg(iPOPUP_YESNO, sMSG) = iPOPUP_RESULT_OK) then
+  begin
+    try
+      Item_Change := arrStocks[StrToInt(s1) - 1];
+      arrStocks[StrToInt(s1) - 1] := arrStocks[StrToInt(s2) - 1];
+      arrStocks[StrToInt(s2) - 1] := Item_Change;
+
+      ShowPeoples;
+      Edit_Original.Text := '';
+      Edit_Renewal.Text := '';
+    except
+      ON E: Exception do
+      begin
+        DM.LogText(E.Message);
+        DM.PopupMsg('변경중 오류가 발생하였습니다. 다시 진행해주세요.');
+      end;
+    end;
+  end;
+
+end;
+
+procedure TfmENV1_2.Button_UpdateClick(Sender: TObject);
+var
+  bChk: Boolean;
+begin
+  bChk := (Sender as TButton).Tag > 0;
+  UpdatePeople(bChk);
+end;
+
+procedure TfmENV1_2.Button_KeyboardClick(Sender: TObject);
+begin
+  DM.PopupKeyboard;
+end;
+
+procedure TfmENV1_2.ButtonClearClick(Sender: TObject);
+begin
+  Edit_Renewal.Text := '';
+  Edit_Original.Text := '';
+end;
+
+procedure TfmENV1_2.ButtonScroll(Sender: TObject);
+begin
+  if (Sender as TButton).Tag >= 0 then
+    SendMEssage(ScrollBox.Handle, WM_VSCROLL, SB_PAGELEFT, 0)
+  else
+    SendMEssage(ScrollBox.Handle, WM_VSCROLL, SB_PAGERIGHT, 0);
+end;
+
+procedure TfmENV1_2.CheckBox_UpdateClick(Sender: TObject);
+begin
+  GroupBox1.Visible := CheckBox_Update.Checked;
+  ButtonClear.Visible :=CheckBox_Update.Checked;
+end;
+
+procedure TfmENV1_2.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  SavePeoples;
+end;
+
+procedure TfmENV1_2.FormMouseWheel(Sender: TObject; Shift: TShiftState; WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean);
+begin
+  if WheelDelta >= 0 then
+    SendMEssage(ScrollBox.Handle, WM_VSCROLL, SB_LINELEFT, 0)
+  else
+    SendMEssage(ScrollBox.Handle, WM_VSCROLL, SB_LINERIGHT, 0);
+end;
+
+procedure TfmENV1_2.FormResize(Sender: TObject);
+begin
+  ButtonUP.Height := PanelRight.Height div 2;
+  ButtonDown.Height := ButtonUP.Height;
+end;
+
+procedure TfmENV1_2.FormShow(Sender: TObject);
+begin
+  ShowPeoples;
+end;
+
+procedure TfmENV1_2.FrmClick(Sender: TObject);
+var
+  i: Integer;
+begin
+  //
+  iSel_SEQ := (Sender as TFrame_People).Tag;
+  for i := ScrollBox.ControlCount - 1 Downto 0 do
+  begin
+    if ScrollBox.Controls[i] is TFrame_People then
+    begin
+      with (ScrollBox.Controls[i] as TFrame_People) do
+      begin
+        Color := clWhite;
+      end;
+    end;
+  end;
+
+  with (Sender as TFrame_People) do
+  begin
+    Color := clSkyBlue;
+    if CheckBox_Update.Checked then
+    begin
+      if (Edit_Original.Text = '') then
+        Edit_Original.Text := IntToStr(iSel_SEQ + 1)
+      else if (Edit_Renewal.Text = '') then
+        Edit_Renewal.Text := IntToStr(iSel_SEQ + 1);
+    end;
+  end;
+end;
+
+procedure TfmENV1_2.SavePeoples;
+var
+  i: Integer;
+begin
+  //
+  if ScrollBox.ControlCount = 0 then
+    Exit;
+
+  for i := Low(arrStocks) to High(arrStocks) do
+  begin
+    if (FindComponent('Frm_People_' + IntToStr(i)) as TFrame_People) <> nil then
+    begin
+      with arrStocks[i], (FindComponent('Frm_People_' + IntToStr(i)) as TFrame_People) do
+      begin
+        sCode := IntToStr(i);
+        sName := Edit_Name.Text;
+        sNotice := Memo_Notice.Text;
+        iMAX := StrToIntDef(Edit_Max.Text, 0);
+        iAmt := 0;
+        bUsed := Label_Check.Caption = arrYN[High(arrYN)];
+      end;
+    end;
+  end;
+end;
+
+procedure TfmENV1_2.ShowPeoples;
+var
+  i: Integer;
+  DelControl: TControl;
+begin
+  //
+
+  if ScrollBox.ControlCount <> 0 then
+  begin
+    for i := ScrollBox.ControlCount - 1 Downto 0 do
+    begin
+      DelControl := ScrollBox.Controls[i];
+      FreeAndNil(DelControl);
+    end;
+  end;
+
+  if Length(arrStocks) = 0 then
+  begin
+    Exit;
+  end;
+
+  for i := Low(arrStocks) to High(arrStocks) do
+  begin
+    with arrStocks[i], TFrame_People.Create(Self) do
+    begin
+      Parent := ScrollBox;
+      Name := 'Frm_People_' + IntToStr(i);
+      Tag := i;
+      Align := alBottom;
+      Label_Seq.Caption := IntToStr(i + 1);
+      Label_Seq.Hint := sCode;
+      Edit_Name.Text := sName;
+      Memo_Notice.Text := sNotice;
+      Edit_Max.Text := IntToStr(iMAX);
+
+      if bUsed then
+      begin
+        Label_Check.Tag := High(arrYN);
+        Label_Check.Caption := arrYN[High(arrYN)];
+      end
+      else
+      begin
+        Label_Check.Tag := Low(arrYN);
+        Label_Check.Caption := arrYN[Low(arrYN)];
+        Edit_Name.Enabled := False;
+        Memo_Notice.Enabled := False;
+        Edit_Max.Enabled := False;
+      end;
+
+      Align := alTop;
+      onclick := FrmClick;
+    end;
+  end;
+end;
+
+procedure TfmENV1_2.UpdatePeople(bADD: Boolean);
+var
+  Item: TDB_STOCK;
+begin
+  // 추가
+  if bADD then
+  begin
+    with Item do
+    begin
+      sCode := '';
+      sName := '';
+      sNotice := '';
+      iMAX := 0;
+      bUsed := True;
+    end;
+    Insert(Item, arrStocks, High(arrStocks));
+
+    with TFrame_People.Create(Self) do
+    begin
+      Parent := ScrollBox;
+      Name := 'Frm_People_' + IntToStr(High(arrStocks));
+      Tag := High(arrStocks);
+      Align := alBottom;
+      Label_Seq.Caption := IntToStr(High(arrStocks) + 1);
+      with Item do
+      begin
+        Label_Seq.Hint := sCode;
+        Edit_Name.Text := sName;
+        Memo_Notice.Text := sNotice;
+        Edit_Max.Text := IntToStr(iMAX);
+        Label_Check.Tag := High(arrYN);
+        Label_Check.Caption := arrYN[High(arrYN)];
+      end;
+      Align := alTop;
+      onclick := FrmClick;
+    end;
+  end
+  // 삭제
+  else if iSel_SEQ <> -1 then
+  begin
+    if DM.PopupMsg(iPOPUP_YESNO, IntToStr(iSel_SEQ + 1) + '번째 항목을#13삭제하시겠습니까?') = iPOPUP_RESULT_OK then
+    begin
+      DELETE(arrStocks, iSel_SEQ, 1);
+      ShowPeoples;
+    end;
+
+  end
+  else
+  begin
+    DM.PopupMsg('삭제할 구분을 먼저 선택해주세요.');
+  end;
+end;
+
+end.

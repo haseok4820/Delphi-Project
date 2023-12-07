@@ -1,0 +1,15 @@
+program Project_TicketOption;
+
+uses
+  System.StartUpCopy,
+  FMX.Forms,
+  uPreview in 'uPreview.pas' {Form1},
+  Frame_Ticket in 'Frame_Ticket.pas' {Frame1: TFrame};
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.CreateForm(TForm1, Form1);
+  Application.Run;
+end.

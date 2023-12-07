@@ -1,0 +1,327 @@
+unit Form_ENV1_1;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, Winapi.ShellApi, //
+  System.SysUtils, System.Variants, System.Classes, System.iniFiles, //
+  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, //
+  Frame_ComboBox_Title, Frame_CheckBox, Frame_Edit, Vcl.ComCtrls;
+
+type
+  TfmENV1_1 = class(TForm)
+    ScrollBoxMain: TScrollBox;
+    GroupBox1: TGroupBox;
+    FrmCombo_PrnPort: TFrame_ComboBox_Prn;
+    FrmCombo_PrnBaudRate: TFrame_ComboBox_Prn;
+    Button_PrnTest: TButton;
+
+    GroupBox2: TGroupBox;
+    FrmCombo_Font: TFrame_ComboBox_Prn;
+    FrmCombo_KakaoAlert: TFrame_ComboBox_Prn;
+
+    GroupBox3: TGroupBox;
+    FrmCombo_PrnType: TFrame_ComboBox_Prn;
+    FrmEdit_PrnTitle: TFrame_ENV_Edit;
+    FrmEdit_TopPadding: TFrame_ENV_Edit;
+    FrmEdit_BotPadding: TFrame_ENV_Edit;
+    Button_Preview: TButton;
+    Button_PrtDefault: TButton;
+
+    GroupBox4: TGroupBox;
+    FrmCombo_DefaultLan: TFrame_ComboBox_Prn;
+    FrmCheckBox_1: TFrame_ENV_CheckBox;
+    FrmCheckBox_2: TFrame_ENV_CheckBox;
+    FrmCheckBox_3: TFrame_ENV_CheckBox;
+    FrmCheckBox_4: TFrame_ENV_CheckBox;
+    Panel_BreakTime: TPanel;
+    FrmCheck_BreakTime: TFrame_ENV_CheckBox;
+    DTP_BreakStart: TDateTimePicker;
+    DTP_BreakEnd: TDateTimePicker;
+    Label_BreakTime: TLabel;
+    FrmEdit_XCnt: TFrame_ENV_Edit;
+    FrmEdit_YCnt: TFrame_ENV_Edit;
+    Button_MenuDefault: TButton;
+    FrmCombo_MenuType: TFrame_ComboBox_Prn;
+    FrmEdit_PrnLength: TFrame_ENV_Edit;
+    Timer_Preview: TTimer;
+
+    procedure FormShow(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormMouseWheel(Sender: TObject; Shift: TShiftState; WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean);
+
+    procedure Button_PrnTestClick(Sender: TObject);
+    procedure FrmEdit_YCntClick(Sender: TObject);
+    procedure Button_MenuDefaultClick(Sender: TObject);
+
+    procedure FrmaeComboClick(Sender: TObject);
+    procedure FrameCheckClick(Sender: TObject);
+    procedure Button_PreviewClick(Sender: TObject);
+    procedure Button_PrtDefaultClick(Sender: TObject);
+    procedure Timer_PreviewTimer(Sender: TObject);
+  private
+    { Private declarations }
+    procedure SettingApply;
+
+  public
+    { Public declarations }
+  end;
+
+var
+  fmENV1_1: TfmENV1_1;
+
+
+
+  arrKakaoAlertType: array [0 .. 2] of String = (
+    '사용안함(알림톡/문자를 보내지 않습니다.)',
+    '선택발송(고객의 선택에 따라, 알림톡/문자을 보냅니다.)',
+    '필수발송(모든 고객에 알림톡을/문자를 보냅니다.)'
+  );
+
+  arrTicketType: array [0 .. 0] of String = (
+    '유형1'
+  );
+
+  arrMenuType: array [0 .. 1] of String = (
+    '리스트형',
+    '배열형'
+    // '배열버튼형'
+  );
+
+  arrLangauage: array [0 .. 3] of String = (
+    '한국어',
+    '영어',
+    '일본어',
+    '중국어'
+  );
+
+implementation
+
+{$R *.dfm}
+
+uses uPrintTest, uDM, uBG, fmMain_Re;
+
+procedure TfmENV1_1.FormShow(Sender: TObject);
+var
+  i, j: Integer;
+begin
+  ScrollBoxMain.VertScrollBar.Position := 0;
+
+  for i := 1 to 4 do
+  begin
+    with (FindComponent('GroupBox' + IntToStr(i)) as TGroupBox) do
+    begin
+      for j := ControlCount - 1 Downto 0 do
+      begin
+        if Controls[j] is TFrame_ComboBox_Prn then
+          (Controls[j] as TFrame_ComboBox_Prn).OnClick := FrmaeComboClick;
+      end;
+    end;
+  end;
+  // GroupBox1
+  FrmCombo_PrnPort.COMBO.Label_Key.Caption := sTicketPRT_PORT;
+  FrmCombo_PrnBaudRate.Tag := iTicketPRT_BaudRate;
+  FrmCombo_PrnBaudRate.COMBO.Label_Key.Caption := arrBaudRateType[iTicketPRT_BaudRate];
+
+  // GroupBox2
+  FrmCombo_PrnType.Tag := iTicketType;
+  FrmCombo_PrnType.COMBO.Label_Key.Caption := arrTicketType[iTicketType];
+  FrmEdit_PrnTitle.Edit_Value.Text := sTicketTitle;
+  // FrmEdit_PrnLength.Edit_Value.Text := IntToStr(iTicket_Length);
+  // FrmEdit_PrtCnt.Edit_Value.Text := IntToStr(iTicketCnt);
+  // FrmEdit_TopPadding.Edit_Value.Text := IntToStr(iTicketTopNil);
+  // FrmEdit_BotPadding.Edit_Value.Text := IntToStr(iTicketBotNil);
+
+  // GroupBox3
+  FrmCombo_Font.COMBO.Label_Key.Caption := sSystemFont;
+  FrmCombo_KakaoAlert.Tag := iKakaoAlert;
+  FrmCombo_KakaoAlert.COMBO.Label_Key.Caption := arrKakaoAlertType[iKakaoAlert];
+  FrmEdit_XCnt.Edit_Value.Text := IntToStr(iCnt_Cols);
+  FrmEdit_YCnt.Edit_Value.Text := IntToStr(iCnt_Rows);
+  FrmCombo_MenuType.Tag := iMenuViewType;
+  FrmCombo_MenuType.COMBO.Label_Key.Caption := arrMenuType[iMenuViewType];
+  if bBreakTime then
+    FrmCheck_BreakTime.Label_Check.Caption := arrYN[High(arrYN)]
+  else
+  begin
+    FrmCheck_BreakTime.Label_Check.Caption := arrYN[Low(arrYN)];
+    DTP_BreakStart.Enabled := False;
+    DTP_BreakEnd.Enabled := False;
+  end;
+
+  DTP_BreakStart.Time := tBreakStart;
+  DTP_BreakEnd.Time := tBreakEnd;
+
+end;
+
+procedure TfmENV1_1.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  SettingApply;
+end;
+
+procedure TfmENV1_1.FormMouseWheel(Sender: TObject; Shift: TShiftState; WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean);
+begin
+  if WheelDelta >= 0 then
+    SendMEssage(ScrollBoxMain.Handle, WM_VSCROLL, SB_LINELEFT, 0)
+  else
+    SendMEssage(ScrollBoxMain.Handle, WM_VSCROLL, SB_LINERIGHT, 0);
+end;
+
+procedure TfmENV1_1.Button_MenuDefaultClick(Sender: TObject);
+begin
+  FrmEdit_XCnt.Edit_Value.Text := '1';
+  FrmEdit_YCnt.Edit_Value.Text := '1';
+  FrmCombo_MenuType.COMBO.Label_Key.Caption := arrMenuType[Low(arrMenuType)];
+  FrmCombo_MenuType.Tag := Low(arrMenuType);
+end;
+
+procedure TfmENV1_1.Button_PreviewClick(Sender: TObject);
+var
+  sPath: String;
+begin
+  if NOT Timer_Preview.Enabled then
+  begin
+    SettingApply;
+    DM.Saveini;
+    sPath := 'Project_TicketOption.exe';
+    if FileExists(sPath) then
+    begin
+      ShellExecute(Application.Handle, 'open', pChar(sPath), nil, nil, SW_SHOWNORMAL);
+      Timer_Preview.Enabled := True;
+    end;
+  end
+  else
+  begin
+    Timer_Preview.Enabled := False;
+    Timer_PreviewTimer(nil);
+  end;
+
+end;
+
+procedure TfmENV1_1.Button_PrnTestClick(Sender: TObject);
+var
+  FormBG: TForm;
+  iW, iH: Integer;
+begin
+  SettingApply;
+  FormBG := TForm_BG.Create(Self);
+  FormBG.Show;
+  FormPrtTest := TFormPrtTest.Create(Self);
+  try
+    with FormPrtTest do
+    begin
+      iH := FormMain_Re.Height div 2;
+      iW := FormMain_Re.Width div 5;
+
+      SetBounds(Left, Top, iW, iH);
+
+      SetWindowPos(Handle, HWND_TOPMOST, Left, Top, Width, Height, 0);
+      ShowModal;
+    end;
+  finally
+    FormPrtTest.Free;
+    FormPrtTest := nil;
+    FormBG.Free;
+    FormBG := nil;
+  end;
+end;
+
+procedure TfmENV1_1.Button_PrtDefaultClick(Sender: TObject);
+begin
+  FrmEdit_PrnTitle.Edit_Value.Text := '1';
+  FrmEdit_PrnLength.Edit_Value.Text := '40';
+  FrmEdit_TopPadding.Edit_Value.Text := '3';
+  FrmEdit_BotPadding.Edit_Value.Text := '3';
+end;
+
+procedure TfmENV1_1.FrameCheckClick(Sender: TObject);
+begin
+  //
+  if (Sender as TFrame) = FrmCheck_BreakTime then
+  begin
+    DTP_BreakStart.Enabled := FrmCheck_BreakTime.Label_Check.Caption = arrYN[High(arrYN)];
+    DTP_BreakEnd.Enabled := FrmCheck_BreakTime.Label_Check.Caption = arrYN[High(arrYN)];
+  end;
+end;
+
+procedure TfmENV1_1.FrmaeComboClick(Sender: TObject);
+var
+  Res: TResult_IS;
+begin
+  //
+  Res.iRes := -1;
+
+  if (Sender as TFrame) = FrmCombo_PrnPort then
+    Res := DM.PopupList(arrComPort)
+  else if (Sender as TFrame) = FrmCombo_PrnBaudRate then
+    Res := DM.PopupList(arrBaudRateType)
+  else if (Sender as TFrame) = FrmCombo_KakaoAlert then
+    Res := DM.PopupList(arrKakaoAlertType)
+  else if (Sender as TFrame) = FrmCombo_Font then
+    Res := DM.PopupList(arrFont)
+  else if (Sender as TFrame) = FrmCombo_DefaultLan then
+    Res := DM.PopupList(arrLangauage)
+  else if (Sender as TFrame) = FrmCombo_PrnType then
+    Res := DM.PopupList(arrTicketType)
+  else if (Sender as TFrame) = FrmCombo_MenuType then
+    Res := DM.PopupList(arrMenuType);
+
+  // 선택
+  if Res.iRes <> iPOPUP_USERCANCEL then
+  begin
+    with (Sender as TFrame_ComboBox_Prn) do
+    begin
+      Tag := Res.iRes;
+      COMBO.Label_Key.Caption := Res.sRes;
+    end;
+  end;
+end;
+
+procedure TfmENV1_1.FrmEdit_YCntClick(Sender: TObject);
+begin
+  FrmEdit_YCnt.FrameClick(Sender);
+end;
+
+procedure TfmENV1_1.SettingApply;
+{ var
+  memini: TMemIniFile; }
+begin
+  // GroupBox1
+  sTicketPRT_PORT := FrmCombo_PrnPort.COMBO.Label_Key.Caption;
+  iTicketPRT_BaudRate := FrmCombo_PrnBaudRate.Tag;
+
+  // GroupBox2
+  iTicketType := FrmCombo_PrnType.Tag;
+  sTicketTitle := FrmEdit_PrnTitle.Edit_Value.Text;
+  // iTicket_Length := StrToIntDef(FrmEdit_PrnLength.Edit_Value.Text, 40);
+  // iTicketCnt := StrToIntDef(FrmEdit_PrtCnt.Edit_Value.Text, 1);
+  // iTicketTopNil := StrToIntDef(FrmEdit_TopPadding.Edit_Value.Text, 2);
+  // iTicketBotNil := StrToIntDef(FrmEdit_BotPadding.Edit_Value.Text, 2);
+
+  // GroupBox3
+  sSystemFont := FrmCombo_Font.COMBO.Label_Key.Caption;
+  iKakaoAlert := FrmCombo_KakaoAlert.Tag;
+  iCnt_Cols := StrToIntDef(FrmEdit_XCnt.Edit_Value.Text, 1);
+  iCnt_Rows := StrToIntDef(FrmEdit_YCnt.Edit_Value.Text, 1);
+  iMenuViewType := FrmCombo_MenuType.Tag;
+  bBreakTime := FrmCheck_BreakTime.Label_Check.Caption = arrYN[High(arrYN)];
+  tBreakStart := DTP_BreakStart.Time;
+  tBreakEnd := DTP_BreakEnd.Time;
+end;
+
+procedure TfmENV1_1.Timer_PreviewTimer(Sender: TObject);
+var
+  i: Integer;
+begin
+  Button_Preview.Caption := '변경사항 적용하기' ;
+  i := FindWindow(nil, 'AirTicket_Preview');
+  if (i = 0) OR (Sender = nil) then
+  begin
+    Button_Preview.Caption := '   상세설정      미리보기 ';
+    Timer_Preview.Enabled := False;
+    DM.Loadini;
+    FormShow(nil);
+  end;
+end;
+
+end.

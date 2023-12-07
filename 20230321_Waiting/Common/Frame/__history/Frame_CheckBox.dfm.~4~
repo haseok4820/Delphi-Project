@@ -1,0 +1,47 @@
+object Frame_ENV_CheckBox: TFrame_ENV_CheckBox
+  Left = 0
+  Top = 0
+  Width = 450
+  Height = 60
+  DoubleBuffered = True
+  Color = clWhite
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -21
+  Font.Name = #44256#46020' B'
+  Font.Style = []
+  Padding.Left = 10
+  Padding.Top = 5
+  Padding.Right = 5
+  Padding.Bottom = 5
+  ParentBackground = False
+  ParentColor = False
+  ParentDoubleBuffered = False
+  ParentFont = False
+  TabOrder = 0
+  object Label_MSG: TLabel
+    AlignWithMargins = True
+    Left = 75
+    Top = 8
+    Width = 367
+    Height = 44
+    Margins.Left = 15
+    Align = alClient
+    Caption = #50668#44592#50640' '#49444#51221#47749#51012' '#51077#47141#54644#51452#49464#50836'.'
+    Layout = tlCenter
+    OnClick = Label_MSGClick
+    ExplicitWidth = 270
+    ExplicitHeight = 24
+  end
+  object Label_Check: TLabel
+    Left = 10
+    Top = 5
+    Width = 50
+    Height = 50
+    Align = alLeft
+    Alignment = taCenter
+    AutoSize = False
+    Caption = #55357#56626
+    Layout = tlCenter
+  end
+end
