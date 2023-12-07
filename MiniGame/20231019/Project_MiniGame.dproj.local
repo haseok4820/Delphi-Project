@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+  <Transactions>
+    <Transaction>2023-10-18 16:21:08.179,=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2023-10-19 15:29:57.263,C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Project_MiniGame.dproj=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
+    <Transaction>2023-10-19 15:30:06.189,=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Unit2.pas</Transaction>
+    <Transaction>2023-10-19 15:38:55.241,C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\uMain.pas=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2023-10-19 15:38:55.241,C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\uMain.dfm=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
+    <Transaction>2023-10-19 15:39:42.902,F:\Delphi\Git\Delphi-Project\MiniGame\20231019\uMain.pas=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\uMain.pas</Transaction>
+    <Transaction>2023-10-19 15:39:42.902,F:\Delphi\Git\Delphi-Project\MiniGame\20231019\uMain.dfm=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\uMain.dfm</Transaction>
+    <Transaction>2023-10-19 15:40:10.723,F:\Delphi\Git\Delphi-Project\MiniGame\20231019\Frame_public\uFrame_Event.pas=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Unit2.pas</Transaction>
+    <Transaction>2023-10-19 15:40:10.723,F:\Delphi\Git\Delphi-Project\MiniGame\20231019\Frame_public\uFrame_Event.dfm=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Unit2.dfm</Transaction>
+    <Transaction>2023-10-19 15:40:20.028,F:\Delphi\Git\Delphi-Project\MiniGame\20231019\Project_MiniGame.dproj=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Project_MiniGame.dproj</Transaction>
+  </Transactions>
+</BorlandProject>

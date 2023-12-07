@@ -1,0 +1,50 @@
+object Form1: TForm1
+  Left = 0
+  Top = 0
+  BorderStyle = bsToolWindow
+  Caption = 'MiniGame'
+  ClientHeight = 450
+  ClientWidth = 500
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -21
+  Font.Name = #46027#50880#52404
+  Font.Style = [fsBold]
+  OldCreateOrder = False
+  PixelsPerInch = 96
+  TextHeight = 21
+  object Panel_Footer: TPanel
+    Left = 0
+    Top = 330
+    Width = 500
+    Height = 120
+    Align = alBottom
+    ShowCaption = False
+    TabOrder = 0
+    ExplicitTop = 336
+  end
+  object Panel_Header: TPanel
+    Left = 0
+    Top = 0
+    Width = 500
+    Height = 50
+    Align = alTop
+    ShowCaption = False
+    TabOrder = 1
+    ExplicitTop = -6
+  end
+  object Panel_Body: TPanel
+    Left = 0
+    Top = 50
+    Width = 500
+    Height = 280
+    Align = alClient
+    BevelOuter = bvNone
+    Color = clWhite
+    ParentBackground = False
+    ShowCaption = False
+    TabOrder = 2
+    ExplicitTop = 56
+  end
+end
