@@ -1,0 +1,104 @@
+object Frame_ENV_Edit: TFrame_ENV_Edit
+  Left = 0
+  Top = 0
+  Width = 800
+  Height = 59
+  Color = clSilver
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -21
+  Font.Name = #44256#46020' B'
+  Font.Style = []
+  Padding.Left = 1
+  Padding.Top = 1
+  Padding.Right = 1
+  ParentBackground = False
+  ParentColor = False
+  ParentFont = False
+  TabOrder = 0
+  OnClick = FrameClick
+  object Label_MSG: TLabel
+    Left = 585
+    Top = 1
+    Width = 214
+    Height = 58
+    Align = alClient
+    Color = clWhite
+    ParentColor = False
+    Transparent = False
+    Layout = tlCenter
+    ExplicitWidth = 6
+    ExplicitHeight = 24
+  end
+  object Panel_Parent: TPanel
+    Left = 1
+    Top = 1
+    Width = 584
+    Height = 58
+    Align = alLeft
+    BevelOuter = bvNone
+    Caption = 'Panel_Parent'
+    TabOrder = 0
+    ExplicitLeft = 0
+    object Label_Key: TLabel
+      Left = 0
+      Top = 0
+      Width = 180
+      Height = 58
+      Align = alLeft
+      Alignment = taCenter
+      AutoSize = False
+      Caption = #51060#47492#51012' '#51077#47141
+      Color = 15592941
+      ParentColor = False
+      Transparent = False
+      Layout = tlCenter
+      ExplicitLeft = 1
+      ExplicitTop = 1
+      ExplicitHeight = 56
+    end
+    object Panel_Body: TPanel
+      Left = 180
+      Top = 0
+      Width = 404
+      Height = 58
+      Align = alClient
+      BevelOuter = bvNone
+      Caption = 'Panel_Body'
+      Color = clWhite
+      Padding.Left = 15
+      Padding.Top = 18
+      Padding.Right = 10
+      Padding.Bottom = 10
+      ParentBackground = False
+      TabOrder = 0
+      OnClick = Panel_BodyClick
+      ExplicitLeft = 181
+      ExplicitTop = 1
+      ExplicitWidth = 300
+      ExplicitHeight = 56
+      object Edit_Value: TEdit
+        Left = 15
+        Top = 18
+        Width = 379
+        Height = 30
+        Align = alClient
+        BorderStyle = bsNone
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -21
+        Font.Name = #44256#46020' B'
+        Font.Style = []
+        MaxLength = 30
+        ParentFont = False
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 0
+        TextHint = #51077#47141#54644#51452#49464#50836'.'
+        ExplicitTop = 13
+        ExplicitWidth = 125
+        ExplicitHeight = 28
+      end
+    end
+  end
+end

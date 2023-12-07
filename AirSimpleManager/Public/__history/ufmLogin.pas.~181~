@@ -1,0 +1,180 @@
+unit ufmLogin;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
+  System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Frame_Edit, Vcl.ExtCtrls, Vcl.StdCtrls;
+
+type
+  TfmLogin = class(TForm)
+    Panel_Parent: TPanel;
+    Frame_ENV_Edit1: TFrame_ENV_Edit;
+    Timer_AllClear: TTimer;
+    procedure FormShow(Sender: TObject);
+    procedure Timer_AllClearTimer(Sender: TObject);
+  private
+    { Private declarations }
+    procedure ShowPad;
+    procedure EditChk(Sender: TObject);
+    procedure ClickPad(Sender: TObject);
+  public
+    { Public declarations }
+  end;
+
+var
+  fmLogin: TfmLogin;
+  iTimer_Clear: Byte;
+
+implementation
+
+{$R *.dfm}
+
+uses uMain, Frame_Nav, uDM;
+
+procedure TfmLogin.ClickPad(Sender: TObject);
+var
+  i: Byte;
+begin
+  //
+  with (Sender as TButton) do
+  begin
+    case Tag of
+      0 .. 8:
+        begin
+          Frame_ENV_Edit1.Edit_Value.Text := Frame_ENV_Edit1.Edit_Value.Text + intToStr(Tag + 1);
+        end;
+      10:
+        begin
+          Frame_ENV_Edit1.Edit_Value.Text := Frame_ENV_Edit1.Edit_Value.Text + '0';
+        end;
+      9:
+        begin
+          Self.Tag := 0;
+          Self.Hint := '사용자 로그인 취소';
+          ModalResult := mrCancel;
+        end;
+      11:
+        begin
+          Frame_ENV_Edit1.Edit_Value.Text := Copy(Frame_ENV_Edit1.Edit_Value.Text, 1, Length(Frame_ENV_Edit1.Edit_Value.Text) - 1);
+        end;
+    end;
+  end;
+
+  for i := 0 to 11 do
+  begin
+    with (FindComponent('NavPad_' + intToStr(i)) as TLabel) do
+    begin
+      Color := clwhite;
+      Font.Color := clBlack;
+    end;
+  end;
+
+  with (FindComponent('NavPad_' + intToStr((Sender as TLabel).Tag)) as TLabel) do
+  begin
+    Color := $00F0B000;
+    Font.Color := clwhite;
+  end;
+
+  Frame_ENV_Edit1.Edit_Value.SetFocus;
+end;
+
+procedure TfmLogin.EditChk(Sender: TObject);
+begin
+  if Frame_ENV_Edit1.Edit_Value.Text = '05303000' then
+  begin
+    Tag := 1;
+    Hint := '로그인 성공';
+    ModalResult := mrOk;
+  end;
+end;
+
+procedure TfmLogin.FormShow(Sender: TObject);
+begin
+  //
+  iTimer_Clear := 0;
+
+  Top := Form_AirManager.Top;
+  Left := Form_AirManager.Left;
+  Width := Form_AirManager.Width;
+  Height := Form_AirManager.Height;
+
+  Padding.Left := (Width - 396) div 2;
+  Padding.Top := (Height - 510) div 2;
+  Padding.Right := Padding.Left;
+  Padding.Bottom := Padding.Top;
+
+  Frame_ENV_Edit1.Edit_Value.OnChange := EditChk;
+  DM.SetRound(Panel_Parent);
+
+  ShowPad;
+end;
+
+procedure TfmLogin.ShowPad;
+var
+  i, j, k: Byte;
+begin
+  //
+
+  j := 0;
+  k := 0;
+  for i := 0 to 11 do
+  begin
+    with TButton.Create(Self) do
+    begin
+      Parent := Panel_Parent;
+      Name := 'NavPad_' + intToStr(i);
+      Tag := i;
+
+      if i <> 0 then
+      begin
+        inc(j);
+        if (j Mod 3 = 0) then
+        begin
+          inc(k);
+          j := 0;
+        end;
+      end;
+
+      Width := 396 div 3;
+      Height := (510 - Frame_ENV_Edit1.Height) div 4;
+      Top := Frame_ENV_Edit1.Height + (k * Height);
+      Left := Width * (j);
+
+      Transparent := False;
+      AutoSize := False;
+      Color := clwhite;
+
+      onClick := ClickPad;
+
+      Font.Size := 24;
+      case i of
+        0 .. 8:
+          begin
+            Caption := intToStr(i + 1);
+          end;
+        10:
+          begin
+            Caption := '0';
+          end;
+        9:
+          begin
+            Caption := '취소';
+          end;
+        11:
+          begin
+            Caption := '지우기';
+          end;
+      end;
+
+    end;
+  end;
+end;
+
+procedure TfmLogin.Timer_AllClearTimer(Sender: TObject);
+begin
+  ClickPad((FindComponent('NavPad_11') as TFrame_ENV_Nav));
+end;
+
+end.

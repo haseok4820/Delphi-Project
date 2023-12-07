@@ -1,0 +1,55 @@
+object Frame1: TFrame1
+  Left = 0
+  Top = 0
+  Width = 550
+  Height = 60
+  Color = clBlack
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -21
+  Font.Name = #44256#46020' B'
+  Font.Style = []
+  ParentBackground = False
+  ParentColor = False
+  ParentFont = False
+  TabOrder = 0
+  object Label_Title: TLabel
+    Left = 0
+    Top = 0
+    Width = 150
+    Height = 60
+    Align = alLeft
+    Alignment = taCenter
+    AutoSize = False
+    Caption = 'Label_Title'
+    Color = clBtnFace
+    ParentColor = False
+    Transparent = False
+    Layout = tlCenter
+  end
+  object Label3: TLabel
+    Left = 450
+    Top = 0
+    Width = 100
+    Height = 60
+    Align = alRight
+    Alignment = taCenter
+    AutoSize = False
+    Caption = #51648#50864#44592
+    Color = clBtnFace
+    ParentColor = False
+    Transparent = False
+    Layout = tlCenter
+    ExplicitLeft = 393
+  end
+  object Edit1: TEdit
+    Left = 150
+    Top = 0
+    Width = 300
+    Height = 60
+    Align = alClient
+    BorderStyle = bsNone
+    TabOrder = 0
+    Text = 'Edit1'
+  end
+end

@@ -1,0 +1,13 @@
+inherited Form_SMPreview_Windows: TForm_SMPreview_Windows
+  ClientWidth = 365
+  DesignerMasterStyle = 0
+  inherited ScrollBox_Parent: TScrollBox
+    Size.Width = 365.000000000000000000
+    Viewport.Width = 365.000000000000000000
+    Viewport.Height = 390.000000000000000000
+  end
+  inherited Memo_Test: TMemo
+    Viewport.Width = 350.000000000000000000
+    Viewport.Height = 143.000000000000000000
+  end
+end

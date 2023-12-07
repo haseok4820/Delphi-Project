@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>1899-12-30 00:00:00.000.543,D:\최하석 작업문서\AirSimpleManager\FireMonkey\Project_PreView.dproj=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Project_PreView.dproj</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.237,D:\최하석 작업문서\AirSimpleManager\FireMonkey\Unit2.fmx=D:\최하석 작업문서\AirSimpleManager\FireMonkey\uTextBackup.fmx</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.164,=D:\최하석 작업문서\AirSimpleManager\FireMonkey\Unit1.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.691,D:\최하석 작업문서\AirSimpleManager\FireMonkey\uMain.pas=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.736,=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.691,D:\최하석 작업문서\AirSimpleManager\FireMonkey\uMain.fmx=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Unit1.fmx</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.237,D:\최하석 작업문서\AirSimpleManager\FireMonkey\Unit2.pas=D:\최하석 작업문서\AirSimpleManager\FireMonkey\uTextBackup.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.630,D:\최하석 작업문서\AirSimpleManager\FireMonkey\Unit1.fmx=D:\최하석 작업문서\AirSimpleManager\FireMonkey\uForm_Receipt.fmx</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.904,C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Project_PreView.dproj=C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.731,=D:\최하석 작업문서\AirSimpleManager\FireMonkey\Unit1.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.630,D:\최하석 작업문서\AirSimpleManager\FireMonkey\Unit1.pas=D:\최하석 작업문서\AirSimpleManager\FireMonkey\uForm_Receipt.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.352,=D:\최하석 작업문서\AirSimpleManager\FireMonkey\Unit2.pas</Transaction>
+  </Transactions>
+	<ActiveMobileDevice>
+		<NoProfile iOSSimulator="iPhone5"/>
+	</ActiveMobileDevice>
+</BorlandProject>

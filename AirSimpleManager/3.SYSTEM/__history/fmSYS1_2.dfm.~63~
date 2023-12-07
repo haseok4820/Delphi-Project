@@ -1,0 +1,249 @@
+object Form_SYS1_2: TForm_SYS1_2
+  Left = 0
+  Top = 0
+  BorderStyle = bsNone
+  Caption = 'Form_SYS1_2'
+  ClientHeight = 550
+  ClientWidth = 829
+  Color = clWhite
+  DoubleBuffered = True
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -21
+  Font.Name = #44256#46020' B'
+  Font.Style = []
+  OldCreateOrder = False
+  Scaled = False
+  OnClose = FormClose
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 24
+  object ScrollBox_Main: TScrollBox
+    Left = 0
+    Top = 0
+    Width = 829
+    Height = 550
+    VertScrollBar.Smooth = True
+    VertScrollBar.Tracking = True
+    Align = alClient
+    BorderStyle = bsNone
+    Padding.Left = 15
+    Padding.Top = 15
+    Padding.Right = 15
+    TabOrder = 0
+    ExplicitWidth = 840
+    object Label_Title: TLabel
+      Left = 15
+      Top = 15
+      Width = 782
+      Height = 40
+      Align = alTop
+      AutoSize = False
+      Caption = '1-2. '#51109#52824' '#50896#44201' '#44288#47532' '#49444#51221
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = 10770443
+      Font.Height = -27
+      Font.Name = #44256#46020' B'
+      Font.Style = []
+      ParentFont = False
+      ExplicitWidth = 810
+    end
+    object Shape1: TShape
+      Left = 15
+      Top = 170
+      Width = 782
+      Height = 10
+      Align = alTop
+      Pen.Color = clWhite
+      ExplicitTop = 238
+      ExplicitWidth = 815
+    end
+    inline Frame_CheckBox_ServerYN: TFrame_ENV_CheckBox
+      Left = 15
+      Top = 55
+      Width = 782
+      Height = 55
+      Align = alTop
+      DoubleBuffered = True
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -21
+      Font.Name = #44256#46020' B'
+      Font.Style = []
+      Padding.Left = 10
+      Padding.Top = 5
+      Padding.Right = 5
+      ParentBackground = False
+      ParentColor = False
+      ParentDoubleBuffered = False
+      ParentFont = False
+      TabOrder = 0
+      OnClick = Frame_CheckBox_ServerYNClick
+      ExplicitLeft = 15
+      ExplicitTop = 55
+      ExplicitWidth = 804
+      ExplicitHeight = 55
+      inherited Label_MSG: TLabel
+        Width = 699
+        Height = 50
+        Caption = #54644#45817' '#51109#48708#47484' '#44288#47532#51088#50857#51004#47196' '#51648#51221' ('#8251' '#47588#51109#48324' '#54616#45208#50473#47564' '#51648#51221#44032#45733')'
+        ExplicitWidth = 541
+      end
+      inherited Label2: TLabel
+        Height = 50
+      end
+    end
+    object Panel_Client: TPanel
+      Left = 15
+      Top = 180
+      Width = 782
+      Height = 400
+      Align = alTop
+      BevelOuter = bvNone
+      Padding.Top = 5
+      Padding.Bottom = 40
+      ShowCaption = False
+      TabOrder = 1
+      ExplicitWidth = 804
+      inline Frame_Edit_HostIP: TFrame_ENV_Edit
+        Left = 0
+        Top = 5
+        Width = 782
+        Height = 49
+        Align = alTop
+        DoubleBuffered = True
+        Color = clSilver
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -21
+        Font.Name = #44256#46020' B'
+        Font.Style = []
+        Padding.Left = 1
+        Padding.Top = 1
+        Padding.Right = 1
+        Padding.Bottom = 1
+        ParentBackground = False
+        ParentColor = False
+        ParentDoubleBuffered = False
+        ParentFont = False
+        TabOrder = 0
+        ExplicitTop = 5
+        ExplicitWidth = 810
+        inherited Panel_Parent: TPanel
+          Width = 780
+          ExplicitWidth = 808
+          inherited Label_Key: TLabel
+            Caption = #44288#47532#51088' '#51109#48708' IP'
+          end
+          inherited Panel_Body: TPanel
+            Width = 600
+            ExplicitWidth = 628
+            inherited Edit_Value: TEdit
+              Width = 567
+              MaxLength = 15
+              TextHint = #44288#47532#50857' '#51109#48708#51032'  IP'#47484' '#51077#47141#54644#51452#49464#50836'.'
+              ExplicitWidth = 595
+            end
+          end
+        end
+      end
+      inline Frame_Edit_Port: TFrame_ENV_Edit
+        Left = 0
+        Top = 54
+        Width = 782
+        Height = 49
+        Align = alTop
+        DoubleBuffered = True
+        Color = clSilver
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -21
+        Font.Name = #44256#46020' B'
+        Font.Style = []
+        Padding.Left = 1
+        Padding.Top = 1
+        Padding.Right = 1
+        Padding.Bottom = 1
+        ParentBackground = False
+        ParentColor = False
+        ParentDoubleBuffered = False
+        ParentFont = False
+        TabOrder = 1
+        ExplicitTop = 54
+        ExplicitWidth = 810
+        inherited Panel_Parent: TPanel
+          Width = 780
+          ExplicitWidth = 808
+          inherited Label_Key: TLabel
+            Caption = #44288#47532#51088' '#51109#48708' Port'
+          end
+          inherited Panel_Body: TPanel
+            Width = 600
+            ExplicitWidth = 628
+            inherited Edit_Value: TEdit
+              Width = 567
+              MaxLength = 5
+              NumbersOnly = True
+              TextHint = #44288#47532#50857' '#51109#48708#50752' '#50672#44208#54624' '#54252#53944#47484' '#51077#47141#54644#51452#49464#50836'. ('#44592#48376' 20228)'
+              ExplicitWidth = 595
+            end
+          end
+        end
+      end
+      object RadioGroup_ExeName: TRadioGroup
+        Left = 0
+        Top = 118
+        Width = 782
+        Height = 242
+        Align = alBottom
+        Caption = #54644#45817' '#51109#52824#50640#49436' '#44288#47532#54624' '#54532#47196#44536#47016#51012' '#49440#53469#54644#51452#49464#50836'.'
+        ItemIndex = 0
+        Items.Strings = (
+          #49324#50857#50504#54632
+          'FOODCAFE_X (_KS, _KCP '#48120#51648#50896')'
+          'KIOSK'
+          'AirDID')
+        TabOrder = 2
+        ExplicitTop = 133
+        ExplicitWidth = 810
+      end
+    end
+    inline Frame_ENV_CheckBox1: TFrame_ENV_CheckBox
+      Left = 15
+      Top = 110
+      Width = 782
+      Height = 60
+      Align = alTop
+      DoubleBuffered = True
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -21
+      Font.Name = #44256#46020' B'
+      Font.Style = []
+      Padding.Left = 10
+      Padding.Top = 5
+      Padding.Right = 5
+      Padding.Bottom = 5
+      ParentBackground = False
+      ParentColor = False
+      ParentDoubleBuffered = False
+      ParentFont = False
+      TabOrder = 2
+      OnClick = Frame_CheckBox_ServerYNClick
+      ExplicitLeft = 15
+      ExplicitTop = 110
+      ExplicitWidth = 804
+      inherited Label_MSG: TLabel
+        Width = 699
+        Height = 50
+        Caption = #48512#54021#49884' '#50896#44201#44288#47532#52404#53356' '#51088#46041#49892#54665
+        ExplicitWidth = 263
+      end
+      inherited Label2: TLabel
+        Height = 50
+      end
+    end
+  end
+end

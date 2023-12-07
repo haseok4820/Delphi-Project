@@ -1,0 +1,73 @@
+object Frame_ENV_Edit: TFrame_ENV_Edit
+  Left = 0
+  Top = 0
+  Width = 800
+  Height = 49
+  DoubleBuffered = True
+  Color = clSilver
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -21
+  Font.Name = #44256#46020' B'
+  Font.Style = []
+  Padding.Left = 1
+  Padding.Top = 1
+  Padding.Right = 1
+  Padding.Bottom = 1
+  ParentBackground = False
+  ParentColor = False
+  ParentDoubleBuffered = False
+  ParentFont = False
+  TabOrder = 0
+  OnClick = FrameClick
+  object Label_Key: TLabel
+    Left = 1
+    Top = 1
+    Width = 180
+    Height = 47
+    Align = alLeft
+    Alignment = taCenter
+    AutoSize = False
+    Caption = #51060#47492#51012' '#51077#47141
+    Color = 15592941
+    ParentColor = False
+    Transparent = False
+    Layout = tlCenter
+    ExplicitHeight = 56
+  end
+  object Panel_Body: TPanel
+    Left = 181
+    Top = 1
+    Width = 618
+    Height = 47
+    Align = alClient
+    BevelOuter = bvNone
+    Color = clWhite
+    Padding.Left = 15
+    Padding.Top = 10
+    Padding.Right = 18
+    ParentBackground = False
+    TabOrder = 0
+    OnClick = Panel_BodyClick
+    ExplicitLeft = 180
+    ExplicitTop = 0
+    object Edit_Value: TEdit
+      Left = 15
+      Top = 10
+      Width = 585
+      Height = 37
+      Align = alClient
+      BorderStyle = bsNone
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -21
+      Font.Name = #44256#46020' B'
+      Font.Style = []
+      ParentFont = False
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 0
+      TextHint = #51077#47141#54644#51452#49464#50836'.'
+    end
+  end
+end

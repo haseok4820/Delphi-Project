@@ -1,0 +1,25 @@
+unit Frame_MenuInfo;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
+  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Frame_ComboBox;
+
+type
+  TFrame_ENV_MenuInfo = class(TFrame)
+    Frame_MenuKit: TFrame_ENV_ComboBox;
+    Edit_MenuName: TEdit;
+    Edit_MenuAmount: TEdit;
+    CheckBox1: TCheckBox;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+implementation
+
+{$R *.dfm}
+
+end.

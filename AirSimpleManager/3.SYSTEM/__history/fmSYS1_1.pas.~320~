@@ -1,0 +1,219 @@
+unit fmSYS1_1;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Frame_Control;
+
+type
+  TForm_SYS1_1 = class(TForm)
+    ScrollBox_Main: TScrollBox;
+    Label_guide: TLabel;
+    Timer_Refrush: TTimer;
+    Panel_Header: TPanel;
+    Label_Title: TLabel;
+    Button_Refrush: TButton;
+    procedure FormShow(Sender: TObject);
+    procedure Timer_RefrushTimer(Sender: TObject);
+    procedure Button_RefrushClick(Sender: TObject);
+  private
+    { Private declarations }
+    procedure ListClear;
+    procedure GetList;
+
+    { Public declarations }
+  end;
+
+var
+  Form_SYS1_1: TForm_SYS1_1;
+  bIng: Boolean = False;
+
+implementation
+
+{$R *.dfm}
+
+uses uDM;
+
+procedure TForm_SYS1_1.Button_RefrushClick(Sender: TObject);
+begin
+  ListClear;
+  DM.SetLog('새로고침 클릭 재실행 처리');
+  Button_Refrush.Enabled := False;
+  Button_Refrush.Caption := '처리중..';
+
+  if FindWindow(PChar('TForm_SK'), nil) = 0 then
+  begin
+    if FileExists('.\Project_SKServer.exe') then
+      DM.ControlProgram(0, '.\Project_SKServer.exe')
+    else
+      DM.FileDownload('', '');
+  end
+  else
+    DM.Send_Msg('{"MsgType" : "Get"}');
+
+end;
+
+procedure TForm_SYS1_1.FormShow(Sender: TObject);
+begin
+  {
+    if AC_bYN then
+    begin
+    Button_RefrushClick(nil);
+
+    Timer_Refrush.Enabled := True;
+    Button_Refrush.Visible := True;
+    bIng := False;
+    AC_Refrush := False;
+    GetList;
+    end
+    else
+    Label_guide.Caption := '[사용불가]' + #13 + '관리자만 사용할 수 있는 기능입니다.' + #13 + '설정을 확인해주세요.';
+  }
+end;
+
+procedure TForm_SYS1_1.GetList;
+var
+  i: Integer;
+begin
+  try
+    ListClear;
+    try
+      Label_guide.Visible := True;
+      Label_guide.Caption := '연결된 장치를 확인하고 있습니다.' + #13#10 + '잠시만 기다려주세요.';
+      if bIng then
+      begin
+        Label_guide.Caption := '현재 통신상태 확인중입니다.' + #13#10 + '잠시만 기다려주세요.';
+        exit;
+      end
+      else
+        bIng := True;
+
+      if AC_bYN = False then
+      begin
+        Label_guide.Caption := '[사용불가]' + #13 + '관리자만 사용할 수 있는 기능입니다.' + #13 + '설정을 확인해주세요.';
+        bIng := False;
+        exit;
+      end
+      else if (Length(arrPos_Info) = 0) AND AC_bYN then
+      begin
+        // DM.GetPopup(0, '연결 프로그램 없음', '연결된 장치가 없습니다.', '');
+        Label_guide.Visible := True;
+        Label_guide.Caption := '연결된 장치가 없습니다.' + #13 + '다른 장치에 원격설정을 확인해주세요.' + Chr(13) + '마지막 체크시간 : ' +
+          FormatDateTime('YYYY-MM-DD HH:MM:SS', Now);
+        bIng := False;
+        exit;
+      end
+      else
+        Label_guide.Visible := False;
+    except
+      ON E: Exception do
+      begin
+        DM.SetLog('장치정보 확인중 오류 : ' + E.Message);
+
+      end;
+    end;
+
+    for i := Low(arrPos_Info) to High(arrPos_Info) do
+    begin
+      try
+        with TFrame_SYS_Control.Create(Self), arrPos_Info[i] do
+        begin
+          Parent := ScrollBox_Main;
+          Name := 'Frame_Control' + IntToStr(i + 1);
+          Visible := True;
+          Align := alBottom;
+
+          tag := iSeq;
+          Hint := shost;
+          Button_Option1.Hint := sAppName;
+          Button_Option2.Hint := sAppName;
+
+          with Label_Status do
+          begin
+            if bConn then
+            begin
+              Caption := '정상 (';
+              Font.Color := clGreen;
+
+              Button_Option1.Enabled := True;
+              Button_Option2.Enabled := True;
+              Button_Option3.Enabled := True;
+            end
+            else
+            begin
+              Caption := '끓김 (';
+              Font.Color := clRed;
+
+              Button_Option1.Enabled := False;
+              Button_Option2.Enabled := False;
+              Button_Option3.Enabled := False;
+            end;
+
+            Caption := '연결상태 : ' + Caption + shost + ')';
+          end;
+
+          Button_Option2.Hint := sAppName;
+
+          GroupBox_Group.Caption := sName + IntToStr(iSeq) + ' [ ' + Hint + ' ]의 정보';
+          Align := alTop;
+        end;
+      except
+        ON E: Exception do
+        begin
+          DM.SetLog(IntToStr(i + 1) + '번쨰 장치정보 적용중 오류 : ' + E.Message);
+        end;
+      end;
+    end;
+    Label_guide.Visible := False;
+  finally
+    bIng := False;
+  end;
+
+end;
+
+procedure TForm_SYS1_1.ListClear;
+var
+  i: Integer;
+  DelControl: TControl;
+begin
+  for i := ScrollBox_Main.ControlCount - 1 Downto 0 do
+  begin
+    try
+      if ScrollBox_Main.Controls[i] is TFrame_SYS_Control then
+      begin
+        DelControl := ScrollBox_Main.Controls[i];
+        FreeAndNil(DelControl);
+      end;
+    except
+      On E: Exception do
+      begin
+        DM.SetLog('장치정보 초기화중 오류 : ' + E.Message);
+      end;
+    end;
+  end;
+  with Label_guide do
+  begin
+    Visible := True;
+    Caption := '연결된 장치를 확인하고 있습니다.' + #13#10 + '잠시만 기다려주세요.';
+  end;
+
+end;
+
+procedure TForm_SYS1_1.Timer_RefrushTimer(Sender: TObject);
+begin
+  try
+    if AC_Refrush then
+    begin
+      DM.SetLog('변경사항 확인, 장비 리셋 처리시작');
+      GetList;
+
+      Button_Refrush.Enabled := True;
+      Button_Refrush.Caption := '새로고침';
+    end;
+  finally
+    AC_Refrush := False;
+  end;
+end;
+
+end.

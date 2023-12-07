@@ -1,0 +1,114 @@
+object Frame_ENV_CheckBox_Prn: TFrame_ENV_CheckBox_Prn
+  Left = 0
+  Top = 0
+  Width = 450
+  Height = 60
+  Color = clWhite
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -21
+  Font.Name = #44256#46020' B'
+  Font.Style = []
+  Padding.Left = 10
+  Padding.Top = 5
+  Padding.Right = 5
+  Padding.Bottom = 5
+  ParentBackground = False
+  ParentColor = False
+  ParentFont = False
+  TabOrder = 0
+  object Image_Check: TImage
+    Left = 10
+    Top = 5
+    Width = 50
+    Height = 50
+    Align = alLeft
+    Center = True
+    Picture.Data = {
+      0B546478504E47496D61676589504E470D0A1A0A0000000D4948445200000028
+      000000280803000000BB20485F00000001735247420240C07DC5000000C6504C
+      54450000000000001212120A0A0A0606060C0C0C1E1E1E1C1C1C080808101010
+      1818181A1A1A0202020404042424242020203C3C3C2C2C2C2828282222223030
+      304C4C4C4848485252525656565050504646465858585A5A5A4E4E4E6262626E
+      6E6E6060606868686464649999999797978D8D8D9494948484849E9E9E898989
+      8888889090908686868B8B8BA4A4A4ACACACA9A9A9A0A0A0ABABABB4B4B4B8B8
+      B8B7B7B7D9D9D9F6F6F6F1F1F1F3F3F3E9E9E9F2F2F2F8F8F8FBFBFBFCFCFCFD
+      FDFDF9F9F9E2E2E26139D1B70000000174524E530040E6D86600000009704859
+      73000017120000171201679FD2520000001974455874536F667477617265004D
+      6963726F736F6674204F66666963657FED3571000000C84944415438CBEDD4B7
+      1A82301486E11F7B17C5DEB0A182052B76C5FBBF29CF898C125CDCF8869321EF
+      13602000755C550B45BF6AA313BCEC88222D3AFE384309ACC76EADFCD004388B
+      E746EBD3CDD78C86D88F5D30E355BDC2B75B93858916CDB8C401F70491129234
+      DB90A61349214DD39043F1B9026EE4D00E610843F86F18F0BB6E05CCD0E8CBA1
+      C5970F549AD9871496896898F3B99DA7C42D580C7089F15AB076FBAF1D9615DE
+      CF3980F9CB453AE4A3BBC14E75193EAD7C80EBBBDEEBBE74CD5F657B0E9B370F
+      971FE2C16B585A0000000049454E44AE426082}
+    Stretch = True
+    OnClick = Image_CheckClick
+  end
+  object Label_MSG: TLabel
+    Left = 66
+    Top = 5
+    Width = 219
+    Height = 50
+    Align = alClient
+    Caption = #49444#51221#47749#51012' '#51077#47141#54644#51452#49464#50836'.'
+    Layout = tlCenter
+    ExplicitWidth = 207
+    ExplicitHeight = 24
+  end
+  object Label_Hide: TLabel
+    Left = 60
+    Top = 5
+    Width = 6
+    Height = 50
+    Align = alLeft
+    Caption = ' '
+    Layout = tlCenter
+    ExplicitHeight = 24
+  end
+  object Label_Normal: TLabel
+    Left = 285
+    Top = 5
+    Width = 80
+    Height = 50
+    Align = alRight
+    Alignment = taCenter
+    AutoSize = False
+    Caption = #48372#53685
+    Color = 10770443
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWhite
+    Font.Height = -21
+    Font.Name = #44256#46020' M'
+    Font.Style = []
+    ParentColor = False
+    ParentFont = False
+    Transparent = False
+    Layout = tlCenter
+    OnClick = Label_PrnClick
+    ExplicitLeft = 187
+    ExplicitTop = 34
+  end
+  object Label_Expand: TLabel
+    Left = 365
+    Top = 5
+    Width = 80
+    Height = 50
+    Align = alRight
+    Alignment = taCenter
+    AutoSize = False
+    Caption = #53356#44172
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -21
+    Font.Name = #44256#46020' B'
+    Font.Style = []
+    ParentFont = False
+    Transparent = False
+    Layout = tlCenter
+    OnClick = Label_PrnClick
+    ExplicitLeft = 273
+    ExplicitTop = 21
+  end
+end

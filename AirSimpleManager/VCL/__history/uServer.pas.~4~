@@ -1,0 +1,47 @@
+unit uServer;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, System.Win.ScktComp, Vcl.ExtCtrls;
+
+type
+  TForm_SKServer = class(TForm)
+    ServerSocket1: TServerSocket;
+    Memo_MSG: TMemo;
+    Panel_Header: TPanel;
+    Button1: TButton;
+    procedure Button1Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form_SKServer: TForm_SKServer;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm_SKServer.Button1Click(Sender: TObject);
+begin
+  if ServerSocket1.Active = False then
+  begin
+    ServerSocket1.Active := True;
+    Memo1.Lines.Add('Server Started');
+    Button1.Caption := 'Stop';
+    Panel1.Visible := True;
+  end
+  else
+  begin
+    ServerSocket1.Active := False;
+    Memo1.Lines.Add('Server Stopped');
+    Button1.Caption := 'Start';
+    Panel1.Visible := False;
+  end;
+end;
+
+end.

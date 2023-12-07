@@ -1,0 +1,85 @@
+object Form_Popup: TForm_Popup
+  Left = 0
+  Top = 0
+  BorderStyle = bsNone
+  Caption = 'Form_Popup'
+  ClientHeight = 400
+  ClientWidth = 450
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -32
+  Font.Name = #47569#51008' '#44256#46357
+  Font.Style = []
+  OldCreateOrder = False
+  OnShow = PopupShow
+  PixelsPerInch = 96
+  TextHeight = 45
+  object Label_MSG: TLabel
+    Left = 0
+    Top = 0
+    Width = 450
+    Height = 260
+    Align = alClient
+    Alignment = taCenter
+    Caption = #54868#47732#50640' '#54364#49884#54624' '#47700#49464#51648#47484' '#51077#47141
+    Color = clWhite
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -27
+    Font.Name = #47569#51008' '#44256#46357
+    Font.Style = [fsBold]
+    ParentColor = False
+    ParentFont = False
+    Transparent = False
+    Layout = tlCenter
+    WordWrap = True
+    ExplicitWidth = 351
+    ExplicitHeight = 37
+  end
+  object Label_Time: TLabel
+    Left = 0
+    Top = 260
+    Width = 450
+    Height = 40
+    Align = alBottom
+    Alignment = taCenter
+    AutoSize = False
+    Caption = '10'#52488' '#54980' '#52285#51060' '#45803#55193#45768#45796'.'
+    Color = clWhite
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -24
+    Font.Name = #47569#51008' '#44256#46357
+    Font.Style = [fsBold]
+    ParentColor = False
+    ParentFont = False
+    Transparent = False
+    WordWrap = True
+    ExplicitLeft = 2
+    ExplicitTop = 316
+    ExplicitWidth = 496
+  end
+  object Panel_Footer: TPanel
+    Left = 0
+    Top = 300
+    Width = 450
+    Height = 100
+    Align = alBottom
+    BevelOuter = bvNone
+    Color = clGray
+    Padding.Top = 2
+    ParentBackground = False
+    ShowCaption = False
+    TabOrder = 0
+    ExplicitTop = 306
+  end
+  object Timer_Timeout: TTimer
+    Tag = 30
+    Enabled = False
+    Interval = 3000
+    OnTimer = Timer_TimeoutTimer
+    Left = 240
+    Top = 208
+  end
+end

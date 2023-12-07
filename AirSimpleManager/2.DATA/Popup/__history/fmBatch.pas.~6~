@@ -1,0 +1,28 @@
+unit fmBatch;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, ImagingComponents, Vcl.ExtCtrls;
+
+type
+  TForm_Batch = class(TForm)
+    Panel_Header: TPanel;
+    Image_Cancel: TImage;
+    ScrollBox_Body: TScrollBox;
+    Panel_StockList: TPanel;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form_Batch: TForm_Batch;
+
+implementation
+
+{$R *.dfm}
+
+end.

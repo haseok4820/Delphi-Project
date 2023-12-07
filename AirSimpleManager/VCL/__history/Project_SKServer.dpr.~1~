@@ -1,0 +1,14 @@
+program Project_SKServer;
+
+uses
+  Vcl.Forms,
+  uServer in 'uServer.pas' {Form_SKServer};
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TForm_SKServer, Form_SKServer);
+  Application.Run;
+end.

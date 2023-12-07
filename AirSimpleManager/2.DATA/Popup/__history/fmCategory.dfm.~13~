@@ -1,0 +1,213 @@
+object Form_Category: TForm_Category
+  Left = 0
+  Top = 0
+  BorderStyle = bsNone
+  Caption = 'Form_Category'
+  ClientHeight = 250
+  ClientWidth = 400
+  Color = clWhite
+  DoubleBuffered = True
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -21
+  Font.Name = #44256#46020' B'
+  Font.Style = []
+  OldCreateOrder = False
+  OnCreate = FormCreate
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 24
+  object Panel_Header: TPanel
+    Left = 0
+    Top = 0
+    Width = 400
+    Height = 50
+    Align = alTop
+    Alignment = taLeftJustify
+    BevelOuter = bvNone
+    Caption = '  '#48516#47448#46321#47197
+    Color = 9850890
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWhite
+    Font.Height = -32
+    Font.Name = #44256#46020' B'
+    Font.Style = []
+    ParentBackground = False
+    ParentFont = False
+    TabOrder = 0
+    OnMouseDown = Panel_HeaderMouseDown
+    object Image_Cancel: TImage
+      Left = 342
+      Top = 0
+      Width = 58
+      Height = 50
+      Align = alRight
+      Center = True
+      Picture.Data = {
+        0B546478504E47496D61676589504E470D0A1A0A0000000D4948445200000028
+        0000002808060000008CFEB86D000000017352474200AECE1CE9000000046741
+        4D410000B18F0BFC6105000000097048597300000EC200000EC20115284A8000
+        00053D494441545847CD985D6C936514C7FF6DDFF563DDC6D760A35994C88CC6
+        8878012193A04B240661F182B965D3315D009D8989376A62B2C498005350E28D
+        410D64A245E79C0B9A287E01AE8C4182265E78A10B83E1C536D8545C3FD6765D
+        E739CFFBBCEDDE7EEF6D47F8DDB43BEDDA7FCE73CEFF3CA72667937B0EB73166
+        F978DBA213180845E0F785301D8EC8C8AD21321B15DFEB0F8465244E4CA0DF1F
+        46DD862AB85FA9C5A30FB8E0F786E42B8B4B686616168B19EE976B71B06D23FC
+        937EF98A8AA8417ED3FA35CBF1CBDB75320C3CD2F11D3CBF8DC2596A9391C213
+        A4EF9D8D44E1ED6E41895D11B143277FC7AB5D97E02CB68ABF4506B94B8AAD16
+        7E1AA37FDF36D4ACAB14A95F0C382936C58CD1AEC69838C6B5CC0144E37D2B04
+        5A29C583431338D13F2C821A839DDBB1791144B2B8087DE6E4F126AC5E562CA3
+        80373883E78F5C80CD51242352A0D96C12225B5EFF011F9DBD2C5ED01838B01D
+        1BEE5D2544CECDE5EF486112E7B05930D1D34A8FF1CC8DFD1B4059D30984E8C8
+        15D2A2117BC6221D95A5687BC783DE0B2332AA72E9509D1019A046CA47248B9B
+        212163C71A515E16AFED69728FEA17FA60A123B715E94B2D2E95309B48648915
+        0DAF9DC207DFFF29A32AF3451A818FD56E55E0FB660F9CF6F8114E4E0551FC44
+        17C294397B823846279011222993EDEF9E43DFC5BF64544513B9D09A143547B6
+        75E5FD9D242E7EAC7EAAB9BBDAFBA0905324664E234920234496D951DF710AEF
+        7DFB878CAAB0C8CDF7E7DE386C25563ABAC0D76D74AC7619057C24AE64C73104
+        6928A413C7A414C8704D16973BF1E2E17ECAE435195519A0EEAE619159CC9C33
+        C73E77F9C84E5D434C4E85E0DADD8322EA606B06714C5A818C8933B9C289FA37
+        7EA49A1C925115B6A0871F4C3F713873CC54F7D33A2BE18658D9F8313D5266B3
+        8863320A6444772FB1A3BDF3347A07F5DDCD662E7C324124674EA1FFBBF6E193
+        289DD7106C25E5CF744329495F73896415C8688DD370E00C8E27FA246572CBFA
+        D5B19A140D118CE0EF4F9AE15A1ECF9C8F62AEB61EE173B98A637212C86816F4
+        2C1DB7DB734546553CFB1FC7A6FB2AE0FF2F485662C1B8BB19CE793537FA4F00
+        4B5B3E8542CD92CA4A3291B3404688AC28C5AE833FA3FBDC551955B9F8D60EDC
+        59B504A364C2154B699E4A542BF9520CFC85644EC3D08D3A4AC37CFABA17473B
+        B662F7D6BB653499EB37A751D9F21914F23E23E298056550431B8B7B0E7BF045
+        42E36878A767C4F8CA471C634820C3C76D762868EC3C83E171AF8CC659F7D257
+        F0514DE6238E312C90BB354A5E364EDDBA96B299C80859CCA6025CD50C090C86
+        E99A4EC7ECEBDDA56B88E1F129F94C851B674B9EEBC3820572E660020DFE7ADD
+        AD841BA27A6F6F92997BF66FC34329CC3C57162490C757848CF6A6FB299D09FB
+        C984B95BCDE4810DFB4EE3E84FFAB1783ECB58CC44CE023973A9760836E115AD
+        AA9538E8BEE7A08BE85E12D93DA0F749A33B4E4E02C5F8A20F4EB543DCF15C2F
+        22E48B5AB76A66DEFCE6D982EC38590566DB21A81C93C697F049A7B5203B4E46
+        814676088D42ED386905F2B11AD921E6A35D30F2D971520A1435471D67648748
+        4488CC63C7491298EF0E910A21D2E08EA313C899CB77874887D11D2726B0503B
+        44268CEC384220FF3EB78A8EA0103B4436B2ED388F6DACD2FD3EA90A24A3ADA6
+        422EC40E910B5AE3A4DA715A6BD7224A97110D21906F26576FF83041F737269F
+        1D2257340B4ADC713E3F3F02D3BCEF8C5DF939AD2EAABD351525181EF3E2865C
+        80161B5E1FC2546235F7AC14F5FEEBD0249C348534743BC90CBD7176760E8AC5
+        A4FB096CB11122A99428A949E5A4535144A2386BB7521CC38DC3DF9B5CEBC0FF
+        D77AB60E8CABF2CF0000000049454E44AE426082}
+      OnClick = Image_CancelClick
+      ExplicitLeft = 294
+      ExplicitTop = 1
+      ExplicitHeight = 58
+    end
+  end
+  inline FrameEdit_CODE: TFrame_ENV_Edit
+    AlignWithMargins = True
+    Left = 10
+    Top = 70
+    Width = 380
+    Height = 49
+    Margins.Left = 10
+    Margins.Top = 20
+    Margins.Right = 10
+    Margins.Bottom = 0
+    Align = alTop
+    DoubleBuffered = True
+    Color = clSilver
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -21
+    Font.Name = #44256#46020' B'
+    Font.Style = []
+    Padding.Left = 1
+    Padding.Top = 1
+    Padding.Right = 1
+    Padding.Bottom = 1
+    ParentBackground = False
+    ParentColor = False
+    ParentDoubleBuffered = False
+    ParentFont = False
+    TabOrder = 1
+    ExplicitLeft = 10
+    ExplicitTop = 70
+    ExplicitWidth = 380
+    inherited Label_Key: TLabel
+      Width = 100
+      Caption = #48516#47448#53076#46300
+      ExplicitWidth = 100
+      ExplicitHeight = 47
+    end
+    inherited Panel_Body: TPanel
+      Left = 101
+      Width = 278
+      ExplicitLeft = 101
+      ExplicitTop = 1
+      ExplicitWidth = 278
+      inherited Edit_Value: TEdit
+        Width = 245
+        MaxLength = 2
+        ExplicitWidth = 245
+      end
+    end
+  end
+  inline FrameEdit_NAME: TFrame_ENV_Edit
+    AlignWithMargins = True
+    Left = 10
+    Top = 119
+    Width = 380
+    Height = 49
+    Margins.Left = 10
+    Margins.Top = 0
+    Margins.Right = 10
+    Margins.Bottom = 10
+    Align = alTop
+    DoubleBuffered = True
+    Color = clSilver
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -21
+    Font.Name = #44256#46020' B'
+    Font.Style = []
+    Padding.Left = 1
+    Padding.Top = 1
+    Padding.Right = 1
+    Padding.Bottom = 1
+    ParentBackground = False
+    ParentColor = False
+    ParentDoubleBuffered = False
+    ParentFont = False
+    TabOrder = 2
+    ExplicitLeft = 10
+    ExplicitTop = 119
+    ExplicitWidth = 380
+    inherited Label_Key: TLabel
+      Width = 100
+      Caption = #48516#47448#47749
+      ExplicitWidth = 100
+      ExplicitHeight = 47
+    end
+    inherited Panel_Body: TPanel
+      Left = 101
+      Width = 278
+      ExplicitLeft = 101
+      ExplicitTop = 1
+      ExplicitWidth = 278
+      inherited Edit_Value: TEdit
+        Width = 245
+        ExplicitWidth = 245
+      end
+    end
+  end
+  object Button1: TButton
+    AlignWithMargins = True
+    Left = 10
+    Top = 178
+    Width = 380
+    Height = 62
+    Margins.Left = 10
+    Margins.Top = 0
+    Margins.Right = 10
+    Margins.Bottom = 10
+    Align = alClient
+    Caption = #46321#47197
+    TabOrder = 3
+    OnClick = Button1Click
+    ExplicitTop = 10
+    ExplicitHeight = 60
+  end
+end

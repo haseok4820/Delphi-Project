@@ -1,0 +1,106 @@
+unit Frame_Control;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
+  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, System.Json;
+
+type
+  TFrame_SYS_Control = class(TFrame)
+    GroupBox_Group: TGroupBox;
+    Panel_Option: TPanel;
+    Button_Option1: TButton;
+    Button_Option2: TButton;
+    Button_Option3: TButton;
+    Panel_Status: TPanel;
+    Button_ALLCancel: TButton;
+    procedure Button_OptionClick(Sender: TObject);
+    procedure Button_MsgClick(Sender: TObject);
+    procedure Button_ALLCancelClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+implementation
+
+{$R *.dfm}
+
+uses uDM;
+
+procedure TFrame_SYS_Control.Button_ALLCancelClick(Sender: TObject);
+var
+  Result_Is: TResult_IS;
+  json_obj: TJSONObject;
+begin
+  Result_Is := DM.GetPopup(1, '사용자 확인', '해당 장치에 요청한모든 작업(재실행, 재부팅을 취소하시겠습니까?.', '');
+  if Result_Is.Result_int <> 0 then
+  begin
+    json_obj := TJSONObject.Create;
+    with json_obj do
+    begin
+      AddPair('MsgType', 'Req');
+      AddPair('PosHost', Self.Hint); // 처리할 장치 IP ALL 모든 장치
+      AddPair('ReqType', '2'); // 0 재부팅, 1 프로그램 재실행, 2 : 모든 작업 취소
+      AddPair('ReqValue', '');
+      AddPair('PopupYN', TJSONNumber.Create(0)); // 팝업 유무
+      AddPair('RecvYN', TJSONNumber.Create(0)); // 처리응답 유무
+
+      DM.Send_Msg(ToString);
+    end;
+  end;
+end;
+
+procedure TFrame_SYS_Control.Button_MsgClick(Sender: TObject);
+begin
+  // 메세지 전송
+end;
+
+procedure TFrame_SYS_Control.Button_OptionClick(Sender: TObject);
+var
+  json_obj: TJSONObject;
+  iPopup, iRecv: Integer;
+begin
+  Button_ALLCancel.Enabled := True;
+
+  // 프로그램 재실행
+  if (Sender as TButton).Hint = '' then
+    DM.GetPopup(0, '설정없음', '해당 장치에 재실행 설정이 되어있지 않습니다.', '')
+  else if Panel_Status.Font.Color = clRed then
+    DM.GetPopup(0, '설정없음', '해당 장치와 연결이 끓겨있어, 처리불가합니다.', '')
+  else
+  begin
+    try
+      json_obj := TJSONObject.Create;
+      try
+        with json_obj, (Sender as TButton) do
+        begin
+          AddPair('MsgType', 'Req');
+          AddPair('PosHost', Self.Hint); // 처리할 장치 IP ALL 모든 장치
+          AddPair('ReqType', TJSONNumber.Create(Tag)); // 0 재부팅, 1 프로그램 재실행
+          AddPair('ReqValue', Hint);
+          // [프로그램 재실행 전용] 0 : NONE(장치 설정에 따름), 1 :푸드카페, 2 : 키오스크, 3 : DID , 4 : AirServer, 5 : AirTrain
+          if Pos('AIR', Hint) > 0 then
+            iPopup := 0
+          else
+            iPopup := 1;
+          AddPair('PopupYN', TJSONNumber.Create(iPopup)); // 팝업 유무
+
+          iRecv := 0;
+          AddPair('RecvYN', TJSONNumber.Create(iRecv)); // 처리응답 유무
+        end;
+        DM.Send_Msg(json_obj.ToString);
+      except
+        On E: Exception do
+        begin
+          DM.SetLog('메세지 전송 작업중 오류 : ' + E.Message);
+        end;
+      end;
+    finally
+    end;
+  end;
+end;
+
+end.

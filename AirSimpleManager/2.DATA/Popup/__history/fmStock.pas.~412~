@@ -1,0 +1,520 @@
+unit fmStock;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, System.DateUtils, Vcl.Graphics, Vcl.Printers,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, Frame_Edit, dxGDIPlusClasses, Frame_ComboBox,
+  ImagingComponents;
+
+type
+  TForm_Stock = class(TForm)
+    Panel_Header: TPanel;
+    Panel_footer: TPanel;
+    Button_Keyboard: TButton;
+    ScrollBox_Body: TScrollBox;
+    FrameEdit_Name: TFrame_ENV_Edit;
+    FrameEdit_Amount: TFrame_ENV_Edit;
+    Panel_CodeType: TPanel;
+    FrameEdit_Code: TFrame_ENV_Edit;
+    Image_Cancel: TImage;
+    Button_CodeChk: TButton;
+    Button_OK: TButton;
+    procedure FormShow(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+
+    procedure Button_CodeChkClick(Sender: TObject);
+    procedure Button_OKClick(Sender: TObject);
+    procedure Image_CancelClick(Sender: TObject);
+    procedure Panel_HeaderMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+    procedure ScrollBox_BodyMouseWheel(Sender: TObject; Shift: TShiftState; WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure Button_KeyboardClick(Sender: TObject);
+    procedure FrameEdit_CodeEdit_ValueKeyPress(Sender: TObject; var Key: Char);
+    procedure FormCreate(Sender: TObject);
+  private
+    { Private declarations }
+    procedure ShowList(iType: Byte);
+    procedure ListValClick(Sender: TObject);
+    {
+      procedure ShowCategory;
+      procedure ShowKitPrn;
+      procedure ShowSet;
+      procedure ShowType;
+    }
+  public
+    { Public declarations }
+  protected
+    procedure CreateParams(var Params: TCreateParams); override;
+  end;
+
+const
+  STOCK_TYPE = 0;
+  STOCK_KITPRN = 1;
+  STOCK_CATEGORY = 2;
+  STOCK_SET = 3;
+  STOCK_TIME = 4;
+
+var
+  Form_Stock: TForm_Stock;
+  bTimeStock: Boolean = False;
+  sNewCODE: STring;
+
+implementation
+
+{$R *.dfm}
+
+uses fmDATA1_1, uDM;
+
+procedure TForm_Stock.Button_KeyboardClick(Sender: TObject);
+begin
+  DM.TouchKeyBoard;
+end;
+
+procedure TForm_Stock.Button_CodeChkClick(Sender: TObject);
+begin
+  if Trim(FrameEdit_Code.Edit_Value.Text) = '' then
+  begin
+    DM.GetPopup('상품코드를 먼저 입력해주세요.');
+    FrameEdit_Code.Edit_Value.SetFocus;
+    Exit;
+  end;
+  if DM.KorCheck(FrameEdit_Code.Edit_Value.Text) then
+    DM.GetPopup('상품코드는 한글을 포함할 수 없습니다.||다른 코드로 변경해주세요.')
+  else if DM.DBCodeChk('HSTOCK', 'STOCKCODE', FrameEdit_Code.Edit_Value.Text) then
+    DM.GetPopup('이미 사용중인 코드입니다||다른 코드로 변경해주세요.')
+  else
+    DM.GetPopup('사용 가능한 코드입니다.');
+end;
+
+procedure TForm_Stock.Button_OKClick(Sender: TObject);
+var
+  sCODE, sType, sName, sAMT, sCategory, sKit, sSet, sUnit: String;
+  iMaeipAmt, iNowMaeip: Integer;
+begin
+  sCODE := FrameEdit_Code.Edit_Value.Text;
+  if Trim(sCODE) = '' then
+    sCODE := IntToSTr(DAteTimeToUnix(NOW));
+
+  sType := arrStockType[(FindComponent('SCROLLBOX_0') as TScrollBox).Tag];
+  sName := FrameEdit_Name.Edit_Value.Text;
+  sAMT := FrameEdit_Amount.Edit_Value.Text;
+  sKit := IntToSTr((FindComponent('SCROLLBOX_1') as TScrollBox).Tag);
+  if sKit = '0' then
+    sKit := '미전';
+  sCategory := arrStockCategoryInfo[(FindComponent('SCROLLBOX_2') as TScrollBox).Tag].sCODE;
+
+  if bTimeStock then
+  begin
+    sSet := arrStockSet[Low(arrStockSet)];
+    sUnit := (FindComponent('FrameENV_TIME_0') as TFrame_ENV_Edit).Edit_Value.Text;
+    iMaeipAmt := StrToIntDEf((FindComponent('FrameENV_TIME_1') as TFrame_ENV_Edit).Edit_Value.Text, 0);
+    iNowMaeip := StrToIntDEf((FindComponent('FrameENV_TIME_2') as TFrame_ENV_Edit).Edit_Value.Text, 0);
+  end
+  else
+  begin
+    sSet := arrStockSet[(FindComponent('SCROLLBOX_3') as TScrollBox).Tag].sCODE;
+    sUnit := '';
+    iMaeipAmt := 0;
+    iNowMaeip := 0;
+  end;
+
+  if DM.DBCodeChk('HSTOCK', 'STOCKCODE', sCODE) then
+  begin
+    DM.GetPopup('이미 사용중인 상품코드입니다.||다른 코드로 변경해주세요.');
+    Exit;
+  end
+  else if (Trim(sName) = '') then
+  begin
+    DM.GetPopup('상품명을 입력해주세요.');
+    Exit;
+  end
+  else
+  begin
+    DM.DBSQLClear;
+    try
+      with DM.FDQ do
+      begin
+        try
+          SQL.Text := 'INSERT INTO HSTOCK (STOCKCODE, STOCKNAME, SALEAMT, GUBUNCODE, KITPRN, VAT, SETCODE, UNIT, MAEIPAMT, NOWMAEIP) ' +
+            ' VALUES(:STOCKCODE, :STOCKNAME, :SALEAMT, :GUBUNCODE, :KITPRN, :VAT, :SETCODE, :UNIT, :MAEIPAMT, :NOWMAEIP)';
+
+          ParamByName('STOCKCODE').AsString := DM.AnsiFormat(sCODE);
+          ParamByName('STOCKNAME').AsString := DM.AnsiFormat(sName);
+          ParamByName('SALEAMT').AsInteger := StrToIntDEf(sAMT, 0);
+          ParamByName('GUBUNCODE').AsString := DM.AnsiFormat(sCategory);
+          ParamByName('KITPRN').AsString := DM.AnsiFormat(sKit);
+          ParamByName('VAT').AsString := DM.AnsiFormat(sType);
+          ParamByName('SETCODE').AsString := DM.AnsiFormat(sSet);
+          ParamByName('UNIT').AsString := sUnit;
+          ParamByName('MAEIPAMT').AsInteger := iMaeipAmt;
+          ParamByName('NOWMAEIP').AsInteger := iNowMaeip;
+          ExecSQL;
+        finally
+          DM.FDQ.CLose;
+          DM.DBDisConnect;
+        end;
+
+      end;
+      sNewCODE := DM.AnsiFormat(sCODE);
+      ModalResult := mrOK;
+    finally
+
+    end;
+  end;
+end;
+
+procedure TForm_Stock.CreateParams(var Params: TCreateParams);
+begin
+  inherited;
+  Params.ExStyle := Params.ExStyle or WS_EX_STATICEDGE;
+  Params.Style := Params.Style or WS_SIZEBOX;
+end;
+
+procedure TForm_Stock.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  DM.SetBG(1);
+end;
+
+procedure TForm_Stock.FormCreate(Sender: TObject);
+begin
+  SetBounds((Application.MainForm.Width - Width) div 2, (Application.MainForm.Height - Height) div 2, Width, Height);
+end;
+
+procedure TForm_Stock.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+  if Key = 27 then
+    Image_CancelClick(Image_Cancel)
+  else if (Shift = [ssCtrl]) AND (Key = 13) then
+    Button_OKClick(Button_OK);
+end;
+
+procedure TForm_Stock.FormShow(Sender: TObject);
+var
+  i: Integer;
+begin
+  DM.SetBG(0);
+  FrameEdit_Code.Label_Key.Caption := '상품코드' + #13#10 + '(미입력시 자동생성)';
+
+  for i := 0 to 4 do
+  begin
+    ShowList(i);
+  end;
+  SetWindowPos(Self.Handle, HWND_TOPMOST, Left, Top, Width, Height, 0);
+
+  FrameEdit_Code.Edit_Value.SetFocus;
+end;
+
+procedure TForm_Stock.FrameEdit_CodeEdit_ValueKeyPress(Sender: TObject; var Key: Char);
+begin
+  if Key = Chr(13) then
+    Button_CodeChkClick(Button_CodeChk);
+end;
+
+procedure TForm_Stock.Image_CancelClick(Sender: TObject);
+begin
+  ModalResult := mrCancel;
+end;
+
+procedure TForm_Stock.ListValClick(Sender: TObject);
+var
+  visiComponent: TComponent;
+begin
+  if (Sender is TRadioButton) then
+  begin
+    with (Sender as TRadioButton) do
+    begin
+      Parent.Tag := Tag;
+      // ShowMessage(Parent.Name + ' : ' + IntToSTr(Parent.Tag));
+
+      if (Parent.Name = 'ScrollBOX_' + IntToSTr(STOCK_TYPE)) AND (Tag = 2) then
+      begin
+        (Self.FindComponent('GroupBOX_' + IntToSTr(STOCK_SET)) as TGroupBox).Visible := False;
+        (Self.FindComponent('GroupBOX_' + IntToSTr(STOCK_TIME)) as TGroupBox).Visible := True;
+        bTimeStock := True;
+      end
+      else
+      begin
+        (Self.FindComponent('GroupBOX_' + IntToSTr(STOCK_SET)) as TGroupBox).Visible := True;
+        (Self.FindComponent('GroupBOX_' + IntToSTr(STOCK_TIME)) as TGroupBox).Visible := False;
+        bTimeStock := False;
+      end;
+    end;
+
+  end;
+
+end;
+
+procedure TForm_Stock.Panel_HeaderMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+
+  ReleaseCapture;
+  SendMessage(Handle, WM_NCLBUTTONDOWN, HTCAPTION, 0);
+end;
+
+procedure TForm_Stock.ScrollBox_BodyMouseWheel(Sender: TObject; Shift: TShiftState; WheelDelta: Integer; MousePos: TPoint;
+  var Handled: Boolean);
+begin
+  if WheelDelta >= 0 then
+    SendMessage((Sender as TScrollBox).Handle, WM_VSCROLL, SB_LINELEFT, 0)
+  else
+    SendMessage((Sender as TScrollBox).Handle, WM_VSCROLL, SB_LINERIGHT, 0);
+end;
+
+procedure TForm_Stock.ShowList(iType: Byte);
+var
+  GroupComp: TControl;
+  ScrollBOX: TScrollBox;
+  i: Cardinal;
+
+  arrList: array of String;
+  SizeLabel: Tlabel;
+begin
+
+  // 그룹
+  GroupComp := TGroupBox.Create(Self);
+
+  with (GroupComp as TGroupBox) do
+  begin
+    Parent := ScrollBox_Body;
+    Name := 'GroupBox_' + IntToSTr(iType);
+    Align := alRight;
+    case iType of
+      STOCK_TYPE:
+        begin
+          if KitDriverPrint then
+            Width := Round(ScrollBox_Body.Width * 0.12)
+          else
+            Width := Round(ScrollBox_Body.Width * 0.15);
+          Caption := '상품 유형';
+          Align := alLeft;
+        end;
+      STOCK_KITPRN:
+        begin {
+            if KitDriverPrint then
+            Width := Round(ScrollBox_Body.Width * 0.25)
+            else
+            Width := Round(ScrollBox_Body.Width * 0.25); }
+          Caption := '주방 프린터 목록';
+          Align := alClient;
+        end;
+      STOCK_CATEGORY:
+        begin
+          Width := Round(ScrollBox_Body.Width * 0.30);
+          Caption := '상품 분류';
+          Align := alRight;
+        end;
+      STOCK_SET:
+        begin
+          Left := 1000;
+          Width := Round(ScrollBox_Body.Width * 0.30);
+          Caption := '세트 유형';
+          Align := alRight;
+        end;
+      STOCK_TIME:
+        begin
+          Visible := False;
+          Left := 1080;
+          Width := Round(ScrollBox_Body.Width * 0.30);
+          Caption := '시간 정보';
+          Align := alRight;
+        end;
+    end;
+  end;
+
+  // 스크롤박스
+  ScrollBOX := TScrollBox.Create(Self);
+  ScrollBOX.Parent := (GroupComp as TGroupBox);
+  ScrollBOX.Name := 'ScrollBOX_' + IntToSTr(iType);
+  ScrollBOX.Align := alClient;
+  ScrollBOX.VertScrollBar.Tracking := True;
+  ScrollBOX.HorzScrollBar.Tracking := True;
+  ScrollBOX.Padding.Left := 10;
+  ScrollBOX.BorderStyle := bsNone;
+
+  ScrollBOX.OnMouseWheel := ScrollBox_BodyMouseWheel;
+
+  // 리스트
+  case iType of
+    STOCK_TYPE:
+      begin
+        for i := Low(arrStockType) to High(arrStockType) do
+          System.Insert(arrStockType[i], arrList, Length(arrList));
+      end;
+    STOCK_KITPRN:
+      begin
+        SizeLabel := Tlabel.Create(nil);
+        with SizeLabel do
+        begin
+          Parent := Self;
+          AutoSize := False;
+          WordWrap := False;
+          Width := 180;
+          Height := 30;
+
+        end;
+        // 드라이버 사용
+        if KitDriverPrint then
+        begin
+          try
+            for i := 0 to Printer.Printers.Count - 1 do
+            begin
+              with SizeLabel do
+              begin
+                Font.Size := 12;
+                Caption := Printer.Printers.Strings[i];
+                Font.Size := DM.LabelFontSize(SizeLabel);
+              end;
+
+              ScrollBOX.HorzScrollBar.Visible := False;
+
+              with TCheckBox.Create(Self) do
+              begin
+                Parent := ScrollBOX;
+                Align := alBottom;
+                ShowHint := True;
+                Name := 'CheckBox_Printer' + IntToSTr(i);
+                Tag := i;
+                Caption := Printer.Printers.Strings[i];
+                Hint := Caption;
+
+                Height := 30;
+                Font.Size := SizeLabel.Font.Size - 1;
+
+                Align := alTop;
+              end;
+            end;
+          finally
+            FreeAndNil(SizeLabel);
+          end;
+
+        end
+        // 일반 포트
+        else
+        begin
+          for i := Low(arrStockKitPrn) to High(arrStockKitPrn) do
+          begin
+            with TRadioButton.Create(Self) do
+            begin
+              Parent := ScrollBOX;
+              Align := alBottom;
+              ShowHint := True;
+              Height := 30;
+              Caption := arrStockKitPrn[i];
+              Tag := i;
+              Hint := Caption;
+              Align := alTop;
+
+              Checked := i = Low(arrList);
+              OnClick := ListValClick;
+            end;
+          end;
+
+        end;
+      end;
+    STOCK_CATEGORY:
+      begin
+        for i := Low(arrStockCategoryInfo) to High(arrStockCategoryInfo) do
+        begin
+          if i = Low(arrStockSet) then
+            System.Insert(arrStockCategoryInfo[i].sName, arrList, Length(arrList))
+          else
+            System.Insert('[' + arrStockCategoryInfo[i].sCODE + '] ' + arrStockCategoryInfo[i].sName, arrList, Length(arrList));
+        end;
+      end;
+    STOCK_SET:
+      begin
+        for i := Low(arrStockSet) to High(arrStockSet) do
+        begin
+          if i = Low(arrStockSet) then
+            System.Insert(arrStockSet[i].sSETNAME, arrList, Length(arrList))
+          else
+            System.Insert('[' + arrStockSet[i].sCODE + '] ' + arrStockSet[i].sSETNAME, arrList, Length(arrList));
+        end;
+      end;
+    STOCK_TIME:
+      begin
+      end;
+  end;
+
+  if (iType <> STOCK_KITPRN) AND (iType <> STOCK_TIME) then
+  begin
+    for i := Low(arrList) to High(arrList) do
+    begin
+      with TRadioButton.Create(Self) do
+      begin
+        Parent := ScrollBOX;
+        Align := alBottom;
+        AutoSize := False;
+        ShowHint := True;
+        Height := 30;
+        Caption := arrList[i];
+        Hint := Caption;
+        Align := alTop;
+        Tag := i;
+
+        Checked := i = Low(arrList);
+        OnClick := ListValClick;
+      end;
+    end;
+  end
+  else if iType = STOCK_TIME then
+  begin
+    for i := 0 to 2 do
+    begin
+      with TFrame_ENV_Edit.Create(Self) do
+      begin
+        Parent := ScrollBOX;
+        AlignWithMargins := True;
+        Align := alBottom;
+        Name := 'FrameENV_TIME_' + IntToSTr(i);
+        ShowHint := True;
+        Height := 50;
+        Margins.Top := 8;
+
+        Font.Size := 12;
+
+        //
+        with Label_Key do
+        begin
+          case i of
+            0:
+              Caption := '기본(제공)시간 [분]';
+            1:
+              Caption := '추가(제공)시간 [분]';
+            2:
+              Caption := '추가금액 [원]';
+          end;
+          Width := 140;
+          Hint := Caption;
+        end;
+
+        with Edit_Value do
+        begin
+          NumbersOnly := True;
+          TextHint := '';
+          case i of
+            0:
+              begin
+                MaxLength := 4;
+              end;
+            1:
+              begin
+                MaxLength := 4;
+              end;
+            2:
+              begin
+                Panel_Body.Padding.SetBounds(5, 10, 5, 0);
+                MaxLength := 8;
+              end;
+          end;
+        end;
+        Align := alTop;
+        Tag := i;
+      end;
+    end;
+  end;
+
+end;
+
+end.

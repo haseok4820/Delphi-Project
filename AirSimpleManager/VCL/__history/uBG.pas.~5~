@@ -1,0 +1,45 @@
+unit uBG;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls;
+
+type
+  TForm2 = class(TForm)
+    Timer_CloseCheck: TTimer;
+    procedure FormCreate(Sender: TObject);
+    procedure Timer_CloseCheckTimer(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form2: TForm2;
+
+implementation
+
+{$R *.dfm}
+
+uses uMain;
+
+procedure TForm2.FormCreate(Sender: TObject);
+begin
+  Top := Screen.Monitors[0].Top;
+  Left := Screen.Monitors[0].Left;
+  Width := Screen.Monitors[0].Width;
+  Height := Screen.Monitors[0].Height;
+end;
+
+procedure TForm2.Timer_CloseCheckTimer(Sender: TObject);
+begin
+  if FindWindow(Hint, nil) = 0 then
+  begin
+    Close;
+  end;
+end;
+
+end.

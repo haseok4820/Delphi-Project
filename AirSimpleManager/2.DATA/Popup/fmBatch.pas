@@ -1,0 +1,30 @@
+unit fmBatch;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, ImagingComponents, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.ComCtrls;
+
+type
+  TForm_Batch = class(TForm)
+    Panel_Header: TPanel;
+    Image_Cancel: TImage;
+    Panel1: TPanel;
+    Button1: TButton;
+    ListView_List: TListView;
+    RadioGroup1: TRadioGroup;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form_Batch: TForm_Batch;
+
+implementation
+
+{$R *.dfm}
+
+end.

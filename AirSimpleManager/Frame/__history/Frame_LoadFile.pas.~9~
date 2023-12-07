@@ -1,0 +1,38 @@
+unit Frame_LoadFile;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
+  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls;
+
+type
+  TFrame_ENV_LoadFile = class(TFrame)
+    Label_Title: TLabel;
+    Label_Clear: TLabel;
+    Label_Value: TLabel;
+    procedure Label_ValueClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+implementation
+
+{$R *.dfm}
+
+uses uDM;
+
+procedure TFrame_ENV_LoadFile.Label_ValueClick(Sender: TObject);
+var
+  Result_IS : TResult_IS;
+begin
+  Result_IS := DM.GetOpen;
+  if Result_IS.Result_int <> 0 then
+  begin
+    Label_Value.Caption := Result_IS.Result_Str;
+  end;
+end;
+
+end.

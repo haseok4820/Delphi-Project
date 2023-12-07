@@ -1,0 +1,68 @@
+object Frame_ENV_ComboBox: TFrame_ENV_ComboBox
+  Left = 0
+  Top = 0
+  Width = 320
+  Height = 70
+  Color = clBlack
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -21
+  Font.Name = #44256#46020' B'
+  Font.Style = []
+  Padding.Left = 2
+  Padding.Top = 2
+  Padding.Right = 2
+  Padding.Bottom = 12
+  ParentBackground = False
+  ParentColor = False
+  ParentFont = False
+  TabOrder = 0
+  object Label_Key: TLabel
+    Left = 14
+    Top = 2
+    Width = 244
+    Height = 56
+    Align = alClient
+    AutoSize = False
+    Caption = #48516#47448#47749#51012' '#51077#47141#54644#51452#49464#50836'.'
+    Color = clWhite
+    ParentColor = False
+    Transparent = False
+    Layout = tlCenter
+    OnClick = Label_KeyClick
+    ExplicitLeft = 0
+    ExplicitTop = 0
+    ExplicitWidth = 250
+    ExplicitHeight = 60
+  end
+  object Label1: TLabel
+    Left = 258
+    Top = 2
+    Width = 60
+    Height = 56
+    Align = alRight
+    Alignment = taCenter
+    AutoSize = False
+    Caption = #9660
+    Color = 15592941
+    ParentColor = False
+    Transparent = False
+    Layout = tlCenter
+    OnClick = Label_KeyClick
+    ExplicitLeft = 70
+    ExplicitTop = 0
+    ExplicitHeight = 60
+  end
+  object Label_Hide: TLabel
+    Left = 2
+    Top = 2
+    Width = 12
+    Height = 56
+    Align = alLeft
+    Caption = '  '
+    Color = clWhite
+    ParentColor = False
+    Transparent = False
+    ExplicitHeight = 24
+  end
+end

@@ -1,0 +1,15 @@
+inherited Form_SMPreview_Surface: TForm_SMPreview_Surface
+  ClientHeight = 1920
+  ClientWidth = 1080
+  Padding.Top = 10.000000000000000000
+  DesignerMasterStyle = 0
+  inherited ScrollBox_Parent: TScrollBox
+    Size.Width = 1080.000000000000000000
+    Size.Height = 1910.000000000000000000
+    Viewport.Width = 1080.000000000000000000
+    Viewport.Height = 1910.000000000000000000
+  end
+  inherited Label_MSG: TLabel
+    TextSettings.Font.StyleExt = {00070000000000000004000000}
+  end
+end

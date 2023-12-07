@@ -1,0 +1,140 @@
+object Frame_SYS_Control: TFrame_SYS_Control
+  Left = 0
+  Top = 0
+  Width = 750
+  Height = 170
+  DoubleBuffered = True
+  Color = clWhite
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -21
+  Font.Name = #44256#46020' B'
+  Font.Style = []
+  Padding.Left = 5
+  Padding.Top = 5
+  Padding.Right = 5
+  Padding.Bottom = 10
+  ParentBackground = False
+  ParentColor = False
+  ParentDoubleBuffered = False
+  ParentFont = False
+  TabOrder = 0
+  object GroupBox_Group: TGroupBox
+    Left = 5
+    Top = 5
+    Width = 740
+    Height = 155
+    Align = alClient
+    Caption = 'POS 1'#51032' '#51221#48372
+    Padding.Left = 10
+    Padding.Top = 5
+    Padding.Right = 10
+    Padding.Bottom = 5
+    TabOrder = 0
+    ExplicitHeight = 105
+    object Panel_Option: TPanel
+      Left = 315
+      Top = 31
+      Width = 413
+      Height = 117
+      Align = alRight
+      BevelOuter = bvNone
+      Padding.Left = 10
+      ShowCaption = False
+      TabOrder = 0
+      ExplicitTop = 36
+      ExplicitHeight = 57
+      object Button_Option1: TButton
+        Left = 10
+        Top = 0
+        Width = 79
+        Height = 67
+        Hint = '0'
+        Align = alLeft
+        Caption = #51116#48512#54021
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -19
+        Font.Name = #44256#46020' B'
+        Font.Style = []
+        ParentFont = False
+        ParentShowHint = False
+        ShowHint = False
+        TabOrder = 0
+        OnClick = Button_OptionClick
+        ExplicitHeight = 57
+      end
+      object Button_Option2: TButton
+        Tag = 1
+        Left = 89
+        Top = 0
+        Width = 151
+        Height = 67
+        Hint = '0'
+        Align = alClient
+        Caption = #54532#47196#44536#47016' '#51116#49892#54665
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -19
+        Font.Name = #44256#46020' B'
+        Font.Style = []
+        ParentFont = False
+        ParentShowHint = False
+        ShowHint = False
+        TabOrder = 1
+        OnClick = Button_OptionClick
+        ExplicitLeft = 95
+        ExplicitTop = -6
+        ExplicitHeight = 64
+      end
+      object Button_Option3: TButton
+        Tag = 1
+        Left = 240
+        Top = 0
+        Width = 173
+        Height = 67
+        Hint = '4'
+        Align = alRight
+        Caption = #54532#47536#53552' '#53685#49888' '#51116#50672#44208
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -19
+        Font.Name = #44256#46020' B'
+        Font.Style = []
+        ParentFont = False
+        ParentShowHint = False
+        ShowHint = False
+        TabOrder = 2
+        OnClick = Button_OptionClick
+        ExplicitHeight = 57
+      end
+      object Button_ALLCancel: TButton
+        Left = 10
+        Top = 67
+        Width = 403
+        Height = 50
+        Align = alBottom
+        Caption = #50836#52397#51089#50629' '#47784#46160' '#52712#49548
+        Enabled = False
+        TabOrder = 3
+        OnClick = Button_ALLCancelClick
+        ExplicitTop = 72
+      end
+    end
+    object Panel_Status: TPanel
+      Left = 12
+      Top = 31
+      Width = 303
+      Height = 117
+      Align = alClient
+      BorderStyle = bsSingle
+      Padding.Left = 5
+      Padding.Top = 5
+      Padding.Right = 5
+      Padding.Bottom = 5
+      TabOrder = 1
+      ExplicitLeft = 13
+      ExplicitTop = 35
+    end
+  end
+end

@@ -1,0 +1,12 @@
+inherited Form_SMPreview_Windows: TForm_SMPreview_Windows
+  BorderStyle = Sizeable
+  DesignerMasterStyle = 0
+  inherited ScrollBox_Parent: TScrollBox
+    Viewport.Width = 350.000000000000000000
+    Viewport.Height = 424.000000000000000000
+  end
+  inherited Memo_Test: TMemo
+    Viewport.Width = 350.000000000000000000
+    Viewport.Height = 143.000000000000000000
+  end
+end

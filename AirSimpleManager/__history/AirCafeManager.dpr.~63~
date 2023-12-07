@@ -1,0 +1,73 @@
+program AirCafeManager;
+
+uses
+  Vcl.Forms,
+  uMain in 'uMain.pas' {Form_AirManager},
+  MiniEgg in 'MiniEgg.pas' {Form_MiniEgg},
+  uNav in 'uNav.pas' {Form_Nav},
+  uDM in 'uDM.pas' {DM: TDataModule},
+  ufmPopup in 'Public\ufmPopup.pas' {fmPopup},
+  ufmPrnTest in 'Public\ufmPrnTest.pas' {fmPrnTest},
+  ufmList in 'Public\ufmList.pas' {fmList},
+  ufmBG in 'Public\ufmBG.pas' {fmBG},
+  fmENV1_1 in '1.ENV\fmENV1_1.pas' {Form_ENV1_1},
+  fmENV1_2 in '1.ENV\fmENV1_2.pas' {Form_ENV1_2},
+  fmENV1_3 in '1.ENV\fmENV1_3.pas' {Form_ENV1_3},
+  fmENV1_4 in '1.ENV\fmENV1_4.pas' {Form_ENV1_4},
+
+  fmENV2_1 in '1.ENV\fmENV2_1.pas' {Form_ENV2_1},
+  fmENV2_2 in '1.ENV\fmENV2_2.pas' {Form_ENV2_2},
+
+  fmENV3_1 in '1.ENV\fmENV3_1.pas' {Form_ENV3_1},
+  fmENV3_2 in '1.ENV\fmENV3_2.pas' {Form_ENV3_2},
+  fmENV3_3 in '1.ENV\fmENV3_3.pas' {Form_ENV3_3},
+
+  fmENV4_1 in '1.ENV\fmENV4_1.pas' {Form_ENV4_1},
+
+  fmENV5_1 in '1.ENV\fmENV5_1.pas' {Form_ENV5_1},
+  fmENV5_2 in '1.ENV\fmENV5_2.pas' {Form_ENV5_2},
+
+  fmSYS1_1 in '3.SYSTEM\fmSYS1_1.pas' {Form_SYS1_1},
+  fmSYS1_2 in '3.SYSTEM\fmSYS1_2.pas' {Form_SYS1_2},
+  fmSYS1_3 in '3.SYSTEM\fmSYS1_3.pas' {Form_SYS1_3},
+
+  fmDATA1_1 in '2.DATA\fmDATA1_1.pas' {Form_DATA1_1},
+  fmDATA1_2 in '2.DATA\fmDATA1_2.pas' {Form_DATA1_2},
+  fmDATA1_3 in '2.DATA\fmDATA1_3.pas' {Form_DATA1_3},
+  fmDATA2_1 in '2.DATA\fmDATA2_1.pas' {Form_DATA2_1},
+  Frame_Nav in 'Frame\Frame_Nav.pas' {Frame_ENV_Nav: TFrame},
+  Frame_CheckBox in 'Frame\Frame_CheckBox.pas' {Frame_ENV_CheckBox: TFrame},
+  Frame_Edit in 'Frame\Frame_Edit.pas' {Frame_ENV_Edit: TFrame},
+  Frame_ComboBox in 'Frame\Frame_ComboBox.pas' {Frame_ENV_ComboBox: TFrame},
+  Frame_CheckBox_Prn in 'Frame\Frame_CheckBox_Prn.pas' {Frame_ENV_CheckBox_Prn: TFrame},
+  Frame_YN in 'Frame\Frame_YN.pas' {Frame_ENV_YN: TFrame},
+  Frame_ComboBox_Title in 'Frame\Frame_ComboBox_Title.pas' {Frame_ComboBox_Prn: TFrame},
+  Frame_doubleComboBox_Title in 'Frame\Frame_doubleComboBox_Title.pas' {Frame_ENV_DoubleComboBox_Title: TFrame},
+  Frame_LoadFile in 'Frame\Frame_LoadFile.pas' {Frame_ENV_LoadFile: TFrame},
+  Frame_MenuInfo in 'Frame\Frame_MenuInfo.pas' {Frame_ENV_MenuInfo: TFrame},
+  Frame_Control in 'Frame\Frame_Control.pas' {Frame_SYS_Control: TFrame},
+  Vcl.Themes,
+  Vcl.Styles,
+  Frame_StockInfo in 'Frame\Frame_StockInfo.pas' {FrameStockInfo: TFrame},
+  fmStock in '2.DATA\Popup\fmStock.pas' {Form_Stock},
+  fmCategory in '2.DATA\Popup\fmCategory.pas' {Form_Category},
+  fmSet in '2.DATA\Popup\fmSet.pas' {Form_Set},
+  fmDATA2_2 in '2.DATA\fmDATA2_2.pas' {Form_DATA2_2},
+  fmTables in '2.DATA\Popup\fmTables.pas' {Form_Table},
+  fmTables_Tool in '2.DATA\Popup\fmTables_Tool.pas' {Form_TableTool},
+  fmDATA2_3 in '2.DATA\fmDATA2_3.pas' {Form_DATA2_3},
+  ufmKeypad in 'Public\ufmKeypad.pas' {fmKeypad};
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  ReportMemoryLeaksOnShutdown := True;
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TDM, DM);
+  Application.CreateForm(TForm_AirManager, Form_AirManager);
+  Application.CreateForm(TForm_DATA2_3, Form_DATA2_3);
+  Application.CreateForm(TfmKeypad, fmKeypad);
+  Application.Run;
+
+end.

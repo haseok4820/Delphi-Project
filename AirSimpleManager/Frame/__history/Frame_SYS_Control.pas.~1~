@@ -1,0 +1,29 @@
+unit Frame_SYS_Control;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
+  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls;
+
+type
+  TFrame1 = class(TFrame)
+    GroupBox4: TGroupBox;
+    Panel7: TPanel;
+    Button10: TButton;
+    Button11: TButton;
+    Button12: TButton;
+    Panel8: TPanel;
+    Label8: TLabel;
+    Button1: TButton;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+implementation
+
+{$R *.dfm}
+
+end.

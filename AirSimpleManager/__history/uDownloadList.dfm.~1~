@@ -1,0 +1,54 @@
+object Form1: TForm1
+  Left = 0
+  Top = 0
+  BorderStyle = bsSizeToolWin
+  Caption = #45796#50868#47196#46300' '#44288#47532#51088
+  ClientHeight = 561
+  ClientWidth = 784
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  PixelsPerInch = 96
+  TextHeight = 13
+  inline FrameDownload1: TFrameDownload
+    Left = 0
+    Top = 0
+    Width = 784
+    Height = 110
+    Align = alTop
+    Color = clWhite
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -27
+    Font.Name = #47569#51008' '#44256#46357
+    Font.Style = [fsBold]
+    Padding.Left = 5
+    Padding.Top = 5
+    Padding.Right = 5
+    Padding.Bottom = 5
+    ParentBackground = False
+    ParentColor = False
+    ParentFont = False
+    TabOrder = 0
+    ExplicitLeft = -85
+    inherited Label_Name: TLabel
+      Width = 774
+    end
+    inherited Image_Open: TImage
+      Left = 736
+    end
+    inherited Label_Path: TLabel
+      Width = 774
+    end
+    inherited ProgressBar1: TProgressBar
+      Width = 774
+      ExplicitLeft = 5
+      ExplicitTop = 55
+      ExplicitWidth = 425
+    end
+  end
+end

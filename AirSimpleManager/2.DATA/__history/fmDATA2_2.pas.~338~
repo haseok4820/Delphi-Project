@@ -1,0 +1,398 @@
+unit fmDATA2_2;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.ComCtrls, Vcl.Grids, Vcl.WinXCtrls;
+
+type
+  TForm_DATA2_2 = class(TForm)
+    Label_Title: TLabel;
+    Panel_Side: TPanel;
+    ListView_Floor: TListView;
+    Panel1: TPanel;
+    Button_CategoryDel: TButton;
+    Button_CategoryFix: TButton;
+    Button_CategoryAdd: TButton;
+    Panel_Footer: TPanel;
+    Button_StockDel: TButton;
+    Timer_Refrush: TTimer;
+    StringGrid_Table: TStringGrid;
+    procedure FormShow(Sender: TObject);
+    procedure Button_StockDelClick(Sender: TObject);
+    procedure FloorEvent(Sender: TObject);
+    procedure ListView_FloorSelectItem(Sender: TObject; Item: TListItem; Selected: Boolean);
+    procedure Timer_RefrushTimer(Sender: TObject);
+    procedure StringGrid_TableSelectCell(Sender: TObject; ACol, ARow: Integer; var CanSelect: Boolean);
+  private
+    { Private declarations }
+    procedure ShowFloor;
+    procedure ShowTable(iFloor: Byte);
+  public
+    { Public declarations }
+    procedure SaveTable;
+  protected
+    procedure FormResizeEND(var Message: TMessage); message WM_EXITSIZEMOVE;
+  end;
+
+const
+  iFLOOR_ADD = 0;
+  iFLOOR_FIX = 1;
+  iFLOOR_DEL = 2;
+
+var
+  Form_DATA2_2: TForm_DATA2_2;
+  iSelFloor: SmallInt = 0;
+  iSelTable: SmallInt = 0;
+
+implementation
+
+{$R *.dfm}
+
+uses fmTables, uDM, Frame_StockInfo;
+
+procedure TForm_DATA2_2.Button_StockDelClick(Sender: TObject);
+begin
+  if (Length(arrFloor) = 0) OR (Length(arrTable) = 0) then
+  begin
+    DM.GetPopup('먼저 좌석 정보를 입력해주세요.');
+    Exit;
+  end;
+  Form_Table := TForm_Table.Create(Self);
+  try
+    Form_Table.ShowModal;
+    Form_Table.Close;
+  finally
+
+  end;
+
+end;
+
+procedure TForm_DATA2_2.FloorEvent(Sender: TObject);
+var
+  i, j, k, iTag: Byte;
+  FloorInfo: TFloor_Info;
+  TableInfo: TTable_Info;
+  Values: array of String;
+
+  bChk, bRefrush: Boolean;
+
+begin
+  //
+  SetLength(Values, 2);
+  bRefrush := False;
+  iTag := (Sender as TButton).Tag;
+  case iTag of
+    iFLOOR_ADD: // 추가
+      begin
+        i := Length(arrFloor) + 1;
+        bChk := False;
+
+        Values[0] := IntTOStr(i) + '층';
+        Values[1] := IntTOStr(30);
+        if InputQuery('층수 추가 [' + IntTOStr(i) + ']', ['구분명(최대 5글자) : ', '좌석수(1 ~ 100) : '], Values) then
+        begin
+          bRefrush := True;
+          with FloorInfo do
+          begin
+            sFloorName := DM.AnsiFormat(Values[0]);
+            iTableCnt := StrToIntDef(Values[1], 1);
+          end;
+          System.Insert(FloorInfo, arrFloor, Length(arrFloor));
+
+          SetLength(arrTable, Length(arrTable) + 1);
+          for i := 0 to FloorInfo.iTableCnt - 1 do
+          begin
+            with TableInfo do
+            begin
+              sTableName := IntTOStr(Length(arrFloor)) + '-' + IntTOStr(i + 1);
+              iTable_X := 0;
+              iTable_Y := 0;
+              iTable_W := 0;
+              iTable_H := 0;
+              bUsed := True;
+            end;
+
+            System.Insert(TableInfo, arrTable[High((arrFloor))], Length(arrTable[High((arrFloor))]));
+          end;
+        end;
+      end;
+    iFLOOR_FIX: // 수정
+      begin
+        if ListView_Floor.ItemIndex < 0 then
+          DM.GetPopup('변경할 층수를 먼저 선택해주세요.')
+        else
+        begin
+          bRefrush := True;
+          i := ListView_Floor.ItemIndex;
+          with arrFloor[i] do
+          begin
+            Values[0] := sFloorName;
+            Values[1] := IntTOStr(iTableCnt);
+
+            if InputQuery('정보수정[' + IntTOStr(i + 1) + ']', ['구분명(최대 5글자) : ', '좌석수(1 ~ 100) : '], Values) then
+            begin
+              sFloorName := Values[0];
+              iTableCnt := StrToIntDef(Values[1], 1);
+
+              if iTableCnt > Length(arrTable[i]) then
+              begin
+                k := 0;
+                for j := Length(arrTable[i]) to iTableCnt - 1 do
+                begin
+                  with TableInfo do
+                  begin
+                    sTableName := IntTOStr(i + 1) + '-' + IntTOStr(j);
+                    iTable_X := 0;
+                    iTable_Y := 0;
+                    iTable_W := 0;
+                    iTable_H := 0;
+                    bUsed := True;
+
+                    inc(k);
+                  end;
+
+                  System.Insert(TableInfo, arrTable[i], Length(arrTable[i]));
+                end;
+              end
+              else if iTableCnt < Length(arrTable[i]) then
+                System.Delete(arrTable[i], iTableCnt, Length(arrTable[i]));
+            end;
+          end;
+        end;
+      end;
+    iFLOOR_DEL: // 삭제
+      begin
+        i := ListView_Floor.ItemIndex;
+        if i < 0 then
+          DM.GetPopup('삭제할 층수를 먼저 선택해주세요.')
+        else
+        begin
+          bRefrush := True;
+          Delete(arrFloor, i, 1);
+          Delete(arrTable, i, 1);
+          // Delete(arrTable[i], 0, Length(arrTable[i]));
+        end;
+      end;
+  end;
+  if bRefrush then
+  begin
+
+    SaveTable;
+    DM.GetTable;
+    ShowFloor;
+    ShowTable(iSelFloor);
+  end;
+end;
+
+procedure TForm_DATA2_2.FormResizeEND(var Message: TMessage);
+begin
+  Timer_Refrush.Enabled := True;
+end;
+
+procedure TForm_DATA2_2.FormShow(Sender: TObject);
+begin
+  DM.GetTable;
+
+  iSelFloor := 0;
+  iSelTable := 0;
+
+  if Length(arrFloor) > 0 then
+    Timer_Refrush.Enabled := True;
+end;
+
+procedure TForm_DATA2_2.ListView_FloorSelectItem(Sender: TObject; Item: TListItem; Selected: Boolean);
+begin
+  //
+  iSelFloor := ListView_Floor.ItemIndex;
+  if Selected AND (iSelFloor >= 0) then
+  begin
+    ShowTable(iSelFloor);
+  end;
+end;
+
+procedure TForm_DATA2_2.SaveTable;
+var
+  iCnt, iSeq: Word;
+  i, j: Byte;
+begin
+  if NOT DM.DBConnect then
+    Exit
+  else
+  begin
+    with DM.FDQ do
+    begin
+      // 층수
+      DM.DBSQLClear;
+      SQL.Text := 'DELETE FROM HPOS';
+      ExecSQL;
+
+      if Length(arrFloor) > 0 then
+      begin
+        DM.DBSQLClear;
+        SQL.Text := 'INSERT INTO HPOS (POSNO, TABLECOUNT, FILLER2) VALUES(:POSNO, :TABLECOUNT, :FILLER2)';
+        Params.ArraySize := Length(arrFloor);
+
+        for i := Low(arrFloor) to High(arrFloor) do
+        begin
+          with arrFloor[i] do
+          begin
+            ParamByName('POSNO').AsIntegers[i] := i + 1;
+            ParamByName('TABLECOUNT').AsIntegers[i] := iTableCnt;
+            ParamByName('FILLER2').AsStrings[i] := DM.AnsiFormat(sFloorName, 10);
+
+          end;
+        end;
+        Execute(Length(arrFloor), 0);
+      end;
+
+      // 좌석
+      DM.DBSQLClear;
+      SQL.Text := 'DELETE FROM HTABLE_NM';
+      ExecSQL;
+
+      if Length(arrFloor) > 0 then
+      begin
+        DM.DBSQLClear;
+        iCnt := 0;
+        for i := Low(arrFloor) to High(arrFloor) do
+          iCnt := iCnt + arrFloor[i].iTableCnt;
+
+        DM.DBSQLClear;
+        SQL.Text := 'INSERT INTO HTABLE_NM (POSNO, ISEQ, TNAME, POSX, POSY, WIDTH, HEIGHT, COCOLOR) ' +
+          ' VALUES(:POSNO, :ISEQ, :TNAME, :POSX, :POSY, :WIDTH, :HEIGHT, :COCOLOR)';
+        Params.ArraySize := iCnt;
+        iSeq := 0;
+        for i := Low(arrTable) to High(arrTable) do
+        begin
+          for j := Low(arrTable[i]) to High(arrTable[i]) do
+          begin
+            if (j >= arrFloor[i].iTableCnt) or (j >= Length(arrTable[i])) then
+              Break;
+
+            with arrTable[i, j] do
+            begin
+              ParamByName('POSNO').AsIntegers[iSeq] := i + 1;
+              ParamByName('ISEQ').AsIntegers[iSeq] := j + 1;
+              ParamByName('TNAME').AsStrings[iSeq] := DM.AnsiFormat(sTableName, 20);
+              ParamByName('COCOLOR').AsStrings[iSeq] := DM.AnsiFormat(sTableTag, 20);
+              ParamByName('POSX').AsIntegers[iSeq] := iTable_X;
+              ParamByName('POSY').AsIntegers[iSeq] := iTable_Y;
+              ParamByName('WIDTH').AsIntegers[iSeq] := iTable_W;
+              ParamByName('HEIGHT').AsIntegers[iSeq] := iTable_H;
+
+              inc(iSeq);
+            end;
+          end;
+        end;
+        Execute(iCnt, 0);
+      end;
+
+    end;
+  end;
+end;
+
+procedure TForm_DATA2_2.ShowFloor;
+var
+  i: Byte;
+  FloorItem: TListItem;
+begin
+  //
+  ListView_Floor.Clear;
+  if Length(arrFloor) = 0 then
+  begin
+    Exit;
+  end;
+
+  for i := Low(arrFloor) to High(arrFloor) do
+  begin
+    FloorItem := ListView_Floor.Items.Add;
+    with FloorItem, arrFloor[i] do
+    begin
+      Caption := IntTOStr(i + 1);
+      SubItems.Add(sFloorName);
+      SubItems.Add(IntTOStr(iTableCnt));
+    end;
+  end;
+end;
+
+procedure TForm_DATA2_2.ShowTable(iFloor: Byte);
+var
+  i, j: SmallInt;
+begin
+  //
+  StringGrid_Table.Row := 0;
+  StringGrid_Table.Col := 0;
+  for i := 0 to StringGrid_Table.ColCount - 1 do
+  begin
+    for j := 0 to StringGrid_Table.RowCount - 1 do
+    begin
+      StringGrid_Table.Cells[i, j] := '';
+    end;
+  end;
+
+  if Length(arrFloor) = 0 then
+    Exit;
+
+  StringGrid_Table.ColCount := 3;
+  StringGrid_Table.RowCount := arrFloor[iFloor].iTableCnt + 1;
+
+  if arrFloor[iFloor].iTableCnt <= 0 then
+    Exit;
+
+  j := 0;
+  if Length(arrTable[iFloor]) = 0 then
+    Exit;
+
+  for i := Low(arrTable[iFloor]) - 1 to High(arrTable[iFloor]) do
+  begin
+    if i > arrFloor[iFloor].iTableCnt then
+      Break;
+
+    j := i + 1;
+    with StringGrid_Table, arrTable[iFloor, i] do
+    begin
+      if j = 0 then
+      begin
+        Cells[0, j] := '좌석번호';
+        Cells[1, j] := '좌석명';
+        Cells[2, j] := '좌석태그(시간제)';
+      end
+      else
+      begin
+        Cells[0, j] := IntTOStr(i + 1);
+        Cells[1, j] := sTableName;
+        Cells[2, j] := sTableTag;
+      end;
+    end;
+  end;
+
+  StringGrid_Table.ColWidths[0] := Round(StringGrid_Table.Width * 0.15);
+  StringGrid_Table.ColWidths[1] := Round(StringGrid_Table.Width * 0.40);
+  StringGrid_Table.ColWidths[2] := Round(StringGrid_Table.Width * 0.40);
+
+  StringGrid_Table.Row := 1;
+  StringGrid_Table.Col := 1;
+end;
+
+procedure TForm_DATA2_2.StringGrid_TableSelectCell(Sender: TObject; ACol, ARow: Integer; var CanSelect: Boolean);
+begin
+  with StringGrid_Table do
+  begin
+    if (ACol = 0) OR (ARow = 0) then
+      Options := Options - [goEditing, goAlwaysShowEditor]
+    else
+      Options := Options + [goEditing, goAlwaysShowEditor];
+
+  end;
+end;
+
+procedure TForm_DATA2_2.Timer_RefrushTimer(Sender: TObject);
+begin
+  Timer_Refrush.Enabled := False;
+  ShowFloor;
+  ShowTable(iSelFloor);
+end;
+
+end.

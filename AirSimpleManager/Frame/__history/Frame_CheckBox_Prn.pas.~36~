@@ -1,0 +1,65 @@
+unit Frame_CheckBox_Prn;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
+  System.Classes,
+  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls,
+  dxGDIPlusClasses, Vcl.ExtCtrls;
+
+type
+  TFrame_ENV_CheckBox_Prn = class(TFrame)
+    Image_Check: TImage;
+    Label_MSG: TLabel;
+    Label_Hide: TLabel;
+    Label_Normal: TLabel;
+    Label_Expand: TLabel;
+    procedure Label_PrnClick(Sender: TObject);
+    procedure Image_CheckClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+implementation
+
+{$R *.dfm}
+
+uses uDM;
+
+procedure TFrame_ENV_CheckBox_Prn.Image_CheckClick(Sender: TObject);
+var
+  Result_is: TResult_IS;
+begin
+  //
+  with (Sender as TImage) do
+  begin
+    Result_is := DM.Image_CheckBOX(Tag);
+    Picture.LoadFromFile(Result_is.Result_Str);
+    Tag := Result_is.Result_Int;
+  end;
+end;
+
+procedure TFrame_ENV_CheckBox_Prn.Label_PrnClick(Sender: TObject);
+var
+  i: Integer;
+begin
+  for i := 0 to Self.ControlCount - 1 do
+  begin
+    if Controls[i] is TLabel then
+    begin
+      TLabel(Controls[i]).Color := clWhite;
+      TLabel(Controls[i]).Font.Color := clBlack;
+      TLabel(Controls[i]).Tag := 0;
+
+    end;
+  end;
+
+  (Sender as TLabel).Color := $00A4580B;
+  (Sender as TLabel).Font.Color := clWhite;
+  (Sender as TLabel).Tag := 1;
+end;
+
+end.

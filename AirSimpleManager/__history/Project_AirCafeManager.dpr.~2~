@@ -1,0 +1,35 @@
+program Project_AirCafeManager;
+
+uses
+  Vcl.Forms,
+  uMain in 'uMain.pas' {Form_AirManager},
+  Frame_Nav in 'Frame\Frame_Nav.pas' {Frame_ENV_Nav: TFrame},
+  uDM in 'uDM.pas' {DM: TDataModule},
+  fmENV1_1 in 'ENV\fmENV1_1.pas' {Form_ENV1_1},
+  Frame_CheckBox in 'Frame\Frame_CheckBox.pas' {Frame_ENV_CheckBox: TFrame},
+  Frame_Edit in 'Frame\Frame_Edit.pas' {Frame_ENV_Edit: TFrame},
+  fmENV3_2 in 'ENV\fmENV3_2.pas' {Form_ENV3_2},
+  Frame_ComboBox in 'Frame\Frame_ComboBox.pas' {Frame_ENV_ComboBox: TFrame},
+  Frame_CheckBox_Prn in 'Frame\Frame_CheckBox_Prn.pas' {Frame_ENV_CheckBox_Prn: TFrame},
+  MiniEgg in 'MiniEgg.pas' {Form_MiniEgg},
+  ufmList in 'Public\ufmList.pas' {fmList},
+  fmENV_Admin in 'ENV\fmENV_Admin.pas' {Form_ENV_Admin},
+  fmENV5_1 in 'ENV\fmENV5_1.pas' {Form_ENV5_1},
+  fmENV1_4 in 'ENV\fmENV1_4.pas' {Form_ENV1_4},
+  ufmLogin in 'Public\ufmLogin.pas' {fmLogin},
+  fmENV1_2 in 'ENV\fmENV1_2.pas' {Form_ENV1_2},
+  Frame_YN in 'Frame\Frame_YN.pas' {Frame_ENV_YN: TFrame},
+  fmENV3_1 in 'ENV\fmENV3_1.pas' {Form_ENV3_1},
+  fmENV2_1 in 'ENV\fmENV2_1.pas' {Form_ENV2_1},
+  fmENV4_1 in 'ENV\fmENV4_1.pas' {Form_ENV4_1},
+  ufmPopup in 'Public\ufmPopup.pas' {fmPopup};
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TDM, DM);
+  Application.CreateForm(TForm_AirManager, Form_AirManager);
+  Application.Run;
+end.

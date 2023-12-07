@@ -1,0 +1,584 @@
+object Form_DATA1_1: TForm_DATA1_1
+  Left = 0
+  Top = 0
+  BorderStyle = bsNone
+  Caption = 'Form_DATA1_1'
+  ClientHeight = 550
+  ClientWidth = 840
+  Color = clWhite
+  DoubleBuffered = True
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -21
+  Font.Name = #44256#46020' B'
+  Font.Style = []
+  KeyPreview = True
+  Padding.Left = 10
+  Padding.Top = 10
+  Padding.Right = 10
+  Padding.Bottom = 10
+  OldCreateOrder = False
+  Scaled = False
+  OnClose = FormClose
+  OnKeyDown = FormKeyDown
+  OnShow = FormShow
+  DesignSize = (
+    840
+    550)
+  PixelsPerInch = 96
+  TextHeight = 24
+  object Label_Title: TLabel
+    Left = 10
+    Top = 10
+    Width = 820
+    Height = 42
+    Align = alTop
+    AutoSize = False
+    Caption = '1-1. '#49345#54408#44288#47532
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = 10770443
+    Font.Height = -27
+    Font.Name = #44256#46020' B'
+    Font.Style = []
+    ParentFont = False
+    Layout = tlCenter
+    ExplicitLeft = 95
+    ExplicitTop = 54
+    ExplicitWidth = 810
+  end
+  object Button_ViewCategory: TButton
+    Tag = 1
+    Left = 680
+    Top = 10
+    Width = 150
+    Height = 40
+    Anchors = [akTop, akRight]
+    Caption = #48516#47448' '#54364#49884#50976#47924
+    TabOrder = 0
+    OnClick = Button_ViewClick
+  end
+  object Button_ViewSearch: TButton
+    Left = 520
+    Top = 10
+    Width = 150
+    Height = 40
+    Anchors = [akTop, akRight]
+    Caption = #44160#49353#52285' '#54364#49884#50976#47924
+    TabOrder = 1
+    OnClick = Button_ViewClick
+  end
+  object GroupBox_Category: TGroupBox
+    AlignWithMargins = True
+    Left = 10
+    Top = 52
+    Width = 180
+    Height = 488
+    Margins.Left = 0
+    Margins.Top = 0
+    Margins.Right = 5
+    Margins.Bottom = 0
+    Align = alLeft
+    Caption = #49345#54408#48516#47448
+    Constraints.MinWidth = 180
+    ParentBackground = False
+    TabOrder = 2
+    object ScrollBox_Category: TScrollBox
+      AlignWithMargins = True
+      Left = 2
+      Top = 26
+      Width = 176
+      Height = 350
+      Margins.Left = 0
+      Margins.Top = 0
+      Margins.Right = 0
+      Margins.Bottom = 5
+      VertScrollBar.Smooth = True
+      VertScrollBar.Tracking = True
+      Align = alClient
+      BorderStyle = bsNone
+      Color = clWhite
+      ParentColor = False
+      TabOrder = 0
+      OnMouseWheel = ScrollBox_MouseWheel
+      ExplicitWidth = 201
+    end
+    object Button_CategoryDel: TButton
+      Tag = 2
+      Left = 2
+      Top = 451
+      Width = 176
+      Height = 35
+      Align = alBottom
+      Caption = #49440#53469#48516#47448' '#49325#51228
+      TabOrder = 1
+      OnClick = Button_CategoryDelClick
+      ExplicitWidth = 201
+    end
+    object Button_CategoryAdd: TButton
+      Left = 2
+      Top = 381
+      Width = 176
+      Height = 35
+      Align = alBottom
+      Caption = #48516#47448' '#52628#44032
+      TabOrder = 2
+      OnClick = Button_CategoryAddClick
+      ExplicitWidth = 201
+    end
+    object Button_CategoryFix: TButton
+      Tag = 1
+      Left = 2
+      Top = 416
+      Width = 176
+      Height = 35
+      Align = alBottom
+      Caption = #49440#53469#48516#47448' '#49688#51221
+      TabOrder = 3
+      OnClick = Button_CategoryAddClick
+      ExplicitWidth = 201
+    end
+  end
+  object Panel_Stock: TPanel
+    Left = 195
+    Top = 52
+    Width = 635
+    Height = 488
+    Align = alClient
+    BevelOuter = bvNone
+    TabOrder = 3
+    ExplicitLeft = 220
+    ExplicitWidth = 610
+    object Panel_SearchOption: TPanel
+      AlignWithMargins = True
+      Left = 0
+      Top = 0
+      Width = 635
+      Height = 90
+      Margins.Left = 0
+      Margins.Top = 0
+      Margins.Right = 0
+      Margins.Bottom = 5
+      Align = alTop
+      BevelOuter = bvNone
+      Padding.Top = 5
+      Padding.Bottom = 5
+      ShowCaption = False
+      TabOrder = 0
+      ExplicitWidth = 610
+      DesignSize = (
+        635
+        90)
+      inline FrameCombo_Search: TFrame_ENV_ComboBox
+        AlignWithMargins = True
+        Left = 0
+        Top = 5
+        Width = 475
+        Height = 35
+        Margins.Left = 0
+        Margins.Top = 0
+        Margins.Right = 160
+        Margins.Bottom = 10
+        Align = alTop
+        DoubleBuffered = True
+        Color = clBlack
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -16
+        Font.Name = #44256#46020' B'
+        Font.Style = []
+        Padding.Left = 2
+        Padding.Top = 2
+        Padding.Right = 2
+        Padding.Bottom = 2
+        ParentBackground = False
+        ParentColor = False
+        ParentDoubleBuffered = False
+        ParentFont = False
+        TabOrder = 0
+        ExplicitTop = 5
+        ExplicitWidth = 450
+        ExplicitHeight = 35
+        inherited Label_Key: TLabel
+          Left = 12
+          Width = 425
+          Height = 31
+          Caption = #49345#54408#47749','#49345#54408#53076#46300'('#48148#53076#46300')'#47196' '#44160#49353
+          ExplicitLeft = 12
+          ExplicitWidth = 574
+          ExplicitHeight = 36
+        end
+        inherited Label1: TLabel
+          Left = 437
+          Width = 36
+          Height = 31
+          ExplicitLeft = 573
+          ExplicitWidth = 36
+          ExplicitHeight = 36
+        end
+        inherited Label_Hide: TLabel
+          Width = 10
+          Height = 31
+          ExplicitWidth = 10
+          ExplicitHeight = 18
+        end
+      end
+      object Button_Search: TButton
+        Left = 485
+        Top = 5
+        Width = 150
+        Height = 80
+        Anchors = [akTop, akRight]
+        Caption = #44160#49353
+        TabOrder = 1
+        OnClick = Timer_RefreshTimer
+        ExplicitLeft = 460
+      end
+      object Edit_Search: TEdit
+        AlignWithMargins = True
+        Left = 0
+        Top = 50
+        Width = 475
+        Height = 35
+        Margins.Left = 0
+        Margins.Top = 0
+        Margins.Right = 160
+        Margins.Bottom = 0
+        Align = alClient
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -27
+        Font.Name = #44256#46020' B'
+        Font.Style = []
+        ParentFont = False
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 2
+        TextHint = #44160#49353#50612#47484' '#51077#47141#54644#51452#49464#50836'.'
+        OnKeyDown = Edit_SearchKeyDown
+        ExplicitWidth = 450
+        ExplicitHeight = 39
+      end
+    end
+    object Panel_Footer: TPanel
+      AlignWithMargins = True
+      Left = 0
+      Top = 383
+      Width = 635
+      Height = 105
+      Margins.Left = 0
+      Margins.Top = 0
+      Margins.Right = 0
+      Margins.Bottom = 0
+      Align = alBottom
+      BevelOuter = bvNone
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -21
+      Font.Name = #44256#46020' B'
+      Font.Style = []
+      ParentBackground = False
+      ParentFont = False
+      ShowCaption = False
+      TabOrder = 1
+      ExplicitWidth = 610
+      object Label_Info: TLabel
+        AlignWithMargins = True
+        Left = 255
+        Top = 0
+        Width = 215
+        Height = 105
+        Margins.Left = 0
+        Margins.Top = 0
+        Margins.Right = 5
+        Margins.Bottom = 0
+        Align = alClient
+        Alignment = taRightJustify
+        Caption = #49345#54408' '#51221#48372#47484' '#44032#51256#50724#44256' '#51080#49845#45768#45796'. '#51104#49884#47564' '#44592#45796#47140#51452#49464#50836'.'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -17
+        Font.Name = #44256#46020' B'
+        Font.Style = []
+        ParentFont = False
+        WordWrap = True
+        ExplicitLeft = 220
+        ExplicitWidth = 225
+        ExplicitHeight = 38
+      end
+      object Button_StockAdd: TButton
+        Left = 0
+        Top = 0
+        Width = 85
+        Height = 105
+        Align = alLeft
+        Caption = #46321#47197
+        TabOrder = 0
+        OnClick = Button_StockAddClick
+      end
+      object Button_StockDel: TButton
+        Left = 85
+        Top = 0
+        Width = 85
+        Height = 105
+        Hint = #49345#54408#53076#46300#47484' '#53364#47533#54616#50668', '#49325#51228#54624' '#49345#54408#51012' '#51648#51221#54624' '#49688' '#51080#49845#45768#45796'.'
+        Align = alLeft
+        Caption = #49440#53469#49325#51228
+        TabOrder = 1
+        OnClick = Button_StockDelClick
+        ExplicitLeft = 80
+      end
+      object Panel_Page: TPanel
+        Left = 475
+        Top = 0
+        Width = 160
+        Height = 105
+        Align = alRight
+        BevelKind = bkTile
+        BevelOuter = bvNone
+        Color = clWhite
+        ParentBackground = False
+        ShowCaption = False
+        TabOrder = 2
+        ExplicitLeft = 450
+        object Label_Pageing: TLabel
+          AlignWithMargins = True
+          Left = 0
+          Top = 10
+          Width = 156
+          Height = 44
+          Hint = 'Page : '
+          Margins.Left = 0
+          Margins.Top = 10
+          Margins.Right = 0
+          Margins.Bottom = 0
+          Align = alTop
+          Alignment = taCenter
+          AutoSize = False
+          Caption = 'Page : 1'
+          Layout = tlCenter
+          ExplicitTop = 0
+        end
+        object Button_Next: TButton
+          Tag = 1
+          Left = 76
+          Top = 54
+          Width = 80
+          Height = 47
+          Align = alRight
+          Caption = #9654
+          ImageAlignment = iaBottom
+          TabOrder = 0
+          OnClick = ButtonPageClick
+        end
+        object Button_Prev: TButton
+          Tag = -1
+          Left = 0
+          Top = 54
+          Width = 80
+          Height = 47
+          Align = alLeft
+          Caption = #9664
+          ImageAlignment = iaBottom
+          TabOrder = 1
+          OnClick = ButtonPageClick
+        end
+      end
+      object Button_StockBatch: TButton
+        Left = 170
+        Top = 0
+        Width = 85
+        Height = 105
+        Hint = #49345#54408#53076#46300#47484' '#53364#47533#54616#50668', '#49325#51228#54624' '#49345#54408#51012' '#51648#51221#54624' '#49688' '#51080#49845#45768#45796'.'
+        Align = alLeft
+        Caption = #51068#44292#49444#51221
+        TabOrder = 3
+        ExplicitLeft = 160
+      end
+    end
+    object Panel_MenuInfo_Column: TPanel
+      AlignWithMargins = True
+      Left = 0
+      Top = 95
+      Width = 635
+      Height = 35
+      Margins.Left = 0
+      Margins.Top = 0
+      Margins.Right = 0
+      Margins.Bottom = 5
+      Align = alTop
+      BevelOuter = bvNone
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -21
+      Font.Name = #44256#46020' B'
+      Font.Style = []
+      ParentBackground = False
+      ParentFont = False
+      ShowCaption = False
+      TabOrder = 2
+      ExplicitWidth = 610
+      object Label_MenuName: TLabel
+        Left = 125
+        Top = 0
+        Width = 230
+        Height = 35
+        Align = alClient
+        Alignment = taCenter
+        AutoSize = False
+        Caption = #49345#54408#47749
+        Layout = tlCenter
+        ExplicitLeft = 100
+        ExplicitWidth = 306
+        ExplicitHeight = 41
+      end
+      object Label_MenuCode: TLabel
+        Left = 0
+        Top = 0
+        Width = 125
+        Height = 35
+        Align = alLeft
+        Alignment = taCenter
+        AutoSize = False
+        Caption = #53076#46300
+        Layout = tlCenter
+        ExplicitHeight = 41
+      end
+      inline FrameCombo_Combo: TFrame_ENV_ComboBox
+        AlignWithMargins = True
+        Left = 485
+        Top = 0
+        Width = 150
+        Height = 35
+        Margins.Left = 0
+        Margins.Top = 0
+        Margins.Right = 0
+        Margins.Bottom = 0
+        Align = alRight
+        DoubleBuffered = True
+        Color = clBlack
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -16
+        Font.Name = #44256#46020' B'
+        Font.Style = []
+        Padding.Left = 2
+        Padding.Top = 2
+        Padding.Right = 2
+        Padding.Bottom = 2
+        ParentBackground = False
+        ParentColor = False
+        ParentDoubleBuffered = False
+        ParentFont = False
+        TabOrder = 0
+        ExplicitLeft = 460
+        ExplicitWidth = 150
+        ExplicitHeight = 35
+        inherited Label_Key: TLabel
+          Left = 12
+          Width = 106
+          Height = 31
+          Caption = #51452#48169#52636#47141#48264#54840
+          ExplicitLeft = 2
+          ExplicitWidth = 116
+          ExplicitHeight = 37
+        end
+        inherited Label1: TLabel
+          Left = 118
+          Width = 30
+          Height = 31
+          ExplicitLeft = 48
+          ExplicitWidth = 30
+          ExplicitHeight = 37
+        end
+        inherited Label_Hide: TLabel
+          Width = 10
+          Height = 31
+          ExplicitWidth = 10
+          ExplicitHeight = 18
+        end
+      end
+      inline FrameCombo_Edit: TFrame_ENV_ComboBox
+        AlignWithMargins = True
+        Left = 355
+        Top = 0
+        Width = 120
+        Height = 35
+        Margins.Left = 0
+        Margins.Top = 0
+        Margins.Right = 10
+        Margins.Bottom = 0
+        Align = alRight
+        DoubleBuffered = True
+        Color = clBlack
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -16
+        Font.Name = #44256#46020' B'
+        Font.Style = []
+        Padding.Left = 2
+        Padding.Top = 2
+        Padding.Right = 2
+        Padding.Bottom = 2
+        ParentBackground = False
+        ParentColor = False
+        ParentDoubleBuffered = False
+        ParentFont = False
+        TabOrder = 1
+        ExplicitLeft = 330
+        ExplicitWidth = 120
+        ExplicitHeight = 35
+        inherited Label_Key: TLabel
+          Left = 12
+          Width = 76
+          Height = 31
+          Caption = #54032#47588#44552#50529
+          ExplicitLeft = 2
+          ExplicitWidth = 66
+          ExplicitHeight = 37
+        end
+        inherited Label1: TLabel
+          Left = 88
+          Width = 30
+          Height = 31
+          ExplicitLeft = 48
+          ExplicitWidth = 30
+          ExplicitHeight = 37
+        end
+        inherited Label_Hide: TLabel
+          Width = 10
+          Height = 31
+          ExplicitWidth = 10
+          ExplicitHeight = 18
+        end
+      end
+    end
+    object ScrollBox_List: TScrollBox
+      AlignWithMargins = True
+      Left = 0
+      Top = 135
+      Width = 635
+      Height = 243
+      Margins.Left = 0
+      Margins.Top = 0
+      Margins.Right = 0
+      Margins.Bottom = 5
+      Align = alClient
+      AutoScroll = False
+      BorderStyle = bsNone
+      Color = 2236962
+      Padding.Top = 1
+      ParentColor = False
+      TabOrder = 3
+      OnMouseWheel = ScrollBox_MouseWheel
+      ExplicitWidth = 610
+    end
+  end
+  object Timer_Refresh: TTimer
+    Enabled = False
+    Interval = 10
+    OnTimer = Timer_RefreshTimer
+    Left = 408
+    Top = 264
+  end
+end

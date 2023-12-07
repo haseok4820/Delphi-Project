@@ -1,0 +1,629 @@
+',
+    'KOVAN.exe'
+  );
+
+  ExtPortList: array [0 .. 15] of String = (
+    '사용안함',
+    'COM1',
+    'COM2',
+    'COM3',
+    'COM4',
+    'COM5',
+    'COM6',
+    'COM7',
+    'COM8',
+    'COM9',
+    'COM10',
+    'COM11',
+    'COM12',
+    'COM13',
+    'COM14',
+    'COM15'
+  );
+
+  arrAspAutoDown: array [0 .. 2] of String = (
+    '메뉴 다운로드 사용안함',
+    '매장ASP 상품사용',
+    '본사ASP 상품사용'
+  );
+
+  arrSideNAv_Category: array [0 .. 2] of String = (
+    '사용자 환경설정',
+    '데이터관리',
+    '원격관리/설정'
+  );
+{$IFDEF DEBUG}
+  arrENV_Category: array [0 .. 4] of String = (
+{$ELSE}
+  arrENV_Category: array [0 .. 3] of String =
+  (
+{$ENDIF}
+    '매장관리',
+    '일반설정',
+    '장치관리',
+    '결제관리'
+{$IFDEF DEBUG},
+    '상품관리(Demo)'
+{$ENDIF}
+  );
+
+  arrENV_Nav: array of array of String;
+
+  arrData_Category: array [0 .. {$IFDEF DEBUG}2 {$ELSE} 1{$ENDIF}] of String = (
+    '판매상품관리',
+    '배치관리'
+    {$IFDEF DEBUG}, '회원관리' {$ENDIF}
+  );
+
+  arrData_Nav: array of array of String;
+
+  arrSystem_Category: array [0 .. 0] of String = (
+    '원격 관리/설정'
+  );
+  arrSystem_Nav: array of array of String;
+
+  arrPrnList: array [0 .. 2] of String = (
+    '영수증',
+    '고객주문서',
+    '주방주문서'
+  );
+
+  arrRecPrnType_OPTION: array [0 .. 8] of String = (
+    '9600BPS',
+    '38400INIT',
+    '19200BPS',
+    'POVI',
+    '115200BPS',
+    'KM-1000/P-100',
+    '38400NOINIT',
+    '*SRP-350*',
+    'KOCES-T5500'
+  );
+
+  arrKitPrnType_OPTION: array [0 .. 12] of String = (
+    '9600BPS-STP',
+    '115200BPS',
+    '19200BPS',
+    '38400BPS',
+    'CALL-1CH',
+    'CALL-2CH',
+    '*SRP350*',
+    'CALLSTAR',
+    '시스콜호출벨',
+    '링크맨호출벨',
+    'LEETEK호출벨',
+    'NECALL',
+    'KAKAO-SMS'
+  );
+
+  arrExtPrnType_OPTION: array [0 .. 12] of String = (
+    '9600BPS-STP/SRP',
+    '115200BPS',
+    '19200BPS',
+    '38400BPS',
+    'Call-1ch',
+    'Call-2ch',
+    '*SRP350*',
+    'CallStar',
+    '시스콜호출벨',
+    '링크맨호출밸',
+    'LEETEK호출벨',
+    'NECALL',
+    'KAKAO-SMS'
+  );
+
+  arrPortType_OPTION: array [0 .. 16] of String = (
+    '사용안함',
+    '영수증프린터',
+    '고객표시장치',
+    'RF 리더기',
+    'CALL-ID',
+    '무선단말기',
+    '라벨프린터',
+    '시리얼리더기',
+    '저울',
+    '호출벨',
+    '동전계수기',
+    '주방-1',
+    '주방-2',
+    '주방-3',
+    '주방-4',
+    '주방-5',
+    '주방-6'
+  );
+
+  arrPortType_Kit: array [0 .. 5] of String = (
+    '미사용',
+    '주방-(특별1)',
+    '주방-(특별2)',
+    '주방-(특별3)',
+    '주방-(특별4)',
+    '주방-(특별5)'
+  );
+
+  arrPortType_OPTION2: array [0 .. 16] of String = (
+    '사용안함',
+    '주방-1',
+    '주방-2',
+    '주방-3',
+    '주방-4',
+    '주방-5',
+    '주방-6',
+    '영수증프린터',
+    '고객표시장치',
+    'RF 리더기',
+    'CALL-ID',
+    '무선단말기',
+    '라벨프린터',
+    '시리얼리더기',
+    '저울',
+    '호출벨',
+    '동전계수기'
+  );
+
+  arrvKitSendList: array [0 .. 9] of String = (
+    '전송안함',
+    '주방-1',
+    '주방-2',
+    '주방-3',
+    '주방-4',
+    '주방-5',
+    '주방-6',
+    '주방-(특별1)',
+    '주방-(특별2)',
+    '주방-(특별3)'
+  );
+
+  arrPrnOptionList: array [0 .. 2] of TPrnOption; // 출력유무, 확대유무(N, B)
+  arrPrnOptionList_RecCation: array [0 .. 1] of array [0 .. 9] of string = (
+    (
+      '타이틀',
+      '매장정보',
+      '영수증번호',
+      '테이블명',
+      '인원',
+      '메뉴',
+      '주문자(배달자)',
+      '주문번호',
+      '주문번호(상단)',
+      '주문번호(하단)'
+    ),
+    (
+      '타이틀',
+      '매장정보',
+      '영수증번호',
+      '테이블',
+      '인원',
+      '메뉴',
+      '주문자(배달자)',
+      '주문번호',
+      '',
+      ''
+    )
+  );
+  arrPrnOptionList_hggCaption: array [0 .. 1] of String = (
+    '매장정보(좌석제 전용)',
+    '영수증하단문구(좌석제 전용)'
+  );
+
+  arrPrnOptionList_KitCation: array [0 .. 1] of array [0 .. 9] of string = (
+    (
+      '타이틀',
+      '테이블명',
+      'POS번호',
+      '출력시간',
+      '인원',
+      '주문자(배달자)',
+      '주문번호',
+      '영수번호(선불)',
+      '주문번호(하단)',
+      '주문번호(상단)'
+    ),
+    (
+      '타이틀',
+      '테이블/참고',
+      'POS번호',
+      '출력시간',
+      '인원',
+      '주문자(배달자)',
+      '메뉴',
+      '주문번호',
+      '영수번호 (선불)',
+      ''
+    )
+  );
+
+  arrRecType: array [0 .. 4] of String = (
+    '영수증 무조건 발행',
+    '영수증 질의 후 발행',
+    '영수증 발행안함',
+    '영수증 현금결제시 발행안함',
+    '영수증 현금결제만 발행'
+  );
+
+  arrKitExtType: array [0 .. 2] of String = (
+    '확대폰트 2 X 2',
+    '확대폰트 2 X 1',
+    '확대폰트 1 X 2'
+  );
+
+  arrYN: array [0 .. 1] of String = (
+    '사용',
+    '사용안함'
+  );
+
+  arrDataSearch_Type: array [0 .. 1] of String = (
+    '상품명/코드로 검색',
+    '판매금액으로 검색'
+  );
+  {
+    arrDataSearch_Option: array of String = (
+    );
+    arrDataSearch_Rows: array of String = (
+    '10개씩 표시',
+    '20개씩 표시',
+    '30개씩 표시'
+    );
+  }
+
+implementation
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+uses ufmList, fmENV1_1, uMain, ufmKeypad, ufmPopup, ufmBG, fmSYS1_1, fmSYS1_3;
+{$R *.dfm}
+
+function TDM.GetList(Title: String; arrList: array of String): TResult_IS;
+var
+  i: Word;
+  li: TListItem;
+begin
+  //
+  fmList := TfmList.Create(Form_AirManager);
+
+  try
+    with fmList do
+    begin
+      for i := Low(arrList) to High(arrList) do
+      begin
+        li := ListView_Body.Items.Add;
+        li.Caption := arrList[i];
+        li.SubItems.Add(IntToStr(i));
+      end;
+
+      if Title = '' then
+        Label_title.Caption := '선택해주세요.'
+      else
+        Label_title.Caption := Title;
+
+      ShowModal;
+
+      if ModalResult = mrOK then
+      begin
+        with ListView_Body.Selected do
+        begin
+          GetList.Result_Str := Caption;
+          GetList.Result_int := StrToIntDef(SubItems.Strings[0], 0);
+        end;
+      end
+      else
+      begin
+        GetList.Result_Str := '취소';
+        GetList.Result_int := -99;
+      end;
+    end;
+
+  finally
+    fmList.Free;
+  end;
+end;
+
+function TDM.GetLogin(Title: String): TResult_IS;
+begin
+  //
+  fmKeypad := TfmKeypad.Create(Self);
+  try
+    with fmKeypad do
+    begin
+      if Title <> '' then
+        Frame_ENV_Edit1.Label_Key.Caption := Title;
+
+      Frame_ENV_Edit1.Edit_Value.PasswordChar := '●';
+      ShowModal;
+      if Tag = 0 then
+      begin
+        Result.Result_int := Tag;
+        Result.Result_Str := Hint;
+      end
+      else
+      begin
+        Result.Result_int := Tag;
+        Result.Result_Str := '성공';
+      end;
+    end;
+  finally
+
+    FreeAndNil(fmKeypad);
+  end;
+
+end;
+
+function TDM.GetOpen(iType: Integer): TResult_IS;
+begin
+  //
+  case iType of
+    0:
+      begin
+        OpenDialog.Title := '파일 선택';
+        OpenDialog.Options := [];
+      end;
+    1: // 미디어 파일 (mp4, avi 등)
+      begin
+        OpenDialog.Title := '미디어 파일 선택';
+        OpenDialog.Options := [];
+        with OpenDialog.FileTypes.Add do
+        begin
+          DisplayName := '미디어 파일';
+          FileMask := '*.mp4;*.avi;*.wmv;*.mkv';
+        end;
+      end;
+  end;
+  if OpenDialog.Execute then
+  begin
+    Result.Result_int := 1;
+    Result.Result_Str := OpenDialog.FileName;
+  end
+  else
+  begin
+    Result.Result_int := 0;
+    Result.Result_Str := '폴더 선택안함';
+  end;
+
+end;
+
+function TDM.GetPopup(iType: Byte; sMsg: String): TResult_IS;
+begin
+  Result := GetPopup(iType, '안 내', sMsg, '');
+
+end;
+
+function TDM.GetPopup(sMsg: String): TResult_IS;
+begin
+  Result := GetPopup(0, '', sMsg, '');
+end;
+
+function TDM.GetPopup(iType: Byte; Title, sMsg, imageName: String): TResult_IS;
+begin
+  { iType
+    - 0:  확인만 표시
+    - 1: 예, 아니오 표시
+
+    응답
+    - 0 : 아니요
+    - 1 : 예, 확인
+  }
+  SetLog(Title + ' : ' + sMsg);
+  sMsg := StringReplace(sMsg, '||', #13#10, [rfReplaceALL]);
+  fmPopup := TfmPopup.Create(Self);
+  with fmPopup do
+  begin
+    Tag := iType;
+    Panel_Header.Caption := Title;
+
+    if Trim(imageName) = '' then
+    begin
+      Label_Msg.Caption := sMsg;
+    end
+    else
+    begin
+      Label_Msg.Visible := False;
+      Image_Msg.Align := alClient;
+    end;
+
+    ShowModal;
+    Result.Result_int := Tag;
+    Result.Result_Str := Hint;
+
+    Free;
+  end;
+
+  if iType <> 0 then
+    SetLog(IntToStr(Result.Result_int) + ' : ' + Result.Result_Str);
+end;
+
+function TDM.SetFrameCheckBOX(bYN: Boolean; FrameCheckBox: TFrame_ENV_CHECKBOX): TResult_IS;
+var
+  sImgName: String;
+begin
+  with FrameCheckBox do
+  begin
+    Tag := StrToIntDef(BoolToStr(bYN), 0);
+    case Tag of
+      0:
+        begin
+          sImgName := 'Check_OFF.png';
+        end;
+    else
+      begin
+        sImgName := 'Check_ON.png';
+      end;
+    end;
+    Image_Check.Picture.LoadFromFile(ProgramPath + IMG_PATH + sImgName);
+  end;
+end;
+
+function TDM.Image_CheckBOX(iTag: Integer; FrameCheckBox: TFrame_ENV_CHECKBOX): TResult_IS;
+var
+  iImgTag: Integer;
+  sImgName: String;
+begin
+  case iTag of
+    0:
+      begin
+        sImgName := 'Check_ON.png';
+        iImgTag := 1;
+      end;
+  else
+    begin
+      sImgName := 'Check_OFF.png';
+      iImgTag := 0;
+    end;
+  end;
+
+  if NOT FileExists(ProgramPath + IMG_PATH + sImgName) then
+  begin
+    Result.Result_int := -1;
+    Result.Result_Str := sImgName + ' 이미지를 찾을 수 없음';
+    Exit;
+  end;
+  with FrameCheckBox do
+  begin
+    Image_Check.Picture.LoadFromFile(ProgramPath + IMG_PATH + sImgName);
+    Tag := iImgTag;
+  end;
+end;
+
+procedure TDM.iniInfo(iType: Integer; siniName: String);
+const
+  Airpos_Seaction = 'AIRPOS';
+  Server_Seaction = 'POS';
+  Control_Seaction = 'CONTROL';
+var
+  ini: TiniFile;
+  i, j: Integer;
+  sStr: String;
+begin
+  // iType
+  {
+    0 : Read
+    1 : Write
+  }
+  if (FileExists(siniName) = False) AND (siniName <> '.\AirControl.ini') then
+  begin
+    if POS('AIRPOS.ini', siniName) > 0 then
+    begin
+      GetPopup(0, '파일확인요망', siniName + '을 찾을수 없습니다. 푸드카페를 설치 후 진행해주세요.', '');
+      Application.Terminate;
+      Exit;
+    end;
+  end;
+  ini := TiniFile.Create(siniName);
+  try
+    with ini do
+    begin
+      if POS('AIRPOS.ini', siniName) > 0 then
+      begin
+        case iType of
+          0:
+            begin
+              StoreName := ReadString(Airpos_Seaction, 'GMZNM', StoreName);
+              StoreOwner := ReadString(Airpos_Seaction, 'GBoss', StoreOwner);
+              StoreType := ReadString(Airpos_Seaction, 'Upjong', StoreType);
+              StoreSeq := ReadString(Airpos_Seaction, 'GRegNo', StoreSeq);
+              StoreTel := ReadString(Airpos_Seaction, 'GTelNO', StoreTel);
+              StoreAddr1 := ReadString(Airpos_Seaction, 'gAddr1', StoreAddr1);
+              StoreAddr2 := ReadString(Airpos_Seaction, 'gAddr2', StoreAddr2);
+
+              Posno := ReadInteger(Airpos_Seaction, 'PosNo', Posno);
+              HostIP := ReadString(Airpos_Seaction, 'HostIP', HostIP);
+              for i := Low(arrkitCommIP) to High(arrkitCommIP) do
+                arrkitCommIP[i] := ReadString(Airpos_Seaction, 'kitCommIP' + IntToStr(i), '');
+
+              optCloseSale := ReadBool(Airpos_Seaction, 'optCloseSale', optCloseSale);
+              useSale24 := ReadBool(Airpos_Seaction, 'useSale24', useSale24);
+              TimeOrigin := ReadString(Airpos_Seaction, 'TimeOrigin', TimeOrigin);
+              useAdvance := ReadBool(Airpos_Seaction, 'useAdvance', useAdvance);
+              useTimeSale := ReadBool(Airpos_Seaction, 'useTimeSale', useTimeSale);
+              TimeSaleStaticLock := ReadBool(Airpos_Seaction, 'TimeSaleStaticLock', TimeSaleStaticLock);
+              TimeAutoLockerLayer := ReadBool(Airpos_Seaction, 'TimeAutoLockerLayer', TimeAutoLockerLayer);
+              TimeTableTag := ReadBool(Airpos_Seaction, 'TimeTableTag', TimeTableTag);
+              TimeSaleNoAdvance := ReadBool(Airpos_Seaction, 'TimeSaleNoAdvance', TimeSaleNoAdvance);
+              useTimeOverChg := ReadBool(Airpos_Seaction, 'useTimeOverChg', useTimeOverChg);
+              useTimeChange := ReadBool(Airpos_Seaction, 'useTimeChange', useTimeChange);
+
+              FoodCourt := ReadBool(Airpos_Seaction, 'FoodCourt', False);
+              TableSizeGB := ReadInteger(Airpos_Seaction, 'TableSizeGB', 1);
+
+              GMZNO := ReadString(Airpos_Seaction, 'GMZNO', GMZNO);
+              useAutoDown := ReadInteger(Airpos_Seaction, 'useAutoDown', 0);
+              useNOTStock := ReadBool(Airpos_Seaction, 'useNOTStock', useNOTStock);
+              CloseNoUpdate := ReadBool(Airpos_Seaction, 'CloseNoUpdate', CloseNoUpdate);
+              NotSaleSend := ReadBool(Airpos_Seaction, 'NotSaleSend', NotSaleSend);
+
+              QuesAppr := ReadBool(Airpos_Seaction, 'QuesAppr', QuesAppr);
+              useOrdCashRecp := ReadBool(Airpos_Seaction, 'useOrdCashRecp', useOrdCashRecp);
+              useIDSave := ReadBool(Airpos_Seaction, 'useIDSave', useIDSave);
+
+              for i := Low(arrPrnOptionList) to High(arrPrnOptionList) do
+              begin
+                with arrPrnOptionList[i] do
+                begin
+                  slMemo := TStringList.Create;
+                  slMemo.Clear;
+                  case i of
+                    0: // 영수증
+                      begin
+                        SetLength(BS_Prn, 10);
+                        SetLength(BS_Ext, 8);
+                        iTop_Len := ReadInteger(Airpos_Seaction, 'RecTopCnt', iTop_Len);
+                        iBot_Len := ReadInteger(Airpos_Seaction, 'RecBotCnt', iBot_Len);
+                        iPrnCnt := ReadInteger(Airpos_Seaction, 'RecpCnt', iPrnCnt);
+
+                        for j := Low(BS_Prn) to High(BS_Prn) do
+                        begin
+                          BS_Prn[j].Result_Str := arrPrnOptionList_RecCation[0, j];
+                          case j of
+                            0 .. 7:
+                              begin
+                                BS_Prn[j].Result_Bool := ReadBool(Airpos_Seaction, 'recPrn' + IntToStr(j + 1), True);
+
+                              end;
+                            8:
+                              begin
+                                BS_Prn[j].Result_Bool := ReadBool(Airpos_Seaction, 'RecOrdNoUpPrn', True);
+                              end;
+                            9:
+                              begin
+                                BS_Prn[j].Result_Bool := ReadBool(Airpos_Seaction, 'RecOrdNoDownPrn', True);
+                              end;
+                          end;
+                        end;
+
+                        for j := Low(BS_Ext) to High(BS_Ext) do
+                        begin
+                          BS_Ext[j].Result_Bool := ReadBool(Airpos_Seaction, 'RecFnt' + IntToStr(j + 1), True);
+                          BS_Ext[j].Result_Str := arrPrnOptionList_RecCation[1, j];
+
+                        end;
+
+                        for j := 1 to 10 do
+                        begin
+                          sStr := ReadString(Airpos_Seaction, 'r_Bigo' + IntToStr(j), '');
+                          if Trim(sStr) <> '' then
+                            slMemo.Add(sStr);
+                        end;
+
+                      end;
+                    1: // 고객주문서
+                      begin
+                        SetLength(BS_Prn, 2);
+                        SetLength(BS_Ext, 0);
+
+                        BS_Prn[0].Result_Bool := ReadBool(Airpos_Seaction, 'ggprnnogmz', False);
+                        BS_Prn[1].Result_Bool := ReadBool(Airpos_Seaction, 'ggRecBigo', False);
+
+                        for j := Low(BS_Prn) to High(BS_Prn) do
+                          BS_Prn[j].Result_Str := arrPrnOptionList_hggCaption[j];
+
+                        iTop_Len := ReadInteger(Airpos_Seaction, 'hggTopCnt', iTop_Len);
+                        iBot_Len := ReadInteger(Airpos_Seaction, 'hggBotCnt', iBot_Len);
+                        iPrnCnt := 1;
+
+                      end;
+                    2: // 주방주문서
+                      begin
+                        SetLength(BS_Prn, 10);
+                        SetLength(BS_Ext, 9);
+
+                        iTop_Len := ReadInteger(Airpos_Seaction, 'kitTopCnt', iTop_Len);
+                        iBot_Len 
