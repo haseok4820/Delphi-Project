@@ -1,9 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<BorlandProject>
-	<Transactions>
-    <Transaction>1899-12-30 00:00:00.000.442,D:\최하석 작업문서\AirSimpleManager\ProjectGroup1.groupproj=D:\최하석 작업문서\AirSimpleManager\ProjectGroup_airMng.groupproj</Transaction>
-  </Transactions>
-	<Default.Personality>
-		<Projects ActiveProject="D:\최하석 작업문서\AirSimpleManager\AirCafeManager.dproj"/>
-	</Default.Personality>
-</BorlandProject>
